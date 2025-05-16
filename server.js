@@ -1,7 +1,10 @@
 // server.js
 const WebSocket = require("ws");
 const { v4: uuidv4 } = require("uuid"); // npm install uuid
-const wss = new WebSocket.Server({ port: 3000 });
+
+// Config port (env variable or default to 3000)
+const PORT = process.env.PORT || 3000;
+const wss = new WebSocket.Server({ port: PORT });
 
 /*
   Data structures:
@@ -244,4 +247,4 @@ function broadcastRoomState(roomId, newWord = null, playerId = null, eventType =
   });
 }
 
-console.log("WebSocket server running on ws://localhost:3000");
+console.log(`WebSocket server running on ws://localhost:${PORT}`);
