@@ -1,0 +1,126 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #e3f2fd;
+  text-align: center;
+  padding: 30px;
+}
+
+.game-container {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  max-width: 500px;
+  margin: auto;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.status-bar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+#last-words {
+  margin-bottom: 15px;
+}
+
+input[type="text"] {
+  padding: 10px;
+  width: 90%;
+  font-size: 1.1em;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+button {
+  padding: 10px 15px;
+  margin: 5px;
+  border: none;
+  background-color: #0288d1;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+button:hover {
+  background-color: #0277bd;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 15px;
+  text-align: left;
+}
+
+li {
+  margin-bottom: 8px;
+  font-size: 1.1em;
+}
+
+.popup {
+  display: none;
+  margin: 10px auto;
+  padding: 12px;
+  background-color: #f44336;
+  color: white;
+  border-radius: 6px;
+  max-width: 90%;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.scoreboard {
+  margin-top: 20px;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.btn-group {
+  margin-top: 20px;
+}
+
+.btn-group button {
+  margin: 5px;
+}
+
+/* 🔥 Timer stress mode */
+#timer {
+  transition: color 0.3s ease;
+}
+
+#timer.low-time {
+  color: red;
+  font-weight: bold;
+  animation: blink 1s step-start infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* 💡 Responsive tweak */
+@media (max-width: 600px) {
+  .game-container {
+    padding: 15px;
+  }
+
+  input[type="text"] {
+    width: 100%;
+  }
+}
