@@ -194,7 +194,6 @@ function handleSubmission() {
   setTimeout(() => {
     wordChain.push(aiWord);
     usedWords.add(aiWord);
-    timeLeft += 3;
     totalWordsExchanged++;
     currentLetter = aiWord.slice(-1);
 
