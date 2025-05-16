@@ -6,24 +6,26 @@ const wordChainElement = document.getElementById('word-chain');
 const scoreElement = document.getElementById('score');
 const timerElement = document.getElementById('timer');
 const restartBtn = document.getElementById('restart-btn');
+const hintBtn = document.getElementById('hint-btn');
 const popup = document.getElementById('popup-message');
+const lastWordsElement = document.getElementById('last-words');
 
-let words = []; // The big word list from words.txt
+let words = []; // Words list
 
 // Game State
 let currentLetter = '';
 let wordChain = [];
 let usedWords = new Set();
 let score = 0;
-let timeLeft = 60; // 1 minute timer
+let timeLeft = 60;
 let timerInterval = null;
 let gameOver = false;
 
-// Word length leveling variables
-let maxWordLength = Infinity;  // Start with no max length limit
-let totalWordsExchanged = 0;   // Count of words from both sides
+// Minimum word length leveling variables
+let minWordLength = 1;  // Start with 1, increase over time
+let totalWordsExchanged = 0;
 
-// Load words from words.txt (one word per line)
+// Load words.txt
 fetch('words.txt')
   .then(response => response.text())
   .then(text => {
@@ -38,7 +40,6 @@ fetch('words.txt')
     showPopup('⚠️ Failed to load words list. Game cannot start.', 5000);
   });
 
-// Start Game
 function startGame() {
   wordChain = [];
   usedWords.clear();
@@ -48,15 +49,16 @@ function startGame() {
   submitBtn.disabled = false;
   wordInput.value = '';
   timeLeft = 60;
-  maxWordLength = Infinity; // reset max length limit
+  minWordLength = 1; // reset minimum word length
   totalWordsExchanged = 0;
 
   currentLetter = getRandomLetter();
   letterElement.textContent = currentLetter;
   updateTimerDisplay();
   updateGame();
+  updateLastWords();
 
-  clearInterval(timerInterval); // Clear old timer if restarting
+  clearInterval(timerInterval);
   timerInterval = setInterval(() => {
     timeLeft--;
     updateTimerDisplay();
@@ -67,39 +69,52 @@ function startGame() {
   }, 1000);
 }
 
-// Update Timer UI
 function updateTimerDisplay() {
-  timerElement.textContent = `Time left: ${timeLeft}s`;
-  timerElement.style.color = timeLeft <= 10 ?    'red' : 'Green';
+  timerElement.textContent = `⏳ Time left: ${timeLeft}s`;
+  if (timeLeft > 40) {
+    timerElement.style.color = 'green';
+  } else if (timeLeft > 10) {
+    timerElement.style.color = 'yellow';
+  } else {
+    timerElement.style.color = 'red';
+  }
 }
 
-// Generate a random letter
 function getRandomLetter() {
   const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   return letters[Math.floor(Math.random() * letters.length)];
 }
 
-// Validate word: must start with currentLetter, not used before, exist in words list,
-// and obey maxWordLength only if limit is finite
+// Validate word with minimum length
 function isValidWord(word) {
   if (!word.startsWith(currentLetter)) return false;
   if (usedWords.has(word)) return false;
   if (!words.includes(word)) return false;
-  if (maxWordLength !== Infinity && word.length > maxWordLength) return false;
+  if (word.length < minWordLength) return false;
   return true;
 }
 
-// Update the game UI
 function updateGame() {
   wordChainElement.innerHTML = wordChain.map((word, index) => {
-    const speaker = index % 2 === 0 ? '👤You' : '🤖AI';  // Player starts first
+    const speaker = index % 2 === 0 ? '👤You' : '🤖AI';
     return `<li><b>${speaker}:</b> ${word}</li>`;
   }).join('');
   scoreElement.textContent = score;
   letterElement.textContent = currentLetter;
+  updateLastWords();
 }
 
-// Show popup message
+// Show last player and AI words below timer
+function updateLastWords() {
+  const playerWord = wordChain.length >= 2 ? wordChain[wordChain.length - 2] : 'None';
+  const aiWord = wordChain.length >= 1 ? wordChain[wordChain.length - 1] : 'None';
+
+  lastWordsElement.innerHTML = `
+    <p>⛓️ : <b>${playerWord}</b>➡️
+  ${aiWord}</b></p>
+  `;
+}
+
 function showPopup(message, duration = 3000) {
   popup.textContent = message;
   popup.style.display = 'block';
@@ -109,7 +124,6 @@ function showPopup(message, duration = 3000) {
   }, duration);
 }
 
-// End game
 function endGame() {
   gameOver = true;
   showPopup("⏱️ Time's up! Game Over 😵", 4000);
@@ -117,21 +131,21 @@ function endGame() {
   submitBtn.disabled = true;
 }
 
-// AI picks a valid word starting with given letter and not used before,
-// obeying maxWordLength if finite
+hintBtn.addEventListener('click', () => {
+  showPopup("🧠 Hint system coming soon!");
+});
+
 function aiPickWord(startLetter) {
   const candidates = words.filter(w =>
     w.startsWith(startLetter) &&
     !usedWords.has(w) &&
-    (maxWordLength === Infinity || w.length <= maxWordLength)
+    w.length >= minWordLength
   );
-
   if (candidates.length === 0) return null;
 
   return candidates[Math.floor(Math.random() * candidates.length)];
 }
 
-// Handle player submission
 function handleSubmission() {
   if (gameOver) {
     showPopup("⛔ Game is over! Hit restart to play again.");
@@ -139,29 +153,29 @@ function handleSubmission() {
   }
 
   const playerWord = wordInput.value.trim().toUpperCase();
-  if (!playerWord) return; // ignore empty input
+  if (!playerWord) return;
 
   if (!isValidWord(playerWord)) {
-    showPopup(`🚫 Invalid! Word must start with "${currentLetter}", be unused, real, and max length ${maxWordLength === Infinity ? '∞' : maxWordLength}.`);
+    showPopup(`🚫 Invalid! Word must start with "${currentLetter}", be unused, real, and at least ${minWordLength} letters.`);
     wordInput.value = '';
     return;
   }
 
-  // Player's valid word
+  // Player's word accepted
   wordChain.push(playerWord);
   usedWords.add(playerWord);
   score++;
-  timeLeft += 3; // reward extra time for correct word
+  timeLeft += 3; // time reward
   totalWordsExchanged++;
   currentLetter = playerWord.slice(-1);
 
-  // Check if maxWordLength should be enforced or increased
+  // Increase min word length based on total words exchanged
   if (totalWordsExchanged === 20) {
-    maxWordLength = 4;
-    showPopup(`🎉 Max word length now set to ${maxWordLength}!`);
+    minWordLength = 4;
+    showPopup(`🎉 Minimum word length now set to ${minWordLength}!`);
   } else if (totalWordsExchanged > 20 && totalWordsExchanged % 20 === 0) {
-    maxWordLength++;
-    showPopup(`🎉 Max word length increased to ${maxWordLength}!`);
+    minWordLength++;
+    showPopup(`🎉 Minimum word length increased to ${minWordLength}!`);
   }
 
   updateGame();
@@ -169,7 +183,7 @@ function handleSubmission() {
   wordInput.value = '';
   wordInput.focus();
 
-  // AI's turn
+  // AI turn
   const aiWord = aiPickWord(currentLetter);
   if (!aiWord) {
     showPopup("🎉 You Win! AI couldn't find a word.", 5000);
@@ -180,18 +194,17 @@ function handleSubmission() {
   setTimeout(() => {
     wordChain.push(aiWord);
     usedWords.add(aiWord);
-    score++;
-    timeLeft += 3; // AI reward time too
+    timeLeft += 3;
     totalWordsExchanged++;
     currentLetter = aiWord.slice(-1);
 
-    // Same max length check for AI
+    // Same min length check for AI
     if (totalWordsExchanged === 20) {
-      maxWordLength = 4;
-      showPopup(`🎉 Max word length now set to ${maxWordLength}!`);
+      minWordLength = 4;
+      showPopup(`🎉 Minimum word length now set to ${minWordLength}!`);
     } else if (totalWordsExchanged > 20 && totalWordsExchanged % 20 === 0) {
-      maxWordLength++;
-      showPopup(`🎉 Max word length increased to ${maxWordLength}!`);
+      minWordLength++;
+      showPopup(`🎉 Minimum word length increased to ${minWordLength}!`);
     }
 
     updateGame();
@@ -199,7 +212,6 @@ function handleSubmission() {
   }, 1200);
 }
 
-// Event listeners
 submitBtn.addEventListener('click', handleSubmission);
 wordInput.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') {
