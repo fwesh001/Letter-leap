@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Letter Leap - Multiplayer</title>
+  <link rel="stylesheet" href="sm.css" />
+</head>
+<body>
+  <div class="game-container">
+    <h1>🌐Multiplayer</h1>
+
+    <div id="connection-status">🕸️ Connecting...</div>
+
+    <div id="player-info">
+      <p>👤 You: <span id="player-name">Player1</span></p>
+      <p>🥷Opponent: <span id="opponent-name">Waiting...</span></p>
+    </div>
+
+    <p id="prompt">
+      Starting Letter: <b class="lettercolor"><span id="letter">A</span></b>
+    </p>
+
+    <div id="timer">⏳Time left: 60s</div>
+    <div id="last-words"></div>
+    <div id="popup-message" class="popup"></div>
+
+    <input type="text" id="word-input" placeholder="Enter your word here" />
+    <p>
+      <button id="submit-btn">✅Submit</button>
+    </p>
+
+    <h3>Word Chain⛓️:</h3>
+    <ul id="word-chain"></ul>
+
+    <p>Score🏆: <span id="score">0</span></p>
+
+    <div>
+      <button id="restart-btn">🔄 Restart</button>
+      <a href="index.html"><button>Home</button></a>
+    </div>
+  </div>
+
+  <script src="multiplayer.js"></script>
+</body>
+</html>
