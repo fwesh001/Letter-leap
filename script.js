@@ -70,7 +70,7 @@ function startGame() {
 // Update Timer UI
 function updateTimerDisplay() {
   timerElement.textContent = `Time left: ${timeLeft}s`;
-  timerElement.style.color = timeLeft <= 10 ? 'red' : 'black';
+  timerElement.style.color = timeLeft <= 10 ?    'red' : 'Green';
 }
 
 // Generate a random letter
@@ -92,7 +92,7 @@ function isValidWord(word) {
 // Update the game UI
 function updateGame() {
   wordChainElement.innerHTML = wordChain.map((word, index) => {
-    const speaker = index % 2 === 0 ? 'You' : 'AI';  // Player starts first
+    const speaker = index % 2 === 0 ? '👤You' : '🤖AI';  // Player starts first
     return `<li><b>${speaker}:</b> ${word}</li>`;
   }).join('');
   scoreElement.textContent = score;
