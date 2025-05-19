@@ -81,7 +81,7 @@ function enableGameInputs() {
 }
 
 function connect() {
-socket = new WebSocket("wss://letter-leap.onrender.com");
+  socket = new WebSocket("ws://localhost:3000");
 
   socket.onopen = () => {
     console.log("Connected to server");
