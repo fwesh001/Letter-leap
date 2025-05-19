@@ -165,7 +165,7 @@ function handleSubmission() {
   wordChain.push(playerWord);
   usedWords.add(playerWord);
   score++;
-  timeLeft += 4; // time reward
+  timeLeft += 5; // time reward
   totalWordsExchanged++;
   currentLetter = playerWord.slice(-1);
 
