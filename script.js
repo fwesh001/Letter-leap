@@ -9,6 +9,8 @@ const restartBtn = document.getElementById('restart-btn');
 const hintBtn = document.getElementById('hint-btn');
 const popup = document.getElementById('popup-message');
 const lastWordsElement = document.getElementById('last-words');
+const startBtn = document.getElementById('start-btn');
+const clickSound = document.getElementById('click-sound');
 
 let words = []; // Words list
 
@@ -171,7 +173,7 @@ function handleSubmission() {
 
   // Increase min word length based on total words exchanged
   if (totalWordsExchanged === 20) {
-    minWordLength = 4;
+    minWordLength = 3;
     showPopup(`🎉 Minimum word length now set to ${minWordLength}!`);
   } else if (totalWordsExchanged > 20 && totalWordsExchanged % 20 === 0) {
     minWordLength++;
