@@ -33,9 +33,7 @@ h1 {
 }
 
 /* Popup */
-.popup {
-  position: absolute;
-  bottom: 130px; /* tweak as needed to be just above input */
+.popup {
   left: 50%;
   transform: translateX(-50%);
   background-color: #ff4d4f;
