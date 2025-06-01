@@ -76,6 +76,7 @@ li {
 
 /*Time style*/
 .popup {
+  text-align: center;
   transform: translateX(-50%);
   background-color: #ff4d4f;
   color: white;
