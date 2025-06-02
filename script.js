@@ -247,3 +247,11 @@ function formatTime(seconds) {
   const secs = seconds % 60;
   return `${mins} minute${mins !== 1 ? 's' : ''} ${secs} second${secs !== 1 ? 's' : ''}`;
 }
+
+function playClickSound() {
+  if (clickSound) {
+    clickSound.currentTime = 0;
+    clickSound.play();
+  }
+}
+
