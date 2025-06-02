@@ -31,7 +31,22 @@ h1 {
     padding: 10px;
     margin-top: 10px;
 }
-
+
+/* Popup */
+.popup {
+  position:relative;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #ff4d4f;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  display: none;
+  z-index: 999;
+  box-shadow: 0 4px 8px rgb(0, 0, 0);
+  animation: fadein 0.3s ease, fadeout 0.3s ease 2.5s;
+}
 
 
 button {
@@ -46,7 +61,8 @@ button {
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #bdecbe;
+    color: #000000;
 }
 
 ul {
@@ -56,7 +72,8 @@ ul {
 
 li {
     font-size: 1.2em;
-    color: #333;
+    font: bold;
+    color: white;
 }
 
 .lettercolor {
@@ -74,18 +91,7 @@ li {
   to { opacity: 0; }
 }
 
-/*Time style*/
-.popup {
-  text-align: center;
-  transform: translateX(-50%);
-  background-color: #ff4d4f;
-  color: white;
-  padding: 12px 20px;
-  border-radius: 8px;
-  font-weight: bold;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-  animation: fadein 0.3s ease, fadeout 0.3s ease 2.5s;
-}
+
 
 @keyframes fadein {
   from { opacity: 0; transform: translateX(-50%) translateY(20px); }
@@ -103,4 +109,70 @@ li b {
 
 li:nth-child(odd) b {
   color: #2196F3;  /* blue for AI */
+}
+
+#game-over-screen {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%; /* adjust this width as needed */
+  height: 100%; /* adjust this height as needed */
+  background-image: url('gameover.png'); /* your PNG background */
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  color: white;
+  padding: 20px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+  border-radius: 15px;
+}
+
+#game-over-screen.hidden {
+  display:none;
+} 
+
+.game-over-content {
+  padding: 5px;
+  margin: 10px;
+  text-align: center;
+  font-family: 'Comic Sans MS', 'Segoe UI', cursive;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#game-over-screen {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+#game-over-screen button {
+  margin: 10px;
+  padding: 12px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  background-color: #00ffcc;
+  color: #000;
+  transition: transform 0.2s, box-shadow 0.3s;
+}
+
+#game-over-screen button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 15px #00ffcc;
 }
