@@ -20,27 +20,30 @@ let wordChain = [];
 let usedWords = new Set();
 let score = 0;
 let timeLeft = 60;
+let totalTimeSpent = 60;
 let timerInterval = null;
 let gameOver = false;
 
-// Minimum word length leveling variables
-let minWordLength = 1;  // Start with 1, increase over time
+let minWordLength = 2;
 let totalWordsExchanged = 0;
 
-// Load words.txt
 fetch('words.txt')
-  .then(response => response.text())
+  .then(res => res.text())
   .then(text => {
-    words = text
-      .split('\n')
-      .map(w => w.trim().toUpperCase())
-      .filter(Boolean);
+    words = text.split('\n').map(w => w.trim().toUpperCase()).filter(Boolean);
     startGame();
   })
   .catch(err => {
     console.error('Failed to load word list:', err);
     showPopup('⚠️ Failed to load words list. Game cannot start.', 5000);
   });
+
+function playClickSound() {
+  if (clickSound) {
+    clickSound.currentTime = 0;
+    clickSound.play();
+  }
+}
 
 function startGame() {
   wordChain = [];
@@ -51,7 +54,8 @@ function startGame() {
   submitBtn.disabled = false;
   wordInput.value = '';
   timeLeft = 60;
-  minWordLength = 1; // reset minimum word length
+  totalTimeSpent = 60;
+  minWordLength = 2;
   totalWordsExchanged = 0;
 
   currentLetter = getRandomLetter();
@@ -73,13 +77,7 @@ function startGame() {
 
 function updateTimerDisplay() {
   timerElement.textContent = `⏳ Time left: ${timeLeft}s`;
-  if (timeLeft > 40) {
-    timerElement.style.color = 'green';
-  } else if (timeLeft > 10) {
-    timerElement.style.color = 'yellow';
-  } else {
-    timerElement.style.color = 'red';
-  }
+  timerElement.style.color = timeLeft > 40 ? 'green' : timeLeft > 10 ? 'yellow' : 'red';
 }
 
 function getRandomLetter() {
@@ -87,18 +85,16 @@ function getRandomLetter() {
   return letters[Math.floor(Math.random() * letters.length)];
 }
 
-// Validate word with minimum length
 function isValidWord(word) {
-  if (!word.startsWith(currentLetter)) return false;
-  if (usedWords.has(word)) return false;
-  if (!words.includes(word)) return false;
-  if (word.length < minWordLength) return false;
-  return true;
+  return word.startsWith(currentLetter) &&
+         !usedWords.has(word) &&
+         words.includes(word) &&
+         word.length >= minWordLength;
 }
 
 function updateGame() {
-  wordChainElement.innerHTML = wordChain.map((word, index) => {
-    const speaker = index % 2 === 0 ? '👤You' : '🤖AI';
+  wordChainElement.innerHTML = wordChain.map((word, i) => {
+    const speaker = i % 2 === 0 ? '👤You' : '🤖AI';
     return `<li><b>${speaker}:</b> ${word}</li>`;
   }).join('');
   scoreElement.textContent = score;
@@ -106,34 +102,28 @@ function updateGame() {
   updateLastWords();
 }
 
-// Show last player and AI words below timer
 function updateLastWords() {
   const playerWord = wordChain.length >= 2 ? wordChain[wordChain.length - 2] : 'None';
   const aiWord = wordChain.length >= 1 ? wordChain[wordChain.length - 1] : 'None';
 
-  lastWordsElement.innerHTML = `
-    <p>⛓️ : <b>${playerWord}</b>➡️
-  ${aiWord}</b></p>
-  `;
+  lastWordsElement.innerHTML = `<p>⛓️ : <b>${playerWord}</b>➡️ ${aiWord}</p>`;
 }
 
-function showPopup(message, duration = 3000) {
-  popup.textContent = message;
+function showPopup(msg, duration = 3000) {
+  popup.textContent = msg;
   popup.style.display = 'block';
-
-  setTimeout(() => {
-    popup.style.display = 'none';
-  }, duration);
+  setTimeout(() => popup.style.display = 'none', duration);
 }
 
 function endGame() {
   gameOver = true;
-  showPopup("⏱️ Time's up! Game Over 😵", 4000);
+  showGameOverScreen();
   wordInput.disabled = true;
   submitBtn.disabled = true;
 }
 
 hintBtn.addEventListener('click', () => {
+  playClickSound();
   showPopup("🧠 Hint system coming soon!");
 });
 
@@ -143,16 +133,11 @@ function aiPickWord(startLetter) {
     !usedWords.has(w) &&
     w.length >= minWordLength
   );
-  if (candidates.length === 0) return null;
-
-  return candidates[Math.floor(Math.random() * candidates.length)];
+  return candidates.length ? candidates[Math.floor(Math.random() * candidates.length)] : null;
 }
 
 function handleSubmission() {
-  if (gameOver) {
-    showPopup("⛔ Game is over! Hit restart to play again.");
-    return;
-  }
+  if (gameOver) return showPopup("⛔ Game is over! Hit restart to play again.");
 
   const playerWord = wordInput.value.trim().toUpperCase();
   if (!playerWord) return;
@@ -163,21 +148,17 @@ function handleSubmission() {
     return;
   }
 
-  // Player's word accepted
   wordChain.push(playerWord);
   usedWords.add(playerWord);
   score++;
-  timeLeft += 5; // time reward
   totalWordsExchanged++;
   currentLetter = playerWord.slice(-1);
+  timeLeft += 5;
+  totalTimeSpent += 5;
 
-  // Increase min word length based on total words exchanged
-  if (totalWordsExchanged === 20) {
-    minWordLength = 3;
-    showPopup(`🎉 Minimum word length now set to ${minWordLength}!`);
-  } else if (totalWordsExchanged > 20 && totalWordsExchanged % 20 === 0) {
+  if (totalWordsExchanged === 10 || (totalWordsExchanged > 10 && totalWordsExchanged % 10 === 0)) {
     minWordLength++;
-    showPopup(`🎉 Minimum word length increased to ${minWordLength}!`);
+    showPopup(`🎉 Minimum word length now set to ${minWordLength}!`);
   }
 
   updateGame();
@@ -185,7 +166,6 @@ function handleSubmission() {
   wordInput.value = '';
   wordInput.focus();
 
-  // AI turn
   const aiWord = aiPickWord(currentLetter);
   if (!aiWord) {
     showPopup("🎉 You Win! AI couldn't find a word.", 5000);
@@ -199,13 +179,9 @@ function handleSubmission() {
     totalWordsExchanged++;
     currentLetter = aiWord.slice(-1);
 
-    // Same min length check for AI
-    if (totalWordsExchanged === 20) {
-      minWordLength = 4;
-      showPopup(`🎉 Minimum word length now set to ${minWordLength}!`);
-    } else if (totalWordsExchanged > 20 && totalWordsExchanged % 20 === 0) {
+    if (totalWordsExchanged === 10 || (totalWordsExchanged > 10 && totalWordsExchanged % 10 === 0)) {
       minWordLength++;
-      showPopup(`🎉 Minimum word length increased to ${minWordLength}!`);
+      showPopup(`🎉 Minimum word length now set to ${minWordLength}!`);
     }
 
     updateGame();
@@ -213,11 +189,61 @@ function handleSubmission() {
   }, 1200);
 }
 
-submitBtn.addEventListener('click', handleSubmission);
+submitBtn.addEventListener('click', () => {
+  playClickSound();
+  handleSubmission();
+});
+
 wordInput.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') {
+    playClickSound();
     handleSubmission();
   }
 });
 
-restartBtn.addEventListener('click', startGame);
+restartBtn.addEventListener('click', () => {
+  playClickSound();
+  startGame();
+});
+
+startBtn.addEventListener('click', () => {
+  playClickSound();
+  startGame();
+});
+
+function showGameOverScreen() {
+  document.querySelector('.game-container').style.display = 'none';
+  document.getElementById('game-over-screen').classList.remove('hidden');
+
+  const quotes = [
+    "RIP, Brain Cells 💀", "Oops! That escalated quickly...",
+    "Your vocabulary went on vacation 🌴", "You vs Time: Time wins again ⏳😵",
+    "That was... something 😅", "You tried... and the letters laughed. 😂",
+    "Word on the street is... you need more practice. 🫠", "That's not how you spell 'victory'. 😅",
+    "Letters were thrown. No survivors. 💀", "You and the keyboard had a disagreement. 👊⌨️",
+    "Grammar police are on their way. 🚨📝", "Your brain: 404 - Word Not Found. 🧠❌",
+    "Well... that was a journey. 🛣️", "Let’s pretend that didn’t happen. 🫢"
+  ];
+  document.getElementById('game-over-quote').textContent = quotes[Math.floor(Math.random() * quotes.length)];
+
+  document.getElementById('final-score').textContent = score;
+  document.getElementById('word-count').textContent = wordChain.length;
+  document.getElementById('time-spent').textContent = formatTime(totalTimeSpent);
+
+  const accuracy = Math.round((score / (totalWordsExchanged || 1)) * 100); // Player-only accuracy
+  document.getElementById('accuracy').textContent = accuracy + '%';
+
+  const list = document.getElementById('word-list');
+  list.innerHTML = '';
+  wordChain.forEach(w => {
+    const li = document.createElement('li');
+    li.textContent = w;
+    list.appendChild(li);
+  });
+}
+
+function formatTime(seconds) {
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${mins} minute${mins !== 1 ? 's' : ''} ${secs} second${secs !== 1 ? 's' : ''}`;
+}
