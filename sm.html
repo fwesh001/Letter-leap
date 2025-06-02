@@ -10,7 +10,7 @@
   
   <div class="game-container">
     <h1>👤Single-player</h1>
-    <p id="prompt">
+    <p id="prompt" style="color: red; font-weight: bold;">
       Starting Letter: <b class="lettercolor"><span id="letter">A</span></b>
     </p>
 
@@ -49,14 +49,17 @@
     <p><strong>📝 Total Words:</strong> <span id="word-count"></span></p>
     <p><strong>⏳ Time Spent:</strong> <span id="time-spent"></span></p>
     <p><strong>🎯 Accuracy:</strong> <span id="accuracy"></span></p>
+    <p><strong>🔠 Longest Word:</strong> <span id="longest-word"></span></p>
     <button onclick="startGame()">🔁 Restart</button>
     <a href="index.html"><button>🏠 Home</button></a>
   </div>
 </div>
 
 <audio id="click-sound" src="click.mp3" preload="auto"></audio>
-<audio id="correct-sound" src="correct.mp3"></audio>
-<audio id="wrong-sound" src="wrong.mp3"></audio>
+<audio id="correct-sound" src="ding.mp3"></audio>
+<audio id="wrong-sound" src="buzz.mp3"></audio>
+<audio id="gameover-sound" src="gameover.mp3"></audio>
+
 
 
 

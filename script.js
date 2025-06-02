@@ -13,7 +13,7 @@ const startBtn = document.getElementById('start-btn');
 const clickSound = document.getElementById('click-sound');
 const correctSound = document.getElementById('correct-sound');
 const wrongSound = document.getElementById('wrong-sound');
-
+const gameoverSound = document.getElementById('gameover-sound');
 
 let words = []; // Words list
 
@@ -49,6 +49,10 @@ function playClickSound() {
 }
 
 function startGame() {
+  // 👇 Fix the screen switching first
+  document.querySelector('.game-container').style.display = 'block';
+  document.getElementById('game-over-screen').classList.add('hidden');
+
   wordChain = [];
   usedWords.clear();
   score = 0;
@@ -118,12 +122,6 @@ function showPopup(msg, duration = 3000) {
   setTimeout(() => popup.style.display = 'none', duration);
 }
 
-function endGame() {
-  gameOver = true;
-  showGameOverScreen();
-  wordInput.disabled = true;
-  submitBtn.disabled = true;
-}
 
 hintBtn.addEventListener('click', () => {
   playClickSound();
@@ -139,8 +137,7 @@ function aiPickWord(startLetter) {
   return candidates.length ? candidates[Math.floor(Math.random() * candidates.length)] : null;
 }
 submitBtn.addEventListener('click', () => {
-  playClickSound(); // always play the click sound on submit click
-  handleSubmission(); // then handle the word validation and sounds
+  handleSubmission(); //handle the word validation and sounds
 });
 
 function handleSubmission() {
@@ -176,6 +173,14 @@ function handleSubmission() {
     minWordLength++;
     showPopup(`🎉 Minimum word length now set to ${minWordLength}!`);
   }
+
+  // Achievement badge checks here — pop badges immediately when earned!
+  if (score === 1) popAchievementBadge("First Blood 🩸"); // first correct word
+  if (score === 3) popAchievementBadge("Trifecta 🎯"); // three correct words
+  if (score === 5) popAchievementBadge("Halfway Hero 🏅"); // five correct words
+  if (score === 10) popAchievementBadge("Word Wizard 🧙"); // ten correct words
+  if (playerWord.length >= 12) popAchievementBadge("Keyboard Warrior 💪");
+  if (score >= 5 && timeLeft < 10) popAchievementBadge("Late Bloomer 🌙");
 
   updateGame();
   updateTimerDisplay();
@@ -230,10 +235,10 @@ function showGameOverScreen() {
     "RIP, Brain Cells 💀", "Oops! That escalated quickly...",
     "Your vocabulary went on vacation 🌴", "You vs Time: Time wins again ⏳😵",
     "That was... something 😅", "You tried... and the letters laughed. 😂",
-    "Word on the street is... you need more practice. 🫠", "That's not how you spell 'victory'. 😅",
+    "Word on the street is... you need more practice.😅", "That's not how you spell 'victory'. 😅",
     "Letters were thrown. No survivors. 💀", "You and the keyboard had a disagreement. 👊⌨️",
     "Grammar police are on their way. 🚨📝", "Your brain: 404 - Word Not Found. 🧠❌",
-    "Well... that was a journey. 🛣️", "Let’s pretend that didn’t happen. 🫢"
+    "Well... that was a journey. 🛣️", "Let’s pretend that didn’t happen.😅"
   ];
   document.getElementById('game-over-quote').textContent = quotes[Math.floor(Math.random() * quotes.length)];
 
@@ -252,6 +257,13 @@ function showGameOverScreen() {
     list.appendChild(li);
   });
 }
+// Pick a random challenge
+  const challengeText = challenges[Math.floor(Math.random() * challenges.length)];
+  
+  // Set challenge text inside the new element
+  const challengeElement = document.getElementById('game-over-challenge');
+  challengeElement.textContent = `🎮 Challenge for next round: ${challengeText}`;
+
 
 function formatTime(seconds) {
   const mins = Math.floor(seconds / 60);
@@ -265,4 +277,39 @@ function playClickSound() {
     clickSound.play();
   }
 }
+
+
+function endGame() {
+  gameOver = true;
+  gameoverSound.currentTime = 0;
+  gameoverSound.play();
+  
+  showGameOverScreen();
+  wordInput.disabled = true;
+  submitBtn.disabled = true;
+}
+
+const longestWord = wordChain.reduce((longest, word) =>
+  word.length > longest.length ? word : longest, ''
+);
+document.getElementById('longest-word').textContent = longestWord || "None";
+
+function popAchievementBadge(badgeName) {
+  const popup = document.getElementById('popup-message');
+  popup.textContent = `🏆 Achievement Unlocked: ${badgeName}`;
+  popup.style.display = 'block';
+  popup.style.backgroundColor = '#FFD700'; // Gold-ish to stand out
+  popup.style.color = '#000';
+  popup.style.fontWeight = 'bold';
+
+  // Hide after 3 seconds and reset styling
+  setTimeout(() => {
+    popup.style.display = 'none';
+    popup.style.backgroundColor = ''; 
+    popup.style.color = '';
+    popup.textContent = '';
+  }, 3000);
+}
+
+
 

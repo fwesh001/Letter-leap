@@ -44,7 +44,7 @@ h1 {
   font-weight: bold;
   display: none;
   z-index: 999;
-  box-shadow: 0 4px 8px rgb(0, 0, 0);
+  box-shadow: 0 0 15px gold;
   animation: fadein 0.3s ease, fadeout 0.3s ease 2.5s;
 }
 
@@ -77,8 +77,10 @@ li {
 }
 
 .lettercolor {
-    color: red;
-    font-size: large;
+    color: white;
+    text-shadow: 2px 2px 5px rgba(125, 207, 220, 0.7);
+    font-size:50px;
+    font-weight: bold;
     font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 @keyframes fadein {
@@ -176,3 +178,4 @@ li:nth-child(odd) b {
   transform: scale(1.1);
   box-shadow: 0 0 15px #00ffcc;
 }
+
