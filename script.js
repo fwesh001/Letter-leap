@@ -11,6 +11,9 @@ const popup = document.getElementById('popup-message');
 const lastWordsElement = document.getElementById('last-words');
 const startBtn = document.getElementById('start-btn');
 const clickSound = document.getElementById('click-sound');
+const correctSound = document.getElementById('correct-sound');
+const wrongSound = document.getElementById('wrong-sound');
+
 
 let words = []; // Words list
 
@@ -135,19 +138,32 @@ function aiPickWord(startLetter) {
   );
   return candidates.length ? candidates[Math.floor(Math.random() * candidates.length)] : null;
 }
+submitBtn.addEventListener('click', () => {
+  playClickSound(); // always play the click sound on submit click
+  handleSubmission(); // then handle the word validation and sounds
+});
 
 function handleSubmission() {
-  if (gameOver) return showPopup("⛔ Game is over! Hit restart to play again.");
+  if (gameOver) {
+    showPopup("⛔ Game is over! Hit restart to play again.");
+    return;
+  }
 
   const playerWord = wordInput.value.trim().toUpperCase();
   if (!playerWord) return;
 
   if (!isValidWord(playerWord)) {
     showPopup(`🚫 Invalid! Word must start with "${currentLetter}", be unused, real, and at least ${minWordLength} letters.`);
+    wrongSound.currentTime = 0;
+    wrongSound.play(); // wrong answer sound
     wordInput.value = '';
     return;
   }
 
+  correctSound.currentTime = 0;
+  correctSound.play(); // correct answer sound
+
+  // Your existing logic when the word is valid
   wordChain.push(playerWord);
   usedWords.add(playerWord);
   score++;
@@ -188,11 +204,6 @@ function handleSubmission() {
     updateTimerDisplay();
   }, 1200);
 }
-
-submitBtn.addEventListener('click', () => {
-  playClickSound();
-  handleSubmission();
-});
 
 wordInput.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') {
