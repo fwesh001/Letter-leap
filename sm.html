@@ -3,11 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Word Chain Game</title>
+  <title>Single-player mode</title>
   <link rel="stylesheet" href="sm.css" />
 </head>
 <body>
-  <audio id="click-sound" src="click.mp3" preload="auto"></audio>
   
   <div class="game-container">
     <h1>👤Single-player</h1>
@@ -16,11 +15,11 @@
     </p>
 
     <div id="timer">⏳Time left: 60s</div>
-    <div id="last-words" style="margin-bottom: 20px; font-weight: bold; color: #333;"></div>
+    <div id="last-words" style="margin-bottom: 20px; font-weight: bold; color:white;"></div>
 
     <div id="popup-message" class="popup"></div>
 
-    <input type="text" id="word-input" placeholder="Enter your word here" />
+    <input type="text" id="word-input" autocomplete="off" autocorrect="off" placeholder="Enter your word here" />
     <p>
           <button id="submit-btn">✅Submit</button>
     <button id="hint-btn">💡Hint</button>
@@ -42,6 +41,19 @@
   </div>
   
   </div>
+
+  <div id="game-over-screen" class="hidden">
+  <div class="game-over-content">
+    <h3 id="game-over-quote">💀 Game Over</h2>
+    <p><strong>🏆 Score:</strong> <span id="final-score"></span></p>
+    <p><strong>📝 Total Words:</strong> <span id="word-count"></span></p>
+    <p><strong>⏳ Time Spent:</strong> <span id="time-spent"></span></p>
+    <p><strong>🎯 Accuracy:</strong> <span id="accuracy"></span></p>
+    <button onclick="startGame()">🔁 Restart</button>
+    <a href="index.html"><button>🏠 Home</button></a>
+  </div>
+</div>
+
 
   <script src="script.js"></script>
 </body>
