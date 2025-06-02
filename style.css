@@ -47,7 +47,7 @@ b{
 }
 
 .multiplayermode {
-     background-color: greenyellow;
+    background-color: greenyellow;
     padding: 50px;
     border-radius: 30px;
     font-size: larger;
@@ -55,6 +55,20 @@ b{
     color: black;
     font-weight: bold;
     color: red;
+}
+
+.level {
+    background-color: greenyellow;
+    padding: 20px;
+    border-radius: 5px;
+    font-size: larger;
+    margin: 20px;
+    color: black;
+    font-weight: bold;
+    color: blue;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+
+    
 }
 
 a {
