@@ -257,6 +257,7 @@ function showGameOverScreen() {
     list.appendChild(li);
   });
 }
+
 // Pick a random challenge
   const challengeText = challenges[Math.floor(Math.random() * challenges.length)];
   
@@ -310,6 +311,3 @@ function popAchievementBadge(badgeName) {
     popup.textContent = '';
   }, 3000);
 }
-
-
-

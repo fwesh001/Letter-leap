@@ -58,11 +58,14 @@ button {
     color: white;
     border: none;
     border-radius: 5px;
+    transition: transform 0.2s, box-shadow 0.3s;
 }
 
 button:hover {
     background-color: #bdecbe;
     color: #000000;
+    transform: scale(1.05);
+    box-shadow: 0 0 15px #bdecbe;
 }
 
 ul {
@@ -136,7 +139,7 @@ li:nth-child(odd) b {
 }
 
 #game-over-screen.hidden {
-  display:none;
+  display: none;
 } 
 
 .game-over-content {
