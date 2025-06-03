@@ -1,3 +1,30 @@
+// At the top of your script
+let socket;
+
+window.addEventListener('DOMContentLoaded', () => {
+  socket = new WebSocket("ws://localhost:3000");
+
+  socket.addEventListener('open', () => {
+    console.log('WebSocket connected!');
+  });
+
+  socket.addEventListener('message', (event) => {
+    const data = JSON.parse(event.data);
+    // handle incoming data to sync multiplayer state or chat or whatever
+  });
+
+  socket.addEventListener('error', (err) => {
+    console.error('Socket error:', err);
+  });
+});
+
+// Then inside your existing functions you can do:
+function sendPlayerWord(word) {
+  if (socket && socket.readyState === WebSocket.OPEN) {
+    socket.send(JSON.stringify({ type: 'playerWord', word }));
+  }
+}
+
 // DOM Elements
 const letterElement = document.getElementById('letter');
 const wordInput = document.getElementById('word-input');
@@ -339,3 +366,14 @@ window.addEventListener('DOMContentLoaded', () => {
   if (muteToggle) muteToggle.textContent = isMuted ? '🔇' : '🔊';
 });
 
+function createRoom() {
+  if (socket && socket.readyState === WebSocket.OPEN) {
+    socket.send(JSON.stringify({ type: "create-room" }));
+  }
+}
+
+function joinRoom(roomId) {
+  if (socket && socket.readyState === WebSocket.OPEN) {
+    socket.send(JSON.stringify({ type: "join-room", roomId }));
+  }
+}
