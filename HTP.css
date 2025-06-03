@@ -1,0 +1,89 @@
+body {
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    animation: fadeIn 1s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
+    border: 2px solid;
+    border-image: linear-gradient(to right, #00f260, #0575e6) 1;
+    animation: glowBorder 5s infinite alternate;
+}
+
+@keyframes glowBorder {
+    0% { border-image: linear-gradient(to right, #00f260, #0575e6) 1; }
+    50% { border-image: linear-gradient(to right, #ff416c, #ff4b2b) 1; }
+    100% { border-image: linear-gradient(to right, #00f260, #0575e6) 1; }
+}
+
+h1, h2, h3 {
+    text-align: center;
+    text-shadow: 0 0 10px #ffffff55;
+}
+
+p, li {
+    font-size: 1.1em;
+    line-height: 1.6;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li::before {
+    content: "🎯 ";
+    margin-right: 5px;
+}
+
+.section {
+    margin: 30px 0;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.start-btn {
+    display: inline-block;
+    margin: 20px auto 0;
+    padding: 15px 30px;
+    background: linear-gradient(135deg, #ff4b2b, #ff416c);
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 50px;
+    box-shadow: 0 0 15px #ff416c;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.start-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px #ff4b2b;
+    
+}
+
+.screenshot {
+    width: 100%;
+    max-width: 700px;
+    display: block;
+    margin: 20px auto;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(255,255,255,0.3);
+}
