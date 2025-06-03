@@ -76,14 +76,7 @@ a {
     color:none;
 }
 
-footer {
-    color:black;
-    padding: 5px;
-    text-align: center;
-    margin: 0;
-    font-weight: bold;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-}
+
 
 /* === Sidebar Container === */
 #settingsSidebar {
@@ -108,9 +101,7 @@ footer {
 
 /* === Toggle Button === */
 #settingsToggleBtn {
-  position: fixed;
-  top: 20px;
-  right: 20px;
+ 
   background: #ff416c;
   color: #fff;
   border: none;
@@ -125,6 +116,7 @@ footer {
 }
 #settingsToggleBtn:hover {
   background: #ff4b2b;
+    transform: rotate(15deg);
 }
 
 /* === Buttons Inside Sidebar === */
@@ -167,4 +159,37 @@ body.light-mode .settings-btn:hover {
   color: #fff;
   box-shadow: 0 0 15px #ff416c;
 }
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: greenyellow;
+  color: #fff;
+  padding: 12px 20px;
+  font-size: 1rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  top: 0;
+  z-index: 100;
+}
+
+.welcome-text {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.header-link {
+  color: #fff;
+  text-decoration: none;
+  margin: 0 10px;
+  background: #444;
+  padding: 6px 10px;
+  border-radius: 5px;
+  transition: background 0.3s;
+}
+
+.header-link:hover {
+  background: #666;
+}
+
 

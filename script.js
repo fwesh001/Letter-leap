@@ -311,3 +311,31 @@ function popAchievementBadge(badgeName) {
     popup.textContent = '';
   }, 3000);
 }
+
+const muteToggle = document.getElementById('mute-toggle');
+let isMuted = false;
+
+muteToggle.addEventListener('click', () => {
+  isMuted = !isMuted;
+  toggleMute(isMuted);
+  muteToggle.textContent = isMuted ? '🔇' : '🔊';
+});
+
+function toggleMute(mute) {
+  const sounds = [clickSound, correctSound, wrongSound, gameoverSound];
+  sounds.forEach(sound => {
+    if (sound) sound.muted = mute;
+  });
+}
+
+// Save mute preference to localStorage
+localStorage.setItem('isMuted', isMuted);
+
+// On page load, apply it
+window.addEventListener('DOMContentLoaded', () => {
+  const savedMute = localStorage.getItem('isMuted') === 'true';
+  isMuted = savedMute;
+  toggleMute(isMuted);
+  if (muteToggle) muteToggle.textContent = isMuted ? '🔇' : '🔊';
+});
+

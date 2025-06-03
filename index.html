@@ -6,8 +6,12 @@
     <link rel="stylesheet" href="style.css">
     <title>Letter-Leap</title>
 </head>
-<header>
-    Welcome to <b> Letter-Leap </b>
+
+<header class="game-header">
+  <span class="welcome-text">👋 Welcome to Letter-Leap!</span>
+  <a href="HTP.html" class="header-link">📘 How to Play</a>
+   <!-- Toggle Button -->
+<button id="settingsToggleBtn" aria-label="Open Settings">⚙️</button>
 </header>
 
 <body>     
@@ -26,8 +30,7 @@
         </a>
     </div> 
 
-    <!-- Toggle Button -->
-<button id="settingsToggleBtn" aria-label="Open Settings">⚙️</button>
+   
 
 <!-- Sidebar -->
 <aside id="settingsSidebar" aria-label="Settings Menu">
@@ -46,9 +49,7 @@
 
 </aside>
 
-    <footer>
-        <a href="HTP.html">How to play</a>
-    </footer>
+   
     <audio id="click-sound" src="click.mp3" preload="auto"></audio>
     <script src="script2.js"></script>
 

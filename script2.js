@@ -54,3 +54,15 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('darkMode', enabled);
   });
 });
+
+// Save mute preference to localStorage
+localStorage.setItem('isMuted', isMuted);
+
+// On page load, apply it
+window.addEventListener('DOMContentLoaded', () => {
+  const savedMute = localStorage.getItem('isMuted') === 'true';
+  isMuted = savedMute;
+  toggleMute(isMuted);
+  if (muteToggle) muteToggle.textContent = isMuted ? '🔇' : '🔊';
+});
+
