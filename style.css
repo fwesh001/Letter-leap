@@ -84,3 +84,87 @@ footer {
     font-weight: bold;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
+
+/* === Sidebar Container === */
+#settingsSidebar {
+  position: fixed;
+  top: 0;
+  right: -280px;
+  width: 280px;
+  height: 100vh;
+  background: #222;
+  box-shadow: -4px 0 15px rgba(0,0,0,0.6);
+  padding: 20px;
+  box-sizing: border-box;
+  transition: right 0.3s ease;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+#settingsSidebar.open {
+  right: 0;
+}
+
+/* === Toggle Button === */
+#settingsToggleBtn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #ff416c;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  font-size: 24px;
+  box-shadow: 0 0 15px #ff416c;
+  transition: background 0.3s;
+  z-index: 10000;
+}
+#settingsToggleBtn:hover {
+  background: #ff4b2b;
+}
+
+/* === Buttons Inside Sidebar === */
+.settings-btn {
+  background: #333;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 15px;
+  font-size: 18px;
+  color: #eee;
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: background 0.3s;
+}
+.settings-btn:hover {
+  background: #ff416c;
+  box-shadow: 0 0 15px #ff416c;
+}
+
+/* === Light Mode Styles === */
+body.light-mode {
+  background: #fff;
+  color: #111;
+}
+body.light-mode #settingsSidebar {
+  background: #eee;
+  color: #111;
+  box-shadow: -4px 0 15px rgba(0,0,0,0.2);
+}
+body.light-mode .settings-btn {
+  background: #ddd;
+  color: #111;
+  box-shadow: 0 0 8px rgba(0,0,0,0.2);
+}
+body.light-mode .settings-btn:hover {
+  background: #ff416c;
+  color: #fff;
+  box-shadow: 0 0 15px #ff416c;
+}
+
