@@ -3,20 +3,26 @@ body {
     background-color: lightblue;
     text-align: center;
     padding: 50px;
-    
+    text-shadow: 0 0 10px #ffffff84;
+    animation: fadeIn 1s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 
 .game-container {
   background-image:url(sm.jpg);
-   background-size: cover;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    margin: 0 auto;
-    position: relative;
+  background-size: cover;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+  position: relative;
 }
 
 h1 {
@@ -27,10 +33,26 @@ h1 {
 
 
 #word-input {
+    height: 40px;
+    width:150px;
+    background:white;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
     font-size: 1.2em;
-    padding: 10px;
-    margin-top: 10px;
+    border-bottom: 2px solid greenyellow;
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
+    animation: glowBorder 5s infinite alternate;
 }
+
+@keyframes glowBorder {
+    0% { border-image: linear-gradient(to right, greenyellow, lightblue) 1; }
+    50% { border-image: linear-gradient(to right, #ff416c, #ff4b2b) 1; }
+    100% { border-image: linear-gradient(to right, greenyellow, lightblue) 1; }
+}
+
 
 /* Popup */
 .popup {
@@ -54,7 +76,7 @@ button {
     font-size: 1em;
     margin-top: 10px;
     cursor: pointer;
-    background-color: #4CAF50;
+    background: linear-gradient(135deg, greenyellow, rgb(97, 133, 42));
     color: white;
     border: none;
     border-radius: 5px;

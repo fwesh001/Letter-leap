@@ -3,7 +3,6 @@ const sidebar = document.getElementById('settingsSidebar');
 const toggleBtn = document.getElementById('settingsToggleBtn');
 const muteBtn = document.getElementById('muteBtn');
 const darkModeBtn = document.getElementById('darkModeBtn');
-const feedbackBtn = document.getElementById('feedbackBtn');
 const restartBtn = document.getElementById('restartBtn');
 
 // Toggle sidebar open/close
@@ -29,10 +28,6 @@ darkModeBtn.addEventListener('click', () => {
   darkModeBtn.setAttribute('aria-pressed', isDarkMode);
 });
 
-// Feedback button placeholder
-feedbackBtn.addEventListener('click', () => {
-  alert('Thanks for your feedback! (Not implemented yet)');
-});
 
 // Restart button placeholder
 restartBtn.addEventListener('click', () => {
