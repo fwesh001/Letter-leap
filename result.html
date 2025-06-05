@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Letter-Leap Results</title>
+  <link rel="stylesheet" href="result.css">
+</head>
+<body>
+
+  <main id="results-screen">
+
+    <!-- 🎭 Funny Game Over Quote -->
+    <section id="game-over-quote" class="card">
+      <h2>💀 Game Over</h2>
+      <p id="quote-text">"You didn’t lose... you just prematurely celebrated."</p>
+    </section>
+
+    <!-- 🧠 Play Style Feedback -->
+    <section id="playstyle-feedback" class="card">
+      <h2>🧠 Your Play Style</h2>
+      <p id="style-description">The Speedy Typo Tornado</p>
+    </section>
+
+    <!-- 📖 Rare Words Used -->
+    <section id="rare-words" class="card">
+      <h2>📚 Rare Words You Played</h2>
+      <ul id="rare-word-list"></ul>
+    </section>
+
+    <!-- ❌ Incorrect Words -->
+    <section id="incorrect-words" class="card">
+      <h2>❌ Incorrect Words</h2>
+      <p id="incorrect-count">5 wrong attempts</p>
+      <p id="funny-roast">“Did you mean ‘giraffe’ or did your keyboard sneeze?”</p>
+    </section>
+
+    <!-- 📊 Stats Summary -->
+    <section id="stats-summary" class="card">
+      <h2>📊 Your Stats</h2>
+      <ul>
+        <li>Total Words Attempted: <span id="total-attempts">0</span></li>
+        <li>Time Spent: <span id="time-spent">00:00</span></li>
+        <li>Accuracy: <span id="accuracy">0%</span></li>
+        <li>Longest Word: <span id="longest-word">---</span></li>
+      </ul>
+    </section>
+
+    <!-- ✅ Correct Words List -->
+    <section id="correct-words" class="card">
+      <h2>✅ Words You Nailed</h2>
+      <ul id="correct-word-list"></ul>
+    </section>
+
+    <!-- 🏆 Milestone Achievements -->
+    <section id="milestones" class="card">
+      <h2>🏆 Achievements</h2>
+      <ul id="milestone-list"></ul>
+    </section>
+
+    <!-- 🧩 Achievement Badges -->
+    <section id="badges" class="card">
+      <h2>🧩 Badges Earned</h2>
+      <div id="badge-container" class="badge-wrap">
+        <!-- Example badge -->
+        <div class="badge">🧙‍♂️ Word Wizard</div>
+        <div class="badge">⌨ Keyboard Warrior</div>
+      </div>
+    </section>
+
+    <!-- 📸 Screenshot Button -->
+    <section id="screenshot-section" class="card">
+      <button id="screenshot-btn">📸 Save Screenshot</button>
+    </section>
+
+    <!-- 🎲 Next Challenge -->
+    <section id="next-challenge" class="card">
+      <h2>🎲 Next Challenge</h2>
+      <p id="challenge-text">Try getting 3 five-letter words in under 30 seconds.</p>
+    </section>
+
+    <!-- 🔊 Sound Effect Note (hidden) -->
+    <audio id="result-sound" src="sounds/victory.mp3" preload="auto"></audio>
+
+    <!-- 💬 Funny AI Coach -->
+    <section id="ai-coach" class="card">
+      <h2>💬 Coach's Comment</h2>
+      <p id="coach-quote">“You type like you're dodging lava—chaotic, but entertaining.”</p>
+    </section>
+
+    <!-- 📣 Social Share Card -->
+    <section id="share-card" class="card">
+      <h2>📣 Share Your Glory</h2>
+      <button id="share-btn">📤 Share Results</button>
+    </section>
+
+    <!-- 🔁 Replay / Home -->
+    <section id="end-options" class="card">
+      <button id="replay-btn">🔁 Play Again</button>
+      <button id="home-btn">🏠 Home</button>
+    </section>
+
+  </main>
+  <script src="script.js"></script>
+  <script src="result.js"></script>
+</body>
+</html>

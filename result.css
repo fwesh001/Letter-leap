@@ -1,0 +1,135 @@
+/* ===== Global Styles ===== */
+:root {
+  --bg: #fefefe;
+  --text: #222;
+  --card-bg: #ffffff;
+  --accent: #5d60ef;
+  --badge-bg: #e8e8ff;
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 2rem;
+  background-color: var(--bg);
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+}
+
+main#results-screen {
+  max-width: 800px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ===== Section Cards ===== */
+.card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease-in-out;
+}
+
+.card:hover {
+  transform: scale(1.01);
+}
+
+.card h2 {
+  margin-top: 0;
+  color: var(--accent);
+}
+
+/* ===== Word Lists ===== */
+ul {
+  list-style-type: none;
+  padding-left: 1rem;
+  margin: 0.5rem 0 0 0;
+}
+
+ul li::before {
+  content: "• ";
+  color: var(--accent);
+}
+
+/* ===== Badge Styles ===== */
+.badge-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.badge {
+  background: var(--badge-bg);
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(93, 96, 239, 0.2);
+  white-space: nowrap;
+  user-select: none;
+}
+
+/* ===== Buttons ===== */
+button {
+  padding: 0.75rem 1.5rem;
+  background-color: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-right: 1rem;
+}
+
+button:hover {
+  background-color: #3c3ff0;
+}
+
+/* ===== Layout Flexing ===== */
+#end-options {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+#badge-container {
+  justify-content: flex-start;
+}
+
+#correct-word-list,
+#rare-word-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+#correct-word-list li,
+#rare-word-list li {
+  background-color: #f4f4f4;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  font-family: monospace;
+}
+
+/* ===== Responsive Goodness ===== */
+@media (max-width: 600px) {
+  body {
+    padding: 1rem;
+  }
+
+  button {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  #end-options {
+    flex-direction: column;
+  }
+}

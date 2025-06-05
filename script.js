@@ -1,30 +1,3 @@
-// At the top of your script
-let socket;
-
-window.addEventListener('DOMContentLoaded', () => {
-  socket = new WebSocket("ws://localhost:3000");
-
-  socket.addEventListener('open', () => {
-    console.log('WebSocket connected!');
-  });
-
-  socket.addEventListener('message', (event) => {
-    const data = JSON.parse(event.data);
-    // handle incoming data to sync multiplayer state or chat or whatever
-  });
-
-  socket.addEventListener('error', (err) => {
-    console.error('Socket error:', err);
-  });
-});
-
-// Then inside your existing functions you can do:
-function sendPlayerWord(word) {
-  if (socket && socket.readyState === WebSocket.OPEN) {
-    socket.send(JSON.stringify({ type: 'playerWord', word }));
-  }
-}
-
 // DOM Elements
 const letterElement = document.getElementById('letter');
 const wordInput = document.getElementById('word-input');
@@ -299,12 +272,6 @@ function formatTime(seconds) {
   return `${mins} minute${mins !== 1 ? 's' : ''} ${secs} second${secs !== 1 ? 's' : ''}`;
 }
 
-function playClickSound() {
-  if (clickSound) {
-    clickSound.currentTime = 0;
-    clickSound.play();
-  }
-}
 
 
 function endGame() {
@@ -342,10 +309,21 @@ function popAchievementBadge(badgeName) {
 const muteToggle = document.getElementById('mute-toggle');
 let isMuted = false;
 
+// On page load, apply saved mute setting
+window.addEventListener('DOMContentLoaded', () => {
+  const savedMute = localStorage.getItem('isMuted') === 'true';
+  isMuted = savedMute;
+  toggleMute(isMuted);
+  if (muteToggle) muteToggle.textContent = isMuted ? '🔇' : '🔊';
+});
+
 muteToggle.addEventListener('click', () => {
   isMuted = !isMuted;
   toggleMute(isMuted);
   muteToggle.textContent = isMuted ? '🔇' : '🔊';
+
+  // Save mute preference on each toggle click!
+  localStorage.setItem('isMuted', isMuted);
 });
 
 function toggleMute(mute) {
@@ -355,25 +333,4 @@ function toggleMute(mute) {
   });
 }
 
-// Save mute preference to localStorage
-localStorage.setItem('isMuted', isMuted);
 
-// On page load, apply it
-window.addEventListener('DOMContentLoaded', () => {
-  const savedMute = localStorage.getItem('isMuted') === 'true';
-  isMuted = savedMute;
-  toggleMute(isMuted);
-  if (muteToggle) muteToggle.textContent = isMuted ? '🔇' : '🔊';
-});
-
-function createRoom() {
-  if (socket && socket.readyState === WebSocket.OPEN) {
-    socket.send(JSON.stringify({ type: "create-room" }));
-  }
-}
-
-function joinRoom(roomId) {
-  if (socket && socket.readyState === WebSocket.OPEN) {
-    socket.send(JSON.stringify({ type: "join-room", roomId }));
-  }
-}

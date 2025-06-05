@@ -161,7 +161,7 @@ li:nth-child(odd) b {
 }
 
 #game-over-screen.hidden {
-  display: none;
+  display:none;
 } 
 
 .game-over-content {
@@ -186,6 +186,7 @@ li:nth-child(odd) b {
 #game-over-screen {
   animation: fadeInUp 0.8s ease-out;
 }
+
 
 #game-over-screen button {
   margin: 10px;
