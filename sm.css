@@ -67,7 +67,7 @@ h1 {
   display: none;
   z-index: 999;
   box-shadow: 0 0 15px gold;
-  animation: fadein 0.3s ease, fadeout 0.3s ease 2.5s;
+  animation: fadein 0.5s ease, fadeout 0.5s ease 5.5s;
 }
 
 
@@ -167,10 +167,11 @@ li:nth-child(odd) b {
 
 .game-over-content {
   padding: 5px;
-  margin: 10px;
+  margin: 60px;
   text-align: center;
   font-family: 'Comic Sans MS', 'Segoe UI', cursive;
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+  font-size: bold 30px;
 }
 
 @keyframes fadeInUp {
@@ -206,3 +207,34 @@ li:nth-child(odd) b {
   box-shadow: 0 0 15px #00ffcc;
 }
 
+/* Responsive styles for smaller screens */
+@media screen and (max-width: 600px) {
+  #game-over-screen {
+    padding: 10px;
+    font-size: 0.9rem;
+    background-size: cover;
+  }
+
+  .game-over-content {
+    font-size: 0.85rem;
+  }
+
+  #game-over-screen button {
+    padding: 10px 15px;
+    font-size: 0.9rem;
+  }
+}
+
+
+.dot {
+  opacity: 0;
+  animation: blink 1.5s infinite;
+}
+.dot:nth-child(1) { animation-delay: 0s; }
+.dot:nth-child(2) { animation-delay: 0.2s; }
+.dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes blink {
+  0%, 80%, 100% { opacity: 0; }
+  40% { opacity: 1; }
+}

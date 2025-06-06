@@ -14,7 +14,10 @@
       Starting Letter: <b class="lettercolor"><span id="letter">A</span></b>
     </p>
 
+
     <div id="timer">⏳Time left: 60s</div>
+    <div id="thinking-indicator" style="display: none;">🤖 Thinking<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></div>
+
     <div id="last-words" style="margin-bottom: 20px; font-weight: bold; color:white;"></div>
 
     <div id="popup-message" class="popup"></div>
@@ -48,9 +51,10 @@
     <p><strong>🏆 Score:</strong> <span id="final-score"></span></p>
     <p><strong>📝 Total Words:</strong> <span id="word-count"></span></p>
     <p><strong>⏳ Time Spent:</strong> <span id="time-spent"></span></p>
+    <p><strong>❌ Incorrect Words:</strong> <span id="incorrect-words-count">0</span></p>
     <p><strong>🎯 Accuracy:</strong> <span id="accuracy"></span></p>
     <a href="result.html" id="see-results-btn"><button>👀 See Results</button></a>
-    <button onclick="startGame()">🔁 Restart</button>
+    <button onclick="startGame()">🔁 Restart</button><br>
     <a href="index.html"><button>🏠 Home</button></a>
   </div>
 </div>

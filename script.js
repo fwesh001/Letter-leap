@@ -29,6 +29,8 @@ let gameOver = false;
 
 let minWordLength = 2;
 let totalWordsExchanged = 0;
+let playerAttempts = 0;  // <-- NEW: Track total player submissions
+let incorrectWordsCount = 0; // Track incorrect attempts
 
 fetch('words.txt')
   .then(res => res.text())
@@ -64,6 +66,7 @@ function startGame() {
   totalTimeSpent = 60;
   minWordLength = 2;
   totalWordsExchanged = 0;
+  playerAttempts = 0;  // Reset attempts
 
   currentLetter = getRandomLetter();
   letterElement.textContent = currentLetter;
@@ -116,9 +119,10 @@ function updateLastWords() {
   lastWordsElement.innerHTML = `<p>⛓️ : <b>${playerWord}</b>➡️ ${aiWord}</p>`;
 }
 
-function showPopup(msg, duration = 3000) {
+function showPopup(msg, duration = 5000) {
   popup.textContent = msg;
   popup.style.display = 'block';
+  popup.style.backgroundColor = ''; // reset
   setTimeout(() => popup.style.display = 'none', duration);
 }
 
@@ -136,9 +140,6 @@ function aiPickWord(startLetter) {
   );
   return candidates.length ? candidates[Math.floor(Math.random() * candidates.length)] : null;
 }
-submitBtn.addEventListener('click', () => {
-  handleSubmission(); //handle the word validation and sounds
-});
 
 function handleSubmission() {
   if (gameOver) {
@@ -147,20 +148,57 @@ function handleSubmission() {
   }
 
   const playerWord = wordInput.value.trim().toUpperCase();
-  if (!playerWord) return;
+  playerAttempts++; // Count every player attempt, even invalid ones
 
-  if (!isValidWord(playerWord)) {
-    showPopup(`🚫 Invalid! Word must start with "${currentLetter}", be unused, real, and at least ${minWordLength} letters.`);
+  if (!playerWord) {
+    showPopup("💤 Blank Input — You typed nothing and expected greatness?");
     wrongSound.currentTime = 0;
-    wrongSound.play(); // wrong answer sound
+    wrongSound.play();
+    incorrectWordsCount++;  // Increment incorrect words here
     wordInput.value = '';
     return;
   }
 
-  correctSound.currentTime = 0;
-  correctSound.play(); // correct answer sound
+  if (usedWords.has(playerWord)) {
+    showPopup("📛 Already Used — Nice try, but we’ve seen that one.");
+    wrongSound.currentTime = 0;
+    wrongSound.play();
+    incorrectWordsCount++;  // Increment here too
+    wordInput.value = '';
+    return;
+  }
 
-  // Your existing logic when the word is valid
+  if (playerWord.length < minWordLength) {
+    showPopup(`🔤 Too Short — Use at least ${minWordLength} letters! Feed me more letters! 🍔📚💪.`);
+    wrongSound.currentTime = 0;
+    wrongSound.play();
+    incorrectWordsCount++;  // And here
+    wordInput.value = '';
+    return;
+  }
+
+  if (!playerWord.startsWith(currentLetter)) {
+    showPopup(`🅰 Wrong Start Letter — Oops! Word must start with ‘${currentLetter}’. Not ‘${playerWord[0]}’.`);
+    wrongSound.currentTime = 0;
+    wrongSound.play();
+    incorrectWordsCount++;  // Yep, here too
+    wordInput.value = '';
+    return;
+  }
+
+  if (!isValidWord(playerWord)) {
+    showPopup(`❌ Invalid Word — ‘${playerWord}’? Oga 😭,That’s not even in alien dictionaries`);
+    wrongSound.currentTime = 0;
+    wrongSound.play();
+    incorrectWordsCount++;  // And here
+    wordInput.value = '';
+    return;
+  }
+
+  // Valid word! Increase score, update state, etc.
+  correctSound.currentTime = 0;
+  correctSound.play();
+
   wordChain.push(playerWord);
   usedWords.add(playerWord);
   score++;
@@ -174,11 +212,10 @@ function handleSubmission() {
     showPopup(`🎉 Minimum word length now set to ${minWordLength}!`);
   }
 
-  // Achievement badge checks here — pop badges immediately when earned!
-  if (score === 1) popAchievementBadge("First Blood 🩸"); // first correct word
-  if (score === 3) popAchievementBadge("Trifecta 🎯"); // three correct words
-  if (score === 5) popAchievementBadge("Halfway Hero 🏅"); // five correct words
-  if (score === 10) popAchievementBadge("Word Wizard 🧙"); // ten correct words
+  if (score === 1) popAchievementBadge("First Blood 🩸");
+  if (score === 3) popAchievementBadge("Trifecta 🎯");
+  if (score === 5) popAchievementBadge("Halfway Hero 🏅");
+  if (score === 10) popAchievementBadge("Word Wizard 🧙");
   if (playerWord.length >= 12) popAchievementBadge("Keyboard Warrior 💪");
   if (score >= 5 && timeLeft < 10) popAchievementBadge("Late Bloomer 🌙");
 
@@ -187,27 +224,36 @@ function handleSubmission() {
   wordInput.value = '';
   wordInput.focus();
 
+
+
+  const thinkingIndicator = document.getElementById('thinking-indicator');
+thinkingIndicator.style.display = 'inline-block';
+letterElement.style.display = 'none'; // Hide current letter
+
+setTimeout(() => {
   const aiWord = aiPickWord(currentLetter);
+  thinkingIndicator.style.display = 'none';
+  letterElement.style.display = 'block';
+
   if (!aiWord) {
     showPopup("🎉 You Win! AI couldn't find a word.", 5000);
     endGame();
     return;
   }
 
-  setTimeout(() => {
-    wordChain.push(aiWord);
-    usedWords.add(aiWord);
-    totalWordsExchanged++;
-    currentLetter = aiWord.slice(-1);
+  wordChain.push(aiWord);
+  usedWords.add(aiWord);
+  totalWordsExchanged++;
+  currentLetter = aiWord.slice(-1);
 
-    if (totalWordsExchanged === 10 || (totalWordsExchanged > 10 && totalWordsExchanged % 10 === 0)) {
-      minWordLength++;
-      showPopup(`🎉 Minimum word length now set to ${minWordLength}!`);
-    }
+  if (totalWordsExchanged === 10 || (totalWordsExchanged > 10 && totalWordsExchanged % 10 === 0)) {
+    minWordLength++;
+    showPopup(`🎉 Minimum word length now set to ${minWordLength}!`);
+  }
 
-    updateGame();
-    updateTimerDisplay();
-  }, 1200);
+  updateGame();
+  updateTimerDisplay();
+}, 3000); // AI 'thinks' for 3 seconds
 }
 
 wordInput.addEventListener('keydown', (e) => {
@@ -215,6 +261,11 @@ wordInput.addEventListener('keydown', (e) => {
     playClickSound();
     handleSubmission();
   }
+});
+
+submitBtn.addEventListener('click', () => {
+  playClickSound();
+  handleSubmission();
 });
 
 restartBtn.addEventListener('click', () => {
@@ -244,9 +295,11 @@ function showGameOverScreen() {
 
   document.getElementById('final-score').textContent = score;
   document.getElementById('word-count').textContent = wordChain.length;
+  document.getElementById('incorrect-words-count').textContent = incorrectWordsCount;
   document.getElementById('time-spent').textContent = formatTime(totalTimeSpent);
 
-  const accuracy = Math.round((score / (totalWordsExchanged || 1)) * 100); // Player-only accuracy
+  // Calculate accuracy based on valid words / total player attempts (not totalWordsExchanged)
+  const accuracy = Math.round((score / (playerAttempts || 1)) * 100);
   document.getElementById('accuracy').textContent = accuracy + '%';
 
   const list = document.getElementById('word-list');
@@ -256,15 +309,20 @@ function showGameOverScreen() {
     li.textContent = w;
     list.appendChild(li);
   });
+
+  // Pick a random challenge (make sure 'challenges' array is defined somewhere else in your code)
+  if (typeof challenges !== 'undefined' && challenges.length) {
+    const challengeText = challenges[Math.floor(Math.random() * challenges.length)];
+    const challengeElement = document.getElementById('game-over-challenge');
+    challengeElement.textContent = `🎮 Challenge for next round: ${challengeText}`;
+  }
+
+  // Show longest word played
+  const longestWord = wordChain.reduce((longest, word) =>
+    word.length > longest.length ? word : longest, ''
+  );
+  document.getElementById('longest-word').textContent = longestWord || "None";
 }
-
-// Pick a random challenge
-  const challengeText = challenges[Math.floor(Math.random() * challenges.length)];
-  
-  // Set challenge text inside the new element
-  const challengeElement = document.getElementById('game-over-challenge');
-  challengeElement.textContent = `🎮 Challenge for next round: ${challengeText}`;
-
 
 function formatTime(seconds) {
   const mins = Math.floor(seconds / 60);
@@ -272,74 +330,17 @@ function formatTime(seconds) {
   return `${mins} minute${mins !== 1 ? 's' : ''} ${secs} second${secs !== 1 ? 's' : ''}`;
 }
 
-const longestWord = wordChain.reduce((longest, word) =>
-  word.length > longest.length ? word : longest, ''
-);
-document.getElementById('longest-word').textContent = longestWord || "None";
-
 function popAchievementBadge(badgeName) {
   const popup = document.getElementById('popup-message');
   popup.textContent = `🏆 Achievement Unlocked: ${badgeName}`;
   popup.style.display = 'block';
-  popup.style.backgroundColor = '#FFD700'; // Gold-ish to stand out
-  popup.style.color = '#000';
-  popup.style.fontWeight = 'bold';
-
-  // Hide after 3 seconds and reset styling
-  setTimeout(() => {
-    popup.style.display = 'none';
-    popup.style.backgroundColor = ''; 
-    popup.style.color = '';
-    popup.textContent = '';
-  }, 3000);
-}
-
-const muteToggle = document.getElementById('mute-toggle');
-let isMuted = false;
-
-// On page load, apply saved mute setting
-window.addEventListener('DOMContentLoaded', () => {
-  const savedMute = localStorage.getItem('isMuted') === 'true';
-  isMuted = savedMute;
-  toggleMute(isMuted);
-  if (muteToggle) muteToggle.textContent = isMuted ? '🔇' : '🔊';
-});
-
-muteToggle.addEventListener('click', () => {
-  isMuted = !isMuted;
-  toggleMute(isMuted);
-  muteToggle.textContent = isMuted ? '🔇' : '🔊';
-
-  // Save mute preference on each toggle click!
-  localStorage.setItem('isMuted', isMuted);
-});
-
-function toggleMute(mute) {
-  const sounds = [clickSound, correctSound, wrongSound, gameoverSound];
-  sounds.forEach(sound => {
-    if (sound) sound.muted = mute;
-  });
-}
-
+  popup.style.backgroundColor = '#FFD700';} // Gold-ish to stand
 
 function endGame() {
   gameOver = true;
-  gameoverSound.currentTime = 0;
-  gameoverSound.play();
-
-  showGameOverScreen();
   wordInput.disabled = true;
   submitBtn.disabled = true;
-
-  // Save game results for result.js
-  localStorage.setItem('gameResults', JSON.stringify({
-    score,
-    wordChain,
-    totalTimeSpent,
-    totalWordsExchanged,
-    accuracy: Math.round((score / (totalWordsExchanged || 1)) * 100),
-    longestWord: wordChain.reduce((longest, word) =>
-      word.length > longest.length ? word : longest, ''
-    )
-  }));
+  gameoverSound.currentTime = 0;
+  gameoverSound.play();
+  showGameOverScreen();
 }
