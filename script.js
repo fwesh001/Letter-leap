@@ -291,7 +291,9 @@ function showGameOverScreen() {
     "Grammar police are on their way. 🚨📝", "Your brain: 404 - Word Not Found. 🧠❌",
     "Well... that was a journey. 🛣️", "Let’s pretend that didn’t happen.😅"
   ];
-  document.getElementById('game-over-quote').textContent = quotes[Math.floor(Math.random() * quotes.length)];
+
+const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+typewriterEffect(randomQuote, 'game-over-quote'); // <- Call the typewriter here
 
   document.getElementById('final-score').textContent = score;
   document.getElementById('word-count').textContent = wordChain.length;
@@ -316,6 +318,7 @@ function showGameOverScreen() {
     const challengeElement = document.getElementById('game-over-challenge');
     challengeElement.textContent = `🎮 Challenge for next round: ${challengeText}`;
   }
+  
 
   // Show longest word played
   const longestWord = wordChain.reduce((longest, word) =>
@@ -336,11 +339,47 @@ function popAchievementBadge(badgeName) {
   popup.style.display = 'block';
   popup.style.backgroundColor = '#FFD700';} // Gold-ish to stand
 
+function saveGameResult() {
+  const data = {
+    score,
+    accuracy: Math.round((score / (playerAttempts || 1)) * 100),
+    wordsPlayed: [...wordChain],
+    longestWord: wordChain.reduce((longest, word) =>
+      word.length > longest.length ? word : longest, ''),
+    timeSpent: totalTimeSpent,
+    incorrectWords: incorrectWordsCount,
+    timestamp: new Date().toISOString(),
+  };
+
+  const history = JSON.parse(localStorage.getItem('gameHistory')) || [];
+  history.push(data);
+  localStorage.setItem('gameHistory', JSON.stringify(history));
+}
+
+
+  const existing = JSON.parse(localStorage.getItem('gameHistory')) || [];
+  existing.push(data);
+  localStorage.setItem('gameHistory', JSON.stringify(existing));
+
+
+
 function endGame() {
   gameOver = true;
   wordInput.disabled = true;
   submitBtn.disabled = true;
   gameoverSound.currentTime = 0;
   gameoverSound.play();
+  saveGameResult(); // <--- 🔥 Save it before showing the screen
   showGameOverScreen();
+}
+
+function typewriterEffect(text, elementId, speed = 50) {
+  const el = document.getElementById(elementId);
+  el.textContent = ''; // Clear previous text
+  let i = 0;
+  const interval = setInterval(() => {
+    el.textContent += text.charAt(i);
+    i++;
+    if (i >= text.length) clearInterval(interval);
+  }, speed);
 }
