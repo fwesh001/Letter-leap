@@ -1,96 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Multiplayer Mode</title>
-  <link rel="stylesheet" href="mm.css" />
-  <style>
-    /* Quick inline styles for the new room UI */
-    #room-selection {
-      margin-bottom: 20px;
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    #join-room-input {
-      padding: 5px 8px;
-      font-size: 1rem;
-      width: 140px;
-    }
-    
-    #room-selection button {
-      cursor: pointer;
-      padding: 7px 12px;
-      font-size: 1rem;
-      border-radius: 6px;
-      border: none;
-      background-color: #007bff;
-      color: white;
-      transition: background-color 0.2s ease;
-    }
-    #room-selection button:hover {
-      background-color: #0056b3;
-    }
-    #status-message {
-      margin-left: 10px;
-      font-weight: 600;
-      color: #333;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
 </head>
 <body>
-  <div class="game-container">
-    <h1>🌐 Multiplayer Mode</h1>
+     <div class="Under-construction">
+            This page is still on development <br>
+                <img src="UC.png" alt="Image:Under-construction Design by Zabdiel" class="Img1" ><br>
+                Check back later! <br>
+     </div>
 
-    <!-- New Create/Join Room UI -->
-    <div id="room-selection">
-      <button id="btn-create-room">Create Room</button>
-
-      <input
-        type="text"
-        id="join-room-input"
-        placeholder="Enter Room ID"
-        maxlength="6"
-      />
-      <button id="btn-join-room">Join Room</button>
-
-      <div id="status-message">Connect to start</div>
-    </div>
-
-    <div class="status-bar">
-      <div id="room-info">Room ID: <span id="room-id">----</span></div>
-      <div id="timer">⏳Time left: 60s</div>
-    </div>
-
-    <div id="last-words">
-      <p><strong>🔁 Last Word:</strong> <span id="last-word">None</span></p>
-      <p><strong>➡️ Next Letter:</strong> <span id="next-letter">A</span></p>
-    </div>
-
-    <div id="popup-message" class="popup"></div>
-
-    <input type="text" id="word-input" placeholder="Hurry Up!  Type your word..." disabled />
-    <button id="submit-btn" disabled>✅ Submit</button>
-
-    <h3>Word Chain ⛓️:</h3>
-    <ul id="word-chain">
-      <!-- Multiplayer words will show here -->
-    </ul>
-
-    <div class="scoreboard">
-      <p>👤 You: <span id="player-score">0</span></p>
-      <p>🥷 Opponent: <span id="opponent-score">0</span></p>
-    </div>
-
-    <div class="btn-group">
-      <button id="copy-room-btn" disabled>🔗 Copy Room ID</button>
-      <button id="leave-btn" disabled>🚪 Leave Room</button>
-      <a href="index.html"><button>🏠 Home</button></a>
-    </div>
-  </div>
-
-  <script src="mm.js"></script>
+    <button class="btn" onclick="window.location.href='index.html'">Home</button>
 </body>
 </html>

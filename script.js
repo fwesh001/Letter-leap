@@ -272,18 +272,6 @@ function formatTime(seconds) {
   return `${mins} minute${mins !== 1 ? 's' : ''} ${secs} second${secs !== 1 ? 's' : ''}`;
 }
 
-
-
-function endGame() {
-  gameOver = true;
-  gameoverSound.currentTime = 0;
-  gameoverSound.play();
-  
-  showGameOverScreen();
-  wordInput.disabled = true;
-  submitBtn.disabled = true;
-}
-
 const longestWord = wordChain.reduce((longest, word) =>
   word.length > longest.length ? word : longest, ''
 );
@@ -334,3 +322,24 @@ function toggleMute(mute) {
 }
 
 
+function endGame() {
+  gameOver = true;
+  gameoverSound.currentTime = 0;
+  gameoverSound.play();
+
+  showGameOverScreen();
+  wordInput.disabled = true;
+  submitBtn.disabled = true;
+
+  // Save game results for result.js
+  localStorage.setItem('gameResults', JSON.stringify({
+    score,
+    wordChain,
+    totalTimeSpent,
+    totalWordsExchanged,
+    accuracy: Math.round((score / (totalWordsExchanged || 1)) * 100),
+    longestWord: wordChain.reduce((longest, word) =>
+      word.length > longest.length ? word : longest, ''
+    )
+  }));
+}

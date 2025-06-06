@@ -40,6 +40,16 @@ p, li {
     line-height: 1.6;
 }
 
+a{
+    text-decoration: none;
+    color: white;
+    background-color: #ffffff55;
+    border-radius: 5px;
+    border-bottom: 2px solid #fff;
+    border-top:2px solid #fff;
+
+}
+
 ul {
     list-style-type: none;
     padding: 0;

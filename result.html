@@ -5,103 +5,133 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Letter-Leap Results</title>
   <link rel="stylesheet" href="result.css">
+  
 </head>
 <body>
+  <div class="container">
+    <header>
+      <h1 class="logo">LETTER<span>LEAP</span></h1>
+      <p class="subtitle">Your word journey results are in!</p>
+    </header>
 
-  <main id="results-screen">
+    <main id="results-screen">
+      <!-- 🎭 Funny Game Over Quote -->
+      <section id="game-over-quote" class="card">
+        <h2><i class="fas fa-skull"></i> Game Over</h2>
+        <p id="quote-text">"You didn’t lose... you just prematurely celebrated."</p>
+        <p>Better luck next time, word warrior!</p>
+      </section>
 
-    <!-- 🎭 Funny Game Over Quote -->
-    <section id="game-over-quote" class="card">
-      <h2>💀 Game Over</h2>
-      <p id="quote-text">"You didn’t lose... you just prematurely celebrated."</p>
-    </section>
+      <!-- 🧠 Play Style Feedback -->
+      <section id="playstyle-feedback" class="card">
+        <h2><i class="fas fa-brain"></i> Your Play Style</h2>
+        <p id="style-description">The Speedy Typo Tornado</p>
+        <p>You typed like your keyboard was on fire! Speed was your friend, but accuracy took a vacation.</p>
+      </section>
 
-    <!-- 🧠 Play Style Feedback -->
-    <section id="playstyle-feedback" class="card">
-      <h2>🧠 Your Play Style</h2>
-      <p id="style-description">The Speedy Typo Tornado</p>
-    </section>
+      <!-- 📖 Rare Words Used -->
+      <section id="rare-words" class="card">
+        <h2><i class="fas fa-book"></i> Rare Words You Played</h2>
+        <ul id="rare-word-list" class="word-list">
+          <li>Serendipity</li>
+          <li>Quixotic</li>
+          <li>Ephemeral</li>
+          <li>Labyrinthine</li>
+          <li>Pulchritude</li>
+        </ul>
+      </section>
 
-    <!-- 📖 Rare Words Used -->
-    <section id="rare-words" class="card">
-      <h2>📚 Rare Words You Played</h2>
-      <ul id="rare-word-list"></ul>
-    </section>
+      <!-- ❌ Incorrect Words -->
+      <section id="incorrect-words" class="card">
+        <h2><i class="fas fa-times-circle"></i> Incorrect Words</h2>
+        <p id="incorrect-count">5 wrong attempts</p>
+        <p id="funny-roast" class="roast">“Did you mean ‘giraffe’ or did your keyboard sneeze?”</p>
+      </section>
 
-    <!-- ❌ Incorrect Words -->
-    <section id="incorrect-words" class="card">
-      <h2>❌ Incorrect Words</h2>
-      <p id="incorrect-count">5 wrong attempts</p>
-      <p id="funny-roast">“Did you mean ‘giraffe’ or did your keyboard sneeze?”</p>
-    </section>
+      <!-- 📊 Stats Summary -->
+      <section id="stats-summary" class="card">
+        <h2><i class="fas fa-chart-bar"></i> Your Stats</h2>
+        <ul>
+          <li>Total Words Attempted: <span class="highlight" id="total-attempts">24</span></li>
+          <li>Time Spent: <span class="highlight" id="time-spent">2:45</span></li>
+          <li>Accuracy: <span class="highlight" id="accuracy">79%</span></li>
+          <li>Longest Word: <span class="highlight" id="longest-word">"Extraordinary"</span></li>
+          <li>Average Word Length: <span class="highlight">6.2 letters</span></li>
+        </ul>
+      </section>
 
-    <!-- 📊 Stats Summary -->
-    <section id="stats-summary" class="card">
-      <h2>📊 Your Stats</h2>
-      <ul>
-        <li>Total Words Attempted: <span id="total-attempts">0</span></li>
-        <li>Time Spent: <span id="time-spent">00:00</span></li>
-        <li>Accuracy: <span id="accuracy">0%</span></li>
-        <li>Longest Word: <span id="longest-word">---</span></li>
-      </ul>
-    </section>
+      <!-- ✅ Correct Words List -->
+      <section id="correct-words" class="card">
+        <h2><i class="fas fa-check-circle"></i> Words You Nailed</h2>
+        <ul id="correct-word-list" class="word-list">
+          <li>Amazing</li>
+          <li>Brilliant</li>
+          <li>Creative</li>
+          <li>Dazzling</li>
+          <li>Eloquent</li>
+          <li>Fantastic</li>
+          <li>Glorious</li>
+          <li>Harmony</li>
+        </ul>
+      </section>
 
-    <!-- ✅ Correct Words List -->
-    <section id="correct-words" class="card">
-      <h2>✅ Words You Nailed</h2>
-      <ul id="correct-word-list"></ul>
-    </section>
+      <!-- 🏆 Milestone Achievements -->
+      <section id="milestones" class="card">
+        <h2><i class="fas fa-trophy"></i> Achievements</h2>
+        <ul id="milestone-list">
+          <li class="achievement-item">
+            <i class="fas fa-medal"></i>
+            <div>First Blood: Scored your first point!</div>
+          </li>
+          <li class="achievement-item">
+            <i class="fas fa-bolt"></i>
+            <div>Speed Demon: 10+ words in under a minute</div>
+          </li>
+          <li class="achievement-item">
+            <i class="fas fa-crown"></i>
+            <div>Vocabulary King: Used 5+ rare words</div>
+          </li>
+          <li class="achievement-item">
+            <i class="fas fa-gem"></i>
+            <div>Perfect Chain: 5 correct words in a row</div>
+          </li>
+        </ul>
+      </section>
 
-    <!-- 🏆 Milestone Achievements -->
-    <section id="milestones" class="card">
-      <h2>🏆 Achievements</h2>
-      <ul id="milestone-list"></ul>
-    </section>
+      <!-- 🧩 Achievement Badges -->
+      <section id="badges" class="card">
+        <h2><i class="fas fa-puzzle-piece"></i> Badges Earned</h2>
+        <div id="badge-container" class="badge-wrap">
+          <div class="badge"><i class="fas fa-hat-wizard"></i> Word Wizard</div>
+          <div class="badge"><i class="fas fa-keyboard"></i> Keyboard Warrior</div>
+          <div class="badge"><i class="fas fa-bolt"></i> Speedster</div>
+          <div class="badge"><i class="fas fa-dragon"></i> Lexicon Dragon</div>
+        </div>
+      </section>
 
-    <!-- 🧩 Achievement Badges -->
-    <section id="badges" class="card">
-      <h2>🧩 Badges Earned</h2>
-      <div id="badge-container" class="badge-wrap">
-        <!-- Example badge -->
-        <div class="badge">🧙‍♂️ Word Wizard</div>
-        <div class="badge">⌨ Keyboard Warrior</div>
-      </div>
-    </section>
+      <!-- 💬 Funny AI Coach -->
+      <section id="ai-coach" class="card">
+        <h2><i class="fas fa-robot"></i> Coach's Comment</h2>
+        <p id="coach-quote">“You type like you're dodging lava—chaotic, but entertaining.”</p>
+        <p>Focus on accuracy next time to boost your score!</p>
+      </section>
 
-    <!-- 📸 Screenshot Button -->
-    <section id="screenshot-section" class="card">
-      <button id="screenshot-btn">📸 Save Screenshot</button>
-    </section>
+      <!-- 🎲 Next Challenge -->
+      <section id="next-challenge" class="card">
+        <h2><i class="fas fa-dice"></i> Next Challenge</h2>
+        <p id="challenge-text">Try getting 3 five-letter words in under 30 seconds.</p>
+        <p>Can you beat your high score?</p>
+      </section>
+    </main>
 
-    <!-- 🎲 Next Challenge -->
-    <section id="next-challenge" class="card">
-      <h2>🎲 Next Challenge</h2>
-      <p id="challenge-text">Try getting 3 five-letter words in under 30 seconds.</p>
-    </section>
-
-    <!-- 🔊 Sound Effect Note (hidden) -->
-    <audio id="result-sound" src="sounds/victory.mp3" preload="auto"></audio>
-
-    <!-- 💬 Funny AI Coach -->
-    <section id="ai-coach" class="card">
-      <h2>💬 Coach's Comment</h2>
-      <p id="coach-quote">“You type like you're dodging lava—chaotic, but entertaining.”</p>
-    </section>
-
-    <!-- 📣 Social Share Card -->
-    <section id="share-card" class="card">
-      <h2>📣 Share Your Glory</h2>
-      <button id="share-btn">📤 Share Results</button>
-    </section>
-
-    <!-- 🔁 Replay / Home -->
-    <section id="end-options" class="card">
-      <button id="replay-btn">🔁 Play Again</button>
-      <button id="home-btn">🏠 Home</button>
-    </section>
-
-  </main>
-  <script src="script.js"></script>
-  <script src="result.js"></script>
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button id="screenshot-btn" class="btn"><i class="fas fa-camera"></i> Save Screenshot</button>
+      <button id="share-btn" class="btn btn-share"><i class="fas fa-share-alt"></i> Share Results</button>
+      <button id="replay-btn" class="btn btn-replay"><i class="fas fa-redo"></i> Play Again</button>
+      <button id="home-btn" class="btn btn-home"><i class="fas fa-home"></i> Home</button>
+    </div>
+  </div>
+<script src="result.js"></script>
 </body>
 </html>

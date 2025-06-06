@@ -160,9 +160,10 @@ li:nth-child(odd) b {
   border-radius: 15px;
 }
 
+/*result screen*/
 #game-over-screen.hidden {
-  display:none;
-} 
+  display: none;
+}
 
 .game-over-content {
   padding: 5px;
