@@ -204,7 +204,7 @@ function handleSubmission() {
   score++;
   totalWordsExchanged++;
   currentLetter = playerWord.slice(-1);
-  timeLeft += 5;
+  timeLeft += 15;
   totalTimeSpent += 5;
 
   if (totalWordsExchanged === 10 || (totalWordsExchanged > 10 && totalWordsExchanged % 10 === 0)) {
