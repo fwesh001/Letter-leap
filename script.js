@@ -205,7 +205,7 @@ function handleSubmission() {
   totalWordsExchanged++;
   currentLetter = playerWord.slice(-1);
   timeLeft += 15;
-  totalTimeSpent += 5;
+  totalTimeSpent += 15;
 
   if (totalWordsExchanged === 10 || (totalWordsExchanged > 10 && totalWordsExchanged % 10 === 0)) {
     minWordLength++;
@@ -253,7 +253,7 @@ setTimeout(() => {
 
   updateGame();
   updateTimerDisplay();
-}, 3000); // AI 'thinks' for 3 seconds
+}, 3000); // AI 'thinks' for 5 seconds
 }
 
 wordInput.addEventListener('keydown', (e) => {
