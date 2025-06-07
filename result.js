@@ -21,10 +21,7 @@ if (latestResult) {
   // 🎭 Funny Quote
   document.getElementById('quote-text').textContent = "Coming soon";
 
-  // 🧠 Play Style
-  document.getElementById('style-description').textContent = "Coming soon";
-  document.getElementById('playstyle-feedback').querySelector('p:nth-of-type(2)').textContent = "Coming soon";
-
+ 
   // 📖 Rare Words
   const rareList = document.getElementById('rare-word-list');
   rareList.innerHTML = '<li>Coming soon</li>';
@@ -51,4 +48,33 @@ if (latestResult) {
 
   // 🎲 Next Challenge
   document.getElementById('challenge-text').textContent = "Coming soon";
+}
+
+const playStyle = determinePlayStyle(latestResult.accuracy || 0);
+document.getElementById('style-description').textContent = playStyle.title;
+document.getElementById('playstyle-feedback').querySelector('p:nth-of-type(2)').textContent = playStyle.message;
+
+
+function determinePlayStyle(accuracy) {
+  if (accuracy >= 90) {
+    return {
+      title: "The Precision Ninja",
+      message: "You sliced through words with deadly accuracy. No typos, no mercy."
+    };
+  } else if (accuracy >= 70) {
+    return {
+      title: "The Balanced Brawler",
+      message: "You held your ground well — a nice mix of speed and precision."
+    };
+  } else if (accuracy >= 40) {
+    return {
+      title: "The Speedy Typo Tornado",
+      message: "You typed like your keyboard was on fire! Speed was your friend, but accuracy took a vacation."
+    };
+  } else {
+    return {
+      title: "The Button Masher",
+      message: "You typed like you were trying to hack into the Matrix… blindfolded. Pure chaos!"
+    };
+  }
 }
