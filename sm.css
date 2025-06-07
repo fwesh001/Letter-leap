@@ -209,24 +209,7 @@ li:nth-child(odd) b {
   box-shadow: 0 0 15px #00ffcc;
 }
 
-/* Responsive styles for smaller screens */
-@media screen and (max-width: 600px) {
-  #game-over-screen {
-    padding: 10px;
-    font-size: 0.9rem;
-    background-size: cover;
-  }
-
-  .game-over-content {
-    font-size: 0.85rem;
-  }
-
-  #game-over-screen button {
-    padding: 10px 15px;
-    font-size: 0.9rem;
-  }
-}
-
+/*AI Thinking style*/
 
 .dot {
   opacity: 0;

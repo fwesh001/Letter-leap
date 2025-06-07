@@ -7,7 +7,7 @@ body {
   justify-content: center;
   padding: 40px 20px;
   min-height: 100vh;
-  user-select: none;
+  user-select:text;
 }
 
 .word-list-container {
@@ -31,13 +31,13 @@ body {
   margin-bottom: 12px;
   color: #fff;
   text-shadow: 0 0 10px #0ff;
-  user-select: text;
+  user-select:none;
 }
 
 .word {
   font-size: 1.4rem;
-  cursor: text;
   color: #a0e9ff;
+  cursor:pointer;
   text-shadow:
     0 0 5px #0ff,
     0 0 10px #0ff;
@@ -77,3 +77,4 @@ body {
   padding: 0;
   border: none;
 }
+

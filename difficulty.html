@@ -6,12 +6,14 @@
     <link rel="stylesheet" href="style.css">
     <title>Difficulty - Letter-Leap</title>
 </head>
+
 <header class="game-header">
   <span class="welcome-text">Letter-Leap!</span>
   <a href="HTP.html" class="header-link">📘 How to Play</a>
    <!-- Toggle Button -->
 <button id="settingsToggleBtn" aria-label="Open Settings">⚙️</button>
 </header>
+
 <body>     
     <h1>💈 Choose a Level 💈</h1>
     <div class="game-container">
@@ -21,20 +23,47 @@
         </div>
         </a>
 
-        <a href="#">
+        <a href="sm-normal.html">
             <div class="level" style="background-color: rgb(229, 229, 62);">
                 😐Normal
             </div>
         </a>
 
-         <a href="#">
+         <a href="sm-hard.html">
             <div class="level" style="background-color: rgb(230, 83, 20);">
                 🤓Hard
             </div>
         </a>
     </div> 
+
+    <!-- Sidebar -->
+<aside id="settingsSidebar" aria-label="Settings Menu">
+  <button id="muteBtn" class="settings-btn" aria-pressed="false">
+    🔇 Mute
+  </button>
+
+  <button id="darkModeBtn" class="settings-btn" aria-pressed="false">
+    🌙 Dark Mode
+  </button>
+  
+  <button id="Howtoplay" class="settings-btn" onclick="window.location.href='htp.html'">
+    📘 How to play
+  </button>
+
+  <button id="feedbackBtn" class="settings-btn" onclick="window.location.href='feedback.html'">
+    📝 Feedback
+  </button>
+
+    <button id="Tips" class="settings-btn" onclick="window.location.href='tips.html'">
+     🎁Tips
+  </button>
+
+</aside>
+
     <footer class="game-footer">
         <p>© 2025 Letter-Leap. All rights reserved.</p>
         <p>Made with 💙 by zabdiel.</p>
+        
+ <script src="script.js"></script>
 </body>
 </html>

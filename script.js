@@ -253,7 +253,7 @@ setTimeout(() => {
 
   updateGame();
   updateTimerDisplay();
-}, 3000); // AI 'thinks' for 5 seconds
+}, 3000); // AI 'thinks' for 3 seconds
 }
 
 wordInput.addEventListener('keydown', (e) => {
