@@ -29,7 +29,7 @@ let timeLeft = 30;
 let totalTimeSpent = 30;
 let timerInterval = null;
 let gameOver = false;
-let minWordLength = 5;
+let minWordLength = 4;
 let totalWordsExchanged = 0;
 let playerAttempts = 0;
 let incorrectWordsCount = 0;
@@ -74,7 +74,7 @@ function startGame() {
   wordInput.value = '';
   timeLeft = 30;
   totalTimeSpent = 30;
-  minWordLength = 5;
+  minWordLength = 4;
   totalWordsExchanged = 0;
   playerAttempts = 0;
   incorrectWordsCount = 0;
