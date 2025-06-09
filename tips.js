@@ -25,43 +25,27 @@ function renderGroupedColumns(groupedWords) {
   const container = document.getElementById('wordListContainer');
   container.innerHTML = '';
 
-  // Alphabet groups of 4 letters each (last group has 2 letters)
-  const letterGroups = [
-    ['A','H','O','U'],
-    ['B','I','P','V'],
-    ['C','J','Q','W'],
-    ['D','K','R','X'],
-    ['E','L','S','Y'],
-    ['F','M','T','Z'],
-    ['G','N']
-  ];
-
-  letterGroups.forEach(group => {
+  // Create columns for each letter A-Z
+  for (let i = 0; i < 26; i++) {
+    const letter = String.fromCharCode(65 + i); // 65 is 'A'
     const col = document.createElement('div');
     col.className = 'column';
 
-    group.forEach(letter => {
-      const header = document.createElement('div');
-      header.className = 'letter-header';
-      header.textContent = letter;
-      col.appendChild(header);
+    const header = document.createElement('div');
+    header.className = 'letter-header';
+    header.textContent = letter;
+    col.appendChild(header);
 
-      const words = groupedWords[letter] || [];
-      words.forEach(word => {
-        const w = document.createElement('div');
-        w.className = 'word';
-        w.textContent = word;
-        col.appendChild(w);
-      });
-
-      // Add a little gap between letters
-      const spacer = document.createElement('div');
-      spacer.style.height = '30px';
-      col.appendChild(spacer);
+    const words = groupedWords[letter] || [];
+    words.forEach(word => {
+      const w = document.createElement('div');
+      w.className = 'word';
+      w.textContent = word;
+      col.appendChild(w);
     });
 
     container.appendChild(col);
-  });
+  }
 }
 
 loadWords();

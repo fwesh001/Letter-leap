@@ -12,17 +12,24 @@ body {
 
 .word-list-container {
   display: flex;
-  gap: 100px;
+  flex-wrap: wrap;
+  gap: 40px 24px;
+  justify-content: center;
+  margin: 20px auto;
+  max-width: 1200px;
+  width: 100%;
   overflow-x: auto;
-  margin: 20px;
+  padding: 10px;
 }
 
 .column {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  min-width: 120px;
-  margin: 40px;
+  min-width: 90px;
+  margin: 16px 4px;
+  flex: 1 1 90px;
+  max-width: 120px;
 }
 
 .letter-header {
@@ -59,11 +66,12 @@ body {
   color: #fff;
 }
 
+/* Remove or comment out this block */
 #wordListContainer {
-  display: grid;
+  /* display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(4, auto);
-  gap: 40px 60px;
+  gap: 40px 60px; */
   max-width: 100vw;
   padding: 20px;
   overflow: hidden; /* no scroll */
@@ -76,5 +84,77 @@ body {
   min-width: 0;
   padding: 0;
   border: none;
+}
+
+/* Home button styles */
+.home-btn {
+  display: inline-block;
+  padding: 10px 28px;
+  background: linear-gradient(90deg, #00c6ff, #0072ff);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 30px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 16px rgba(0, 255, 255, 0.2);
+  margin: 24px 0 0 24px;
+  transition: background 0.3s, box-shadow 0.3s, color 0.2s;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.home-btn:hover,
+.home-btn:focus {
+  background: linear-gradient(90deg, #0072ff, #00c6ff);
+  color: #0ff;
+  box-shadow: 0 6px 24px #0ff88a44;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .word-list-container {
+    gap: 24px 12px;
+    max-width: 100vw;
+    padding: 8px;
+  }
+  .column {
+    min-width: 70px;
+    max-width: 90px;
+    margin: 8px 2px;
+    gap: 8px;
+  }
+  .letter-header {
+    font-size: 1.2rem;
+  }
+  .word {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .word-list-container {
+    flex-wrap: wrap;
+    gap: 12px 4px;
+    padding: 4px;
+  }
+  .column {
+    min-width: 48px;
+    max-width: 60px;
+    margin: 4px 1px;
+    gap: 4px;
+  }
+  .letter-header {
+    font-size: 1rem;
+  }
+  .word {
+    font-size: 0.85rem;
+  }
+  .home-btn {
+    font-size: 1rem;
+    padding: 8px 16px;
+    margin: 12px 0 0 8px;
+  }
 }
 
