@@ -230,3 +230,102 @@ body.light-mode .settings-btn:hover {
     transform: scale(1.05);
     box-shadow: 0 0 25px #2402ad;
 }
+
+/*info popup*/
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 10000;
+}
+
+.popup-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.popup-box {
+  background: #1e1e2f;
+  color: #e0e0e0;
+  width: 90vw;
+  max-width: 400px;
+  max-height: 80vh;
+  padding: 1.5rem;
+  border-radius: 15px;
+  box-shadow: 0 0 15px #0ff;
+  position: relative;
+  overflow-y: auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: left;
+  box-sizing: border-box;
+}
+
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: -1px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: #aaa;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.close-btn:hover {
+  color: #0ff;
+}
+
+.popup-header h2 {
+  margin: 0 0 1rem 0;
+  font-size: 1.8rem;
+  text-align: center;
+  background-color: #1e1e2f;
+}
+
+.popup-info ul {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 1rem;
+}
+
+.popup-info ul li {
+  margin-bottom: 0.7rem;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.popup-info blockquote {
+  font-style: italic;
+  color: #0ff;
+  border-left: 3px solid #0ff;
+  padding-left: 1rem;
+  margin: 1rem 0 1.5rem 0;
+}
+
+.start-btn {
+  display: block;
+  width: 100%;
+  background-color: #0ff;
+  color: #000;
+  border: none;
+  padding: 1rem 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+}
+
+.start-btn:hover {
+  background-color: #0cc;
+}
