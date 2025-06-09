@@ -255,7 +255,7 @@ body.light-mode .settings-btn:hover {
   color: #e0e0e0;
   width: 90vw;
   max-width: 400px;
-  max-height: 80vh;
+  max-height: 100vh;
   padding: 1.5rem;
   border-radius: 15px;
   box-shadow: 0 0 15px #0ff;
@@ -265,6 +265,7 @@ body.light-mode .settings-btn:hover {
   text-align: left;
   box-sizing: border-box;
 }
+
 
 
 .close-btn {
@@ -320,7 +321,7 @@ body.light-mode .settings-btn:hover {
   border: none;
   padding: 1rem 0;
   font-size: 1.3rem;
-  font-weight: 700;
+  font-weight: 700; 
   border-radius: 10px;
   cursor: pointer;
   transition: background-color 0.25s ease;

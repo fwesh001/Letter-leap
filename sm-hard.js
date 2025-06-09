@@ -29,10 +29,11 @@ let timeLeft = 30;
 let totalTimeSpent = 30;
 let timerInterval = null;
 let gameOver = false;
-let minWordLength = 4;
+let minWordLength = 4; // Start with 4 letters minimum
 let totalWordsExchanged = 0;
 let playerAttempts = 0;
 let incorrectWordsCount = 0;
+let lastRandomQuote = ""; // Add this near your other game state variables
 
 // =======================
 // 📦 WORD LIST FETCH
@@ -74,7 +75,7 @@ function startGame() {
   wordInput.value = '';
   timeLeft = 30;
   totalTimeSpent = 30;
-  minWordLength = 4;
+  minWordLength = 4; // Reset to 4 letters minimum
   totalWordsExchanged = 0;
   playerAttempts = 0;
   incorrectWordsCount = 0;
@@ -215,7 +216,7 @@ function handleSubmission() {
   currentLetter = playerWord.slice(-1);
   timeLeft += 5; totalTimeSpent += 5;
 
-  if (totalWordsExchanged % 3 === 0) {
+  if (totalWordsExchanged % 5 === 0) {
     minWordLength++;
     showPopup(`🎉 Minimum word length now set to ${minWordLength}!`);
   }
@@ -247,13 +248,13 @@ function handleSubmission() {
     wordChain.push(aiWord); usedWords.add(aiWord);
     totalWordsExchanged++; currentLetter = aiWord.slice(-1);
 
-    if (totalWordsExchanged % 3 === 0) {
+    if (totalWordsExchanged % 5 === 0) {
       minWordLength++;
       showPopup(`🎉 Minimum word length now set to ${minWordLength}!`);
     }
 
     updateGame(); updateTimerDisplay();
-  }, 1000);
+  }, 3000);
 }
 
 // =======================
@@ -273,13 +274,14 @@ function showGameOverScreen() {
     "Well... that was a journey. 🛣️", "Let’s pretend that didn’t happen.😅"
   ];
   const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+  lastRandomQuote = randomQuote; // Set this BEFORE saveGameResult()
   typewriterEffect(randomQuote, 'game-over-quote');
 
   document.getElementById('final-score').textContent = score;
   document.getElementById('word-count').textContent = wordChain.length;
   document.getElementById('incorrect-words-count').textContent = incorrectWordsCount;
   document.getElementById('time-spent').textContent = formatTime(totalTimeSpent);
-  document.getElementById('accuracy').textContent = Math.round((score / (playerAttempts || 1)) * 100) + '%';
+  document.getElementById('accuracy').textContent = Math.round((score / (playerAttempts || 1)) + 100) + '%';
 
   const list = document.getElementById('word-list');
   list.innerHTML = '';
@@ -312,11 +314,19 @@ function saveGameResult() {
     timeSpent: totalTimeSpent,
     incorrectWords: incorrectWordsCount,
     timestamp: new Date().toISOString(),
+    gameOverQuote: lastRandomQuote // Make sure this line exists!
   };
+
+  // Retrieve the existing game history, if any
   const history = JSON.parse(localStorage.getItem('gameHistory')) || [];
+  
+  // Add the new game result to history
   history.push(data);
+  
+  // Save the updated history back to localStorage
   localStorage.setItem('gameHistory', JSON.stringify(history));
 }
+
 
 // =======================
 // 🧠 END GAME
