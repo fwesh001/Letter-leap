@@ -1,3 +1,7 @@
+let allGroupedWords = {};
+let wordOffsets = {};
+const wordsPerPage = 5;
+
 async function loadWords() {
   try {
     const response = await fetch('words.txt');
@@ -9,19 +13,24 @@ async function loadWords() {
     lines.forEach(word => {
       const letter = word[0].toUpperCase();
       if (!grouped[letter]) grouped[letter] = [];
-      if (grouped[letter].length < 5) {
-        grouped[letter].push(word);
-      }
+      grouped[letter].push(word);
     });
 
-    renderGroupedColumns(grouped);
+    allGroupedWords = grouped;
+    // Initialize offsets for each letter
+    wordOffsets = {};
+    Object.keys(allGroupedWords).forEach(letter => {
+      wordOffsets[letter] = 0;
+    });
+
+    renderGroupedColumns(allGroupedWords, wordOffsets);
   } catch (err) {
     console.error('Error loading words:', err);
     document.getElementById('wordListContainer').textContent = 'Failed to load words.';
   }
 }
 
-function renderGroupedColumns(groupedWords) {
+function renderGroupedColumns(groupedWords, offsets) {
   const container = document.getElementById('wordListContainer');
   container.innerHTML = '';
 
@@ -37,15 +46,35 @@ function renderGroupedColumns(groupedWords) {
     col.appendChild(header);
 
     const words = groupedWords[letter] || [];
-    words.forEach(word => {
+    const offset = offsets && offsets[letter] ? offsets[letter] : 0;
+    for (let j = 0; j < wordsPerPage; j++) {
+      if (words.length === 0) break;
+      const idx = (offset + j) % words.length;
       const w = document.createElement('div');
       w.className = 'word';
-      w.textContent = word;
+      w.textContent = words[idx];
       col.appendChild(w);
-    });
+    }
 
     container.appendChild(col);
   }
 }
+
+// Add refresh button logic
+document.addEventListener('DOMContentLoaded', () => {
+  const refreshBtn = document.getElementById('refreshBtn');
+  if (refreshBtn) {
+    refreshBtn.addEventListener('click', () => {
+      // Advance offset for each letter
+      Object.keys(allGroupedWords).forEach(letter => {
+        const len = allGroupedWords[letter].length;
+        if (len > 0) {
+          wordOffsets[letter] = (wordOffsets[letter] + wordsPerPage) % len;
+        }
+      });
+      renderGroupedColumns(allGroupedWords, wordOffsets);
+    });
+  }
+});
 
 loadWords();
