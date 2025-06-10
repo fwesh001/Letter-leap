@@ -7,77 +7,106 @@
   <link rel="stylesheet" href="sm-hard.css" />
 </head>
 <body>
-  <!--Game header-->
+  <!-- =========================
+       Game Container
+  ========================== -->
   <div class="game-container">
     <h1>👤Single-player</h1>
 
-    <!--Starting letter-->
+    <!-- =========================
+         Starting Letter
+    ========================== -->
     <p id="prompt" style="color: red; font-weight: bold;">
       Starting Letter: <b class="lettercolor"><span id="letter">A</span></b>
     </p>
 
-    <!--AI thinking Indicator-->
-    <div id="thinking-indicator" style="display: none;">🤖 Thinking<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></div>
+    <!-- =========================
+         AI Thinking Indicator
+    ========================== -->
+    <div id="thinking-indicator" style="display: none;">
+      🤖 Thinking<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>
+    </div>
     
-    <!--Timer-->
+    <!-- =========================
+         Timer
+    ========================== -->
     <div id="timer">⏳Time left: 60s</div>
     
-    <!--last words of player and AI-->
+    <!-- =========================
+         Last Words (Player & AI)
+    ========================== -->
     <div id="last-words" style="margin-bottom: 20px; font-weight: bold; color:white;"></div>
 
-    <!--popup message-->
+    <!-- =========================
+         Popup Message
+    ========================== -->
     <div id="popup-message" class="popup"></div>
 
-    <!--Input box for words-->
+    <!-- =========================
+         Input Box for Words
+    ========================== -->
     <input type="text" id="word-input" autocomplete="off" autocorrect="off" placeholder="Your word here" />
     
-    <!--score (displays the player score)-->
+    <!-- =========================
+         Score Display
+    ========================== -->
     <p>Score🏆: <span id="score">0</span></p>
     
-    <!--submit and hint button-->
+    <!-- =========================
+         Submit & Hint Buttons
+    ========================== -->
     <p>
       <button id="submit-btn">✅Submit</button>
       <button id="hint-btn">💡Hint</button>
     </p>
 
-    <!--Word list (Full list of player and AI words)-->
+    <!-- =========================
+         Word Chain List
+    ========================== -->
     <h3>Word Chain⛓️:</h3>
     <ul id="word-chain">
       <!-- Words will appear here -->
     </ul>
 
-    <!--Restart and Home button-->
+    <!-- =========================
+         Restart & Home Buttons
+    ========================== -->
     <div>
       <button id="restart-btn">🔄 Restart</button>
-        <a href="loading.html">
-          <button>🏠Home</button>
-        </a>
-  </div>
-  
+      <a href="loading.html">
+        <button>🏠Home</button>
+      </a>
+    </div>
   </div>
 
-  <!--Game over (displays game result after the game)-->
+  <!-- =========================
+       Game Over Screen
+  ========================== -->
   <div id="game-over-screen" class="hidden">
-  <div class="game-over-content">
-    <h3 id="game-over-quote">💀 Game Over</h2>
-    <p><strong>🏆 Score:</strong> <span id="final-score"></span></p>
-    <p><strong>📝 Total Words:</strong> <span id="word-count"></span></p>
-    <p><strong>⏳ Time Spent:</strong> <span id="time-spent"></span></p>
-    <p><strong>❌ Incorrect Words:</strong> <span id="incorrect-words-count">0</span></p>
-    <p><strong>🎯 Accuracy:</strong> <span id="accuracy"></span></p>
-    <a href="lr.html" id="see-results-btn"><button>👀 See Results</button></a>
-    <button onclick="startGame()">🔁 Restart</button><br>
-    <a href="index.html"><button>🏠 Home</button></a>
+    <div class="game-over-content">
+      <h3 id="game-over-quote">💀 Game Over</h3>
+      <p><strong>🏆 Score:</strong> <span id="final-score"></span></p>
+      <p><strong>📝 Total Words:</strong> <span id="word-count"></span></p>
+      <p><strong>⏳ Time Spent:</strong> <span id="time-spent"></span></p>
+      <p><strong>❌ Incorrect Words:</strong> <span id="incorrect-words-count">0</span></p>
+      <p><strong>🎯 Accuracy:</strong> <span id="accuracy"></span></p>
+      <a href="lr.html" id="see-results-btn"><button>👀 See Results</button></a>
+      <button onclick="startGame()">🔁 Restart</button><br>
+      <a href="index.html"><button>🏠 Home</button></a>
+    </div>
   </div>
-</div>
 
-    <!--Audio clips-->
-    <audio id="click-sound" src="click.mp3" preload="auto"></audio>
-    <audio id="correct-sound" src="ding.mp3"></audio>
-    <audio id="wrong-sound" src="buzz.mp3"></audio>
-    <audio id="gameover-sound" src="gameover.mp3"></audio>
+  <!-- =========================
+       Audio Clips
+  ========================== -->
+  <audio id="click-sound" src="click.mp3" preload="auto"></audio>
+  <audio id="correct-sound" src="ding.mp3"></audio>
+  <audio id="wrong-sound" src="buzz.mp3"></audio>
+  <audio id="gameover-sound" src="gameover.mp3"></audio>
 
+  <!-- =========================
+       Scripts
+  ========================== -->
   <script src="sm-hard.js"></script>
-
 </body>
 </html>

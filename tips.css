@@ -1,3 +1,6 @@
+/* ===========================
+   Base Styles
+   =========================== */
 body {
   margin: 0;
   background: linear-gradient(120deg, #1e3c72, #2a5298);
@@ -7,9 +10,12 @@ body {
   justify-content: center;
   padding: 40px 20px;
   min-height: 100vh;
-  user-select:text;
+  user-select: text;
 }
 
+/* ===========================
+   Word List Layout
+   =========================== */
 .word-list-container {
   display: flex;
   flex-wrap: wrap;
@@ -22,6 +28,9 @@ body {
   padding: 10px;
 }
 
+/* ===========================
+   Column Styles
+   =========================== */
 .column {
   display: flex;
   flex-direction: column;
@@ -32,19 +41,25 @@ body {
   max-width: 120px;
 }
 
+/* ===========================
+   Letter Header
+   =========================== */
 .letter-header {
   font-weight: 800;
   font-size: 2rem;
   margin-bottom: 12px;
   color: #fff;
   text-shadow: 0 0 10px #0ff;
-  user-select:none;
+  user-select: none;
 }
 
+/* ===========================
+   Word Styles
+   =========================== */
 .word {
   font-size: 1.4rem;
   color: #a0e9ff;
-  cursor:pointer;
+  cursor: pointer;
   text-shadow:
     0 0 5px #0ff,
     0 0 10px #0ff;
@@ -53,10 +68,10 @@ body {
 }
 
 @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
-    }
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
 
 .word:hover {
   text-shadow:
@@ -66,7 +81,9 @@ body {
   color: #fff;
 }
 
-/* Remove or comment out this block */
+/* ===========================
+   (Unused) Old Word List Container
+   =========================== */
 #wordListContainer {
   /* display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -77,6 +94,9 @@ body {
   overflow: hidden; /* no scroll */
 }
 
+/* ===========================
+   Column Reset (Override)
+   =========================== */
 .column {
   display: flex;
   flex-direction: column;
@@ -86,7 +106,9 @@ body {
   border: none;
 }
 
-/* Home button styles */
+/* ===========================
+   Home Button Styles
+   =========================== */
 .home-btn {
   display: inline-block;
   padding: 10px 28px;
@@ -112,6 +134,9 @@ body {
   box-shadow: 0 6px 24px #0ff88a44;
 }
 
+/* ===========================
+   Refresh Button Styles
+   =========================== */
 .refresh-btn {
   display: inline-block;
   padding: 10px 28px;
@@ -136,7 +161,9 @@ body {
   box-shadow: 0 6px 24px #0ff88a44;
 }
 
-/* Responsive adjustments */
+/* ===========================
+   Responsive Adjustments
+   =========================== */
 @media (max-width: 900px) {
   .word-list-container {
     gap: 24px 12px;

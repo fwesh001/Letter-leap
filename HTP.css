@@ -1,3 +1,6 @@
+/* ===========================
+   Base Styles & Animations
+   =========================== */
 body {
     background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -12,6 +15,9 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* ===========================
+   Main Container
+   =========================== */
 .container {
     max-width: 900px;
     margin: 40px auto;
@@ -30,6 +36,9 @@ body {
     100% { border-image: linear-gradient(to right, #00f260, #0575e6) 1; }
 }
 
+/* ===========================
+   Typography
+   =========================== */
 h1, h2, h3 {
     text-align: center;
     text-shadow: 0 0 10px #ffffff55;
@@ -40,16 +49,21 @@ p, li {
     line-height: 1.6;
 }
 
-a{
+/* ===========================
+   Links
+   =========================== */
+a {
     text-decoration: none;
     color: white;
     background-color: #ffffff55;
     border-radius: 5px;
     border-bottom: 2px solid #fff;
-    border-top:2px solid #fff;
-
+    border-top: 2px solid #fff;
 }
 
+/* ===========================
+   Lists & Icons
+   =========================== */
 ul {
     list-style-type: none;
     padding: 0;
@@ -60,6 +74,9 @@ li::before {
     margin-right: 5px;
 }
 
+/* ===========================
+   Section Blocks
+   =========================== */
 .section {
     margin: 30px 0;
     padding: 20px;
@@ -68,6 +85,9 @@ li::before {
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
+/* ===========================
+   Buttons
+   =========================== */
 .btn {
     display: inline-block;
     margin: 20px auto 0;
@@ -82,13 +102,14 @@ li::before {
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
 .btn:hover {
     transform: scale(1.05);
     box-shadow: 0 0 25px #ff4b2b;
-    
 }
 
+/* ===========================
+   Images
+   =========================== */
 .screenshot {
     width: 100%;
     max-width: 700px;
@@ -98,14 +119,16 @@ li::before {
     box-shadow: 0 0 15px rgba(255,255,255,0.3);
 }
 
-/* Feedback Form style */
-.inputbox{
+/* ===========================
+   Feedback Form Styles
+   =========================== */
+.inputbox {
     position: relative;
     margin: 30px 0;
     width: 250px;
     border-bottom: 2px solid #fff;
 }
-.inputbox label{
+.inputbox label {
     position: absolute;
     top: 50%;
     left: 5px;
@@ -116,12 +139,10 @@ li::before {
     transition: .5s;
     font-weight: bold;
 }
-
 input:focus ~ label,
-input:valid ~ label{
-top: -1px;
+input:valid ~ label {
+    top: -1px;
 }
-
 .inputbox input {
     width: 100%;
     height: 50px;
@@ -129,25 +150,25 @@ top: -1px;
     border: none;
     outline: none;
     font-size: 1em;
-    padding:0 35px 0 5px;
+    padding: 0 35px 0 5px;
     color: red;
     font-family: 'Times New Roman', Times, serif;
     font-size: 20px;
     font-weight: bold;
 }
-
-label{
+label {
     font-weight: bold;
     font-family: Arial, Helvetica, sans-serif;
 }
 
+/* ===========================
+   Submit Button
+   =========================== */
 .submit {
     margin-top: 20px;
     margin-left: 20px;
-
 }
-
-.submit input{
+.submit input {
     display: inline-block;
     margin: 20px auto 0;
     padding: 15px 30px;
@@ -161,20 +182,21 @@ label{
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
-.submit :hover{
-     transform: scale(1.05);
+.submit :hover {
+    transform: scale(1.05);
     box-shadow: 0 0 25px #ff4b2b;
 }
 
-.textbox input{
+/* ===========================
+   Textbox Styles
+   =========================== */
+.textbox input {
     width: 200px;
     font-family: 'Times New Roman', Times, serif;
     color: #000;
     font-weight: bold;
 }
-
-.textbox{
+.textbox {
     color: white;
-    font-size:20px;
+    font-size: 20px;
 }

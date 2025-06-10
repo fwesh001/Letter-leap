@@ -7,82 +7,97 @@
     <title>Difficulty - Letter-Leap</title>
 </head>
 
-<header class="game-header">
-  <a href="index.html"><span style="color: white; text-decoration: none;" class="welcome-text">Letter-Leap!</span></a>
-  <a href="HTP.html" class="header-link">📘 How to Play</a>
-   <!-- Toggle Button -->
-<button id="settingsToggleBtn" aria-label="Open Settings">⚙️</button>
-</header>
-
-<body>     
-    <h1>💈 Choose a Level 💈</h1>
-    <div class="game-container">
-<div class="level" id="easyLevel" style="background-color:greenyellow;">
-  🥺 Easy
-</div>
-
-<div class="level" id="normalLevel" style="background-color: rgb(229, 229, 62);">
-  😐 Normal
-</div>
-
-<div class="level" id="hardLevel" style="background-color: rgb(230, 83, 20);">
-  🤓 Hard
-</div>
-    </div> 
-
-    <!-- Sidebar -->
-<aside id="settingsSidebar" aria-label="Settings Menu">
-  <button id="muteBtn" class="settings-btn" aria-pressed="false">
-    🔇 Mute
-  </button>
-
-  <button id="darkModeBtn" class="settings-btn" aria-pressed="false">
-    🌙 Dark Mode
-  </button>
-  
-  <button id="Howtoplay" class="settings-btn" onclick="window.location.href='htp.html'">
-    📘 How to play
-  </button>
-
-  <button id="feedbackBtn" class="settings-btn" onclick="window.location.href='feedback.html'">
-    📝 Feedback
-  </button>
-
-    <button id="Tips" class="settings-btn" onclick="window.location.href='tips.html'">
-     🎁Tips
-  </button>
-
-</aside>
-
-
-<!-- Level Info Popup -->
-<div id="levelInfoPopup" class="popup-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="popupTitle" aria-describedby="popupDesc">
-  <div class="popup-box">
-    <button id="closePopupBtn" class="close-btn" aria-label="Close Popup">✖</button>
-    <header class="popup-header">
-      <h2 id="popupTitle">Level 3: Word Wizardry</h2>
+<body>
+    <!-- =========================
+         Header Section
+    ========================== -->
+    <header class="game-header">
+        <a href="index.html">
+            <span style="color: white; text-decoration: none;" class="welcome-text">Letter-Leap!</span>
+        </a>
+        <a href="HTP.html" class="header-link">📘 How to Play</a>
+        <!-- Settings Toggle Button -->
+        <button id="settingsToggleBtn" aria-label="Open Settings">⚙️</button>
     </header>
-    <section class="popup-info" id="popupDesc">
-      <ul>
-        <li>🕒 <strong>Time Limit:</strong> 60 seconds</li>
-        <li>🔤 <strong>Minimum Words:</strong> 8</li>
-        <li>⏳ <strong>Bonus Time per Word:</strong> +3 seconds per correct word</li>
-        <li>🔡 <strong>Word Length Allowed:</strong> 3 to 8 letters</li>
-        <li>🎯 <strong>Score Multiplier:</strong> 2x for 5+ letter words</li>
-        <li>💡 <strong>Special Rule:</strong> Only adjectives count</li>
-        <li>🏅 <strong>Achievement Unlock Tip:</strong> Type 15+ correct words to earn the “Keyboard Warrior” badge</li>
-      </ul>
-      <blockquote>“Type fast. Think faster. No second chances in Word Wizardry mode!”</blockquote>
-    </section>
-    <button id="startLevelBtn" class="start-btn">Play</button>
-  </div>
-</div>
 
+    <!-- =========================
+         Main Content Section
+    ========================== -->
+    <main>
+        <h1>💈 Choose a Level 💈</h1>
+        <div class="game-container">
+            <!-- Easy Level -->
+            <div class="level" id="easyLevel" style="background-color:greenyellow;">
+                🥺 Easy
+            </div>
+            <!-- Normal Level -->
+            <div class="level" id="normalLevel" style="background-color: rgb(229, 229, 62);">
+                😐 Normal
+            </div>
+            <!-- Hard Level -->
+            <div class="level" id="hardLevel" style="background-color: rgb(230, 83, 20);">
+                🤓 Hard
+            </div>
+        </div>
+    </main>
 
+    <!-- =========================
+         Sidebar Settings Menu
+    ========================== -->
+    <aside id="settingsSidebar" aria-label="Settings Menu">
+        <button id="muteBtn" class="settings-btn" aria-pressed="false">
+            🔇 Mute
+        </button>
+        <button id="darkModeBtn" class="settings-btn" aria-pressed="false">
+            🌙 Dark Mode
+        </button>
+        <button id="Howtoplay" class="settings-btn" onclick="window.location.href='htp.html'">
+            📘 How to play
+        </button>
+        <button id="feedbackBtn" class="settings-btn" onclick="window.location.href='feedback.html'">
+            📝 Feedback
+        </button>
+        <button id="Tips" class="settings-btn" onclick="window.location.href='tips.html'">
+            🎁Tips
+        </button>
+    </aside>
+
+    <!-- =========================
+         Level Info Popup
+    ========================== -->
+    <div id="levelInfoPopup" class="popup-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="popupTitle" aria-describedby="popupDesc">
+        <div class="popup-box">
+            <button id="closePopupBtn" class="close-btn" aria-label="Close Popup">✖</button>
+            <header class="popup-header">
+                <h2 id="popupTitle">Level 3: Word Wizardry</h2>
+            </header>
+            <section class="popup-info" id="popupDesc">
+                <ul>
+                    <li>🕒 <strong>Time Limit:</strong> 60 seconds</li>
+                    <li>🔤 <strong>Minimum Words:</strong> 8</li>
+                    <li>⏳ <strong>Bonus Time per Word:</strong> +3 seconds per correct word</li>
+                    <li>🔡 <strong>Word Length Allowed:</strong> 3 to 8 letters</li>
+                    <li>🎯 <strong>Score Multiplier:</strong> 2x for 5+ letter words</li>
+                    <li>💡 <strong>Special Rule:</strong> Only adjectives count</li>
+                    <li>🏅 <strong>Achievement Unlock Tip:</strong> Type 15+ correct words to earn the “Keyboard Warrior” badge</li>
+                </ul>
+                <blockquote>“Type fast. Think faster. No second chances in Word Wizardry mode!”</blockquote>
+            </section>
+            <button id="startLevelBtn" class="start-btn">Play</button>
+        </div>
+    </div>
+
+    <!-- =========================
+         Footer Section
+    ========================== -->
     <footer class="game-footer">
         <p>© 2025 Letter-Leap. All rights reserved.</p>
         <p>Made with 💙 by zabdiel.</p>
-        
- <script src="difficulty.js"></script>
+    </footer>
+
+    <!-- =========================
+         Scripts
+    ========================== -->
+    <script src="difficulty.js"></script>
 </body>
 </html>

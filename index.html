@@ -7,63 +7,75 @@
     <title>Letter-Leap</title>
 </head>
 
-<!-- header -->
-<header class="game-header">
-  <span class="welcome-text">👋 Welcome to Letter-Leap!</span>
-  <a href="HTP.html" class="header-link">📘 How to Play</a>
-   <!-- Toggle Button -->
-<button id="settingsToggleBtn" aria-label="Open Settings">⚙️</button>
-</header>
+<body>
+    <!-- =========================
+         Header Section
+    ========================== -->
+    <header class="game-header">
+        <span class="welcome-text">👋 Welcome to Letter-Leap!</span>
+        <a href="HTP.html" class="header-link">📘 How to Play</a>
+        <!-- Settings Toggle Button -->
+        <button id="settingsToggleBtn" aria-label="Open Settings">⚙️</button>
+    </header>
 
-<body>     
-    <h1>💈 Choose a mode 💈</h1>
-    <div class="game-container">
-        <a href="difficulty.html">
-        <div class="singlemode">
-            👤Single-player mode
+    <!-- =========================
+         Main Content Section
+    ========================== -->
+    <main>
+        <h1>💈 Choose a mode 💈</h1>
+        <div class="game-container">
+            <!-- Single-player Mode -->
+            <a href="difficulty.html">
+                <div class="singlemode">
+                    👤Single-player mode
+                </div>
+            </a>
+            <!-- Multi-player Mode -->
+            <a href="mm.html">
+                <div class="multiplayermode">
+                    👥 Multi-player mode
+                </div>
+            </a>
         </div>
-        </a>
+    </main>
 
-        <a href="mm.html">
-        <div class="multiplayermode">
-            👥 Multi-player mode
-        </div>
-        </a>
-    </div> 
+    <!-- =========================
+         Sidebar Settings Menu
+    ========================== -->
+    <aside id="settingsSidebar" aria-label="Settings Menu">
+        <button id="muteBtn" class="settings-btn" aria-pressed="false">
+            🔇 Mute
+        </button>
+        <button id="darkModeBtn" class="settings-btn" aria-pressed="false">
+            🌙 Dark Mode
+        </button>
+        <button id="Howtoplay" class="settings-btn" onclick="window.location.href='htp.html'">
+            📘 How to play
+        </button>
+        <button id="feedbackBtn" class="settings-btn" onclick="window.location.href='feedback.html'">
+            📝 Feedback
+        </button>
+        <button id="Tips" class="settings-btn" onclick="window.location.href='tips.html'">
+            🎁Tips
+        </button>
+    </aside>
 
-   
-
-<!-- Sidebar -->
-<aside id="settingsSidebar" aria-label="Settings Menu">
-  <button id="muteBtn" class="settings-btn" aria-pressed="false">
-    🔇 Mute
-  </button>
-
-  <button id="darkModeBtn" class="settings-btn" aria-pressed="false">
-    🌙 Dark Mode
-  </button>
-  
-  <button id="Howtoplay" class="settings-btn" onclick="window.location.href='htp.html'">
-    📘 How to play
-  </button>
-
-  <button id="feedbackBtn" class="settings-btn" onclick="window.location.href='feedback.html'">
-    📝 Feedback
-  </button>
-
-    <button id="Tips" class="settings-btn" onclick="window.location.href='tips.html'">
-     🎁Tips
-  </button>
-
-</aside>
-
-  <!-- Click_sound -->   
+    <!-- =========================
+         Audio Elements
+    ========================== -->
     <audio id="click-sound" src="click.mp3" preload="auto"></audio>
-    
+
+    <!-- =========================
+         Scripts
+    ========================== -->
     <script src="script2.js"></script>
 
+    <!-- =========================
+         Footer Section
+    ========================== -->
     <footer class="game-footer">
         <p>© 2025 Letter-Leap. All rights reserved.</p>
         <p>Made with 💙 by zabdiel.</p>
+    </footer>
 </body>
 </html>

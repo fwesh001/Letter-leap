@@ -1,12 +1,21 @@
+// ==========================
+// 📊 LOAD GAME HISTORY
+// ==========================
 const history = JSON.parse(localStorage.getItem('gameHistory')) || [];
 const latestResult = history[history.length - 1];
 
+// ==========================
+// ⏱️ TIME FORMATTER
+// ==========================
 function formatTime(seconds) {
   const mins = Math.floor(seconds / 60);
   const secs = seconds % 60;
   return `${mins}:${secs.toString().padStart(2, '0')}`;
 }
 
+// ==========================
+// 📝 POPULATE RESULT DATA
+// ==========================
 if (latestResult) {
   // 🎯 Stats
   document.getElementById('total-attempts').textContent = latestResult.wordsPlayed.length || 0;
@@ -21,7 +30,6 @@ if (latestResult) {
   // 🎭 Funny Quote
   document.getElementById('quote-text').textContent = "Coming soon";
 
- 
   // 📖 Rare Words
   const rareList = document.getElementById('rare-word-list');
   rareList.innerHTML = '<li>Coming soon</li>';
@@ -50,11 +58,18 @@ if (latestResult) {
   document.getElementById('challenge-text').textContent = "Coming soon";
 }
 
-const playStyle = determinePlayStyle(latestResult.accuracy || 0);
+// ==========================
+// 🕹️ PLAY STYLE FEEDBACK
+// ==========================
+const playStyle = determinePlayStyle(latestResult?.accuracy || 0);
 document.getElementById('style-description').textContent = playStyle.title;
 document.getElementById('playstyle-feedback').querySelector('p:nth-of-type(2)').textContent = playStyle.message;
 
-
+/**
+ * Determines play style based on accuracy.
+ * @param {number} accuracy
+ * @returns {{title: string, message: string}}
+ */
 function determinePlayStyle(accuracy) {
   if (accuracy >= 100) {
     return {

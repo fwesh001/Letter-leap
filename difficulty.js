@@ -1,11 +1,20 @@
+// ==========================
+// DOM ELEMENT REFERENCES
+// ==========================
 const popup = document.getElementById('levelInfoPopup');
 const popupTitle = document.getElementById('popupTitle');
 const popupDesc = document.getElementById('popupDesc');
 const startBtn = document.getElementById('startLevelBtn');
 const closeBtn = document.getElementById('closePopupBtn');
 
+// ==========================
+// GLOBAL VARIABLES
+// ==========================
 let selectedLevelUrl = '';
 
+// ==========================
+// LEVELS DATA CONFIGURATION
+// ==========================
 const levelsData = {
   easy: {
     title: 'Level Easy: Easy Peasy',
@@ -45,31 +54,50 @@ const levelsData = {
   }
 };
 
+// ==========================
+// POPUP HANDLING FUNCTIONS
+// ==========================
+
+/**
+ * Displays the popup with the selected level's information.
+ * @param {string} levelKey - The key for the selected level ('easy', 'normal', 'hard')
+ */
 function showPopup(levelKey) {
   const level = levelsData[levelKey];
   popupTitle.textContent = level.title;
 
-  // Build list with emojis as list items
-  popupDesc.innerHTML = '<ul>' + level.descriptionList.map(item => `<li>${item}</li>`).join('') + '</ul>' +
-                        `<blockquote>${level.flavorText}</blockquote>`;
+  // Build description list and flavor text
+  popupDesc.innerHTML = '<ul>' +
+    level.descriptionList.map(item => `<li>${item}</li>`).join('') +
+    '</ul>' +
+    `<blockquote>${level.flavorText}</blockquote>`;
 
   selectedLevelUrl = level.url;
   popup.classList.add('show');
   popup.classList.remove('hidden');
 }
 
+/**
+ * Hides the popup.
+ */
 function hidePopup() {
   popup.classList.remove('show');
   popup.classList.add('hidden');
 }
 
-// Difficulty level divs (make sure your difficulty divs have these IDs)
+// ==========================
+// EVENT LISTENERS
+// ==========================
+
+// Difficulty level divs (make sure your HTML has these IDs)
 document.getElementById('easyLevel').addEventListener('click', () => showPopup('easy'));
 document.getElementById('normalLevel').addEventListener('click', () => showPopup('normal'));
 document.getElementById('hardLevel').addEventListener('click', () => showPopup('hard'));
 
+// Start button: navigates to the selected level's URL
 startBtn.addEventListener('click', () => {
   window.location.href = selectedLevelUrl;
 });
 
+// Close button: hides the popup
 closeBtn.addEventListener('click', hidePopup);
