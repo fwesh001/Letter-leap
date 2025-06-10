@@ -16,7 +16,7 @@ const levelsData = {
       '💡 Tips: None',
       '🏅 Achievement Unlock Tip: Type 5+ correct words to unlock “Word Rookie” badge',
     ],
-    flavorText: '“Chill vibes only. Perfect for warming up those typing fingers.”',
+    flavorText: '“For fun.”',
     url: 'sm.html'
   },
   normal: {
@@ -25,23 +25,22 @@ const levelsData = {
       '🕒 Time Limit: 40 seconds',
       '🔤 Minimum Words: 3',
       '⏳ Bonus Time per Word: +10 seconds',
-      '🔡 Word Length Allowed: 3 to 7 letters',
-      '💡 Tips: Only nouns count',
+      '💡 Tips: None',
       '🏅 Achievement Unlock Tip: Type 12+ correct words to earn “Keyboard Samurai” badge',
     ],
     flavorText: '“Focus up, it\'s getting real now! Precision is key.”',
     url: 'sm-normal.html'
   },
   hard: {
-    title: 'Level Hard: Word Wizardry',
+    title: 'Level Hard: Word Expert',
     descriptionList: [
       '🕒 Time Limit: 30 seconds',
       '🔤 Minimum Words: 5',
       '⏳ Bonus Time per Word: +5 seconds',
-      '💡 Tips: Only adjectives count',
+      '💡 Tips: None',
       '🏅 Achievement Unlock Tip: Type 12+ correct words to earn “Keyboard Warrior” badge',
     ],
-    flavorText: '“Type fast. Think faster. No second chances in Word Wizardry mode!”',
+    flavorText: '“Type fast. Think faster. No second chances in Word Expert mode!”',
     url: 'sm-hard.html'
   }
 };

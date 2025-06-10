@@ -215,7 +215,7 @@ function handleSubmission() {
   currentLetter = playerWord.slice(-1);
   timeLeft += 5; totalTimeSpent += 5;
 
-  if (totalWordsExchanged % 5 === 0) {
+  if (totalWordsExchanged % 7 === 0) {
     minWordLength++;
     showPopup(`🎉 Minimum word length now set to ${minWordLength}!`);
   }
@@ -247,7 +247,7 @@ function handleSubmission() {
     wordChain.push(aiWord); usedWords.add(aiWord);
     totalWordsExchanged++; currentLetter = aiWord.slice(-1);
 
-    if (totalWordsExchanged % 5 === 0) {
+    if (totalWordsExchanged % 7 === 0) {
       minWordLength++;
       showPopup(`🎉 Minimum word length now set to ${minWordLength}!`);
     }

@@ -56,7 +56,12 @@ document.getElementById('playstyle-feedback').querySelector('p:nth-of-type(2)').
 
 
 function determinePlayStyle(accuracy) {
-  if (accuracy >= 90) {
+  if (accuracy >= 100) {
+    return {
+      title: "The Dictionary Expert",
+      message: "Even the AI was shocked."
+    };
+  } else if (accuracy >= 90) {
     return {
       title: "The Precision Ninja",
       message: "You sliced through words with deadly accuracy. No typos, no mercy."

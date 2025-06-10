@@ -1,3 +1,6 @@
+/* ===========================
+   Base Styles
+   =========================== */
 body {
     background-color: lightblue;
     font-family: Arial, Helvetica, sans-serif;
@@ -5,8 +8,17 @@ body {
     margin: 0;
     padding: 0;
     text-align: center;
+    animation: fadeIn 1s ease-in;
 }
 
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===========================
+   Header
+   =========================== */
 header {
     background-color: greenyellow;
     text-align: left;
@@ -14,19 +26,30 @@ header {
     color: red; 
 }
 
-
-
-
-b{
+/* ===========================
+   Typography
+   =========================== */
+b {
     color: blue;
     font-weight: bold;
     font-family: 'Times New Roman', Times, serif;
 }
 
+/* ===========================
+   Links
+   =========================== */
+a {
+    text-decoration: none;
+    color: none;
+}
+
+/* ===========================
+   Game Containers & Modes
+   =========================== */
 .game-container {
     background-image: url(bq.jpg);
-     background-size:cover;
-     background-repeat: no-repeat;
+    background-size: cover;
+    background-repeat: no-repeat;
     align-items: center;
     justify-content: center;
     padding: 50px;
@@ -35,26 +58,15 @@ b{
     margin: 20px;
 }
 
-.singlemode {
-    background-color: greenyellow;
-    padding: 50px;
-    border-radius: 30px;
-    font-size: larger;
-    margin: 20px;
-    color: black;
-    font-weight: bold;
-    color: blue;
-}
-
+.singlemode,
 .multiplayermode {
     background-color: greenyellow;
     padding: 50px;
     border-radius: 30px;
     font-size: larger;
     margin: 20px;
-    color: black;
+    color: #444;
     font-weight: bold;
-    color: red;
 }
 
 .level {
@@ -63,137 +75,136 @@ b{
     border-radius: 5px;
     font-size: larger;
     margin: 20px;
-    color: black;
-    font-weight: bold;
     color: blue;
+    font-weight: bold;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-
-    
 }
 
-a {
-    text-decoration: none;
-    color:none;
-}
-
-
-
-/* === Sidebar Container === */
+/* ===========================
+   Sidebar & Settings
+   =========================== */
+/* Sidebar Container */
 #settingsSidebar {
-  position: fixed;
-  top: 0;
-  right: -280px;
-  width: 280px;
-  height: 100vh;
-  background: #222;
-  box-shadow: -4px 0 15px rgba(0,0,0,0.6);
-  padding: 20px;
-  box-sizing: border-box;
-  transition: right 0.3s ease;
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+    position: fixed;
+    top: 0;
+    right: -280px;
+    width: 280px;
+    height: 100vh;
+    background: #222;
+    box-shadow: -4px 0 15px rgba(0,0,0,0.6);
+    padding: 20px;
+    box-sizing: border-box;
+    transition: right 0.3s ease;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 #settingsSidebar.open {
-  right: 0;
+    right: 0;
 }
 
-/* === Toggle Button === */
+/* Toggle Button */
 #settingsToggleBtn {
- 
-  background: #ff416c;
-  color: #fff;
-  border: none;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  cursor: pointer;
-  font-size: 24px;
-  box-shadow: 0 0 15px #ff416c;
-  transition: background 0.3s;
-  z-index: 10000;
+    background: #ff416c;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    font-size: 24px;
+    box-shadow: 0 0 15px #ff416c;
+    transition: background 0.3s;
+    z-index: 10000;
 }
 #settingsToggleBtn:hover {
-  background: #ff4b2b;
+    background: #ff4b2b;
     transform: rotate(15deg);
 }
 
-/* === Buttons Inside Sidebar === */
+/* Buttons Inside Sidebar */
 .settings-btn {
-  background: #333;
-  border: none;
-  border-radius: 10px;
-  padding: 12px 15px;
-  font-size: 18px;
-  color: #eee;
-  cursor: pointer;
-  box-shadow: 0 0 8px rgba(0,0,0,0.4);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  transition: background 0.3s;
+    background: #333;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 15px;
+    font-size: 18px;
+    color: #eee;
+    cursor: pointer;
+    box-shadow: 0 0 8px rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: background 0.3s;
 }
 .settings-btn:hover {
-  background: #ff416c;
-  box-shadow: 0 0 15px #ff416c;
+    background: #ff416c;
+    box-shadow: 0 0 15px #ff416c;
 }
 
-/* === Light Mode Styles === */
+/* ===========================
+   Light Mode Styles
+   =========================== */
 body.light-mode {
-  background: #fff;
-  color: #111;
+    background: #fff;
+    color: #111;
 }
 body.light-mode #settingsSidebar {
-  background: #eee;
-  color: #111;
-  box-shadow: -4px 0 15px rgba(0,0,0,0.2);
+    background: #eee;
+    color: #111;
+    box-shadow: -4px 0 15px rgba(0,0,0,0.2);
 }
 body.light-mode .settings-btn {
-  background: #ddd;
-  color: #111;
-  box-shadow: 0 0 8px rgba(0,0,0,0.2);
+    background: #ddd;
+    color: #111;
+    box-shadow: 0 0 8px rgba(0,0,0,0.2);
 }
 body.light-mode .settings-btn:hover {
-  background: #ff416c;
-  color: #fff;
-  box-shadow: 0 0 15px #ff416c;
+    background: #ff416c;
+    color: #fff;
+    box-shadow: 0 0 15px #ff416c;
 }
 
+/* ===========================
+   Game Header & Navigation
+   =========================== */
 .game-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: greenyellow;
-  color: #fff;
-  padding: 12px 20px;
-  font-size: 1rem;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-  top: 0;
-  z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: greenyellow;
+    color: #fff;
+    padding: 12px 20px;
+    font-size: 1rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    top: 0;
+    z-index: 100;
 }
 
 .welcome-text {
-  font-weight: bold;
-  font-size: 1.1rem;
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #444;
 }
 
 .header-link {
-  color: #fff;
-  text-decoration: none;
-  margin: 0 10px;
-  background: #444;
-  padding: 6px 10px;
-  border-radius: 5px;
-  transition: background 0.3s;
+    color: #fff;
+    text-decoration: none;
+    margin: 0 10px;
+    background: #444;
+    padding: 6px 10px;
+    border-radius: 5px;
+    transition: background 0.3s;
 }
-
 .header-link:hover {
-  background: #666;
+    background: #666;
 }
 
-/*Under-construction*/
-.Under-construction{
+/* ===========================
+   Under Construction Notice
+   =========================== */
+.Under-construction {
     color: red;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 25px;
@@ -203,6 +214,9 @@ body.light-mode .settings-btn:hover {
     text-shadow: white 20px;
 }
 
+/* ===========================
+   Images
+   =========================== */
 .Img1 {
     justify-content: center;
     align-items: center;
@@ -211,6 +225,9 @@ body.light-mode .settings-btn:hover {
     padding: 50px; 
 }
 
+/* ===========================
+   Buttons
+   =========================== */
 .btn {
     display: inline-block;
     margin: 20px;
@@ -225,108 +242,102 @@ body.light-mode .settings-btn:hover {
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
 .btn:hover {
     transform: scale(1.05);
     box-shadow: 0 0 25px #2402ad;
 }
 
-/*info popup*/
+/* ===========================
+   Info Popup
+   =========================== */
 .popup-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.75);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-  z-index: 10000;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 10000;
 }
-
 .popup-overlay.show {
-  opacity: 1;
-  pointer-events: auto;
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .popup-box {
-  background: #1e1e2f;
-  color: #e0e0e0;
-  width: 90vw;
-  max-width: 400px;
-  max-height: 100vh;
-  padding: 1.5rem;
-  border-radius: 15px;
-  box-shadow: 0 0 15px #0ff;
-  position: relative;
-  overflow-y: auto;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  text-align: left;
-  box-sizing: border-box;
+    background: #1e1e2f;
+    color: #e0e0e0;
+    width: 90vw;
+    max-width: 400px;
+    max-height: 100vh;
+    padding: 1.5rem;
+    border-radius: 15px;
+    box-shadow: 0 0 15px #0ff;
+    position: relative;
+    overflow-y: auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: left;
+    box-sizing: border-box;
 }
-
-
 
 .close-btn {
-  position: absolute;
-  top: 10px;
-  right: -1px;
-  background: transparent;
-  border: none;
-  font-size: 1.5rem;
-  color: #aaa;
-  cursor: pointer;
-  transition: color 0.2s ease;
+    position: absolute;
+    top: 10px;
+    right: -1px;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: #aaa;
+    cursor: pointer;
+    transition: color 0.2s ease;
 }
-
 .close-btn:hover {
-  color: #0ff;
+    color: #0ff;
 }
 
 .popup-header h2 {
-  margin: 0 0 1rem 0;
-  font-size: 1.8rem;
-  text-align: center;
-  background-color: #1e1e2f;
+    margin: 0 0 1rem 0;
+    font-size: 1.8rem;
+    text-align: center;
+    background-color: #1e1e2f;
 }
 
 .popup-info ul {
-  list-style: none;
-  padding-left: 0;
-  margin-bottom: 1rem;
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 1rem;
 }
-
 .popup-info ul li {
-  margin-bottom: 0.7rem;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+    margin-bottom: 0.7rem;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
-
 .popup-info blockquote {
-  font-style: italic;
-  color: #0ff;
-  border-left: 3px solid #0ff;
-  padding-left: 1rem;
-  margin: 1rem 0 1.5rem 0;
+    font-style: italic;
+    color: #0ff;
+    border-left: 3px solid #0ff;
+    padding-left: 1rem;
+    margin: 1rem 0 1.5rem 0;
 }
 
 .start-btn {
-  display: block;
-  width: 100%;
-  background-color: #0ff;
-  color: #000;
-  border: none;
-  padding: 1rem 0;
-  font-size: 1.3rem;
-  font-weight: 700; 
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background-color 0.25s ease;
+    display: block;
+    width: 100%;
+    background-color: #0ff;
+    color: #000;
+    border: none;
+    padding: 1rem 0;
+    font-size: 1.3rem;
+    font-weight: 700; 
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
 }
-
 .start-btn:hover {
-  background-color: #0cc;
+    background-color: #0cc;
 }
