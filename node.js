@@ -3,7 +3,6 @@ const http = require('http');
 const { Server } = require('socket.io');
 const path = require('path');
 const fs = require('fs');
-
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
@@ -11,7 +10,7 @@ const io = new Server(server);
 const PORT = 3000;
 
 // Load words from file
-const WORD_LIST = fs.readFileSync(path.join(__dirname, '../../words.txt'), 'utf-8')
+const WORD_LIST = fs.readFileSync(path.join(__dirname, 'words.txt'), 'utf-8')
   .split('\n')
   .map(w => w.trim().toLowerCase())
   .filter(Boolean);
@@ -29,7 +28,7 @@ const AI_ID = 'AI_PLAYER';
 const AI_NAME = 'AI Bot';
 
 // Serve static files from the public directory
-app.use(express.static(path.join(__dirname, '../../public')));
+app.use(express.static(__dirname));
 
 function startTurnTimer(roomName) {
   clearInterval(roomTimers[roomName]);
