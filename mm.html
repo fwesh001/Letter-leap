@@ -1,34 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Multiplayer Mode - Letter-Leap</title>
-
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z424QVM52M"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-Z424QVM52M');
-    </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multiplayer - Letter-leap</title>
+  <link rel="stylesheet" href="main.css">
 </head>
 <body>
-    <!-- =========================
-         Under Construction Notice
-    ========================== -->
-    <div class="Under-construction">
-        This page is still in development <br>
-        <img src="UC.png" alt="Image: Under-construction Design by Zabdiel" class="Img1"><br>
-        Check back later! <br>
-    </div>
+  <header>
+    Multiplayer - Letter-leap
+  </header>
+  <main>
+    <section class="room-system" id="room-system">
+      <div class="create-room">
+        <input type="text" id="create-room-name" placeholder="Room name">
+        <button id="create-room-btn" class="button">Create Room</button>
+        <button id="add-ai-btn" class="button" style="margin-left: 0.5rem;">Add AI Opponent</button>
+      </div>
+      <div class="join-room">
+        <input type="text" id="join-room-name" placeholder="Room name">
+        <button id="join-room-btn" class="button">Join Room</button>
+      </div>
+      <div class="choose-letter" id="choose-letter-section" style="display:none;">
+        <label for="start-letter">Choose starting letter:</label>
+        <select id="start-letter">
+          <option value="">Random</option>
+          <!-- JS will fill A-Z -->
+        </select>
+        <button id="choose-letter-btn" class="button">Start Game</button>
+      </div>
+      <div id="waiting-message" class="waiting-message" style="display:none;">
+        Waiting for opponent to join...
+      </div>
+    </section>
+    <section class="game-area" id="game-area" style="display:none;">
+      <div id="room-name-display" class="room-name"></div>
+      <div class="scoreboard">
+        <div class="player-score">
+          <span id="your-name">You</span>: <span id="your-score">0</span>
+        </div>
+        <div class="opponent-score">
+          <span id="opponent-name">Opponent</span>: <span id="opponent-score">0</span>
+        </div>
+      </div>
+      <div class="timer">
+        Time left: <span id="timer-value">15</span>s
+      </div>
+      <div id="next-letter-display" class="next-letter"></div>
 
-    <!-- =========================
-         Home Button
-    ========================== -->
-    <button class="btn" onclick="window.location.href='loading.html'">Home</button>
+      <!-- Move last-words display here -->
+      <div class="last-words" id="last-words-display">
+        <span id="last-word-prev">none</span>
+        <span class="arrow">→</span>
+        <span id="last-word-current">none</span>
+      </div>
+
+      <div class="word-input-area">
+        <input type="text" id="word-input" placeholder="Type your word..." autocomplete="off">
+        <button id="submit-word-btn" class="button">Submit</button>
+      </div>
+      <div class="word-history">
+        <h3>Word Chain History</h3>
+        <ul id="word-chain-list"></ul>
+      </div>
+    </section>
+    <div id="modal-overlay" class="modal-overlay" style="display:none;">
+      <div class="modal">
+        <span id="modal-message"></span>
+        <input id="modal-input" style="display:none; margin-top:1rem;" class="modal-input" type="text" />
+        <button id="modal-close-btn" class="button">OK</button>
+      </div>
+    </div>
+    <div id="ai-indicator" class="ai-indicator" style="display:none;">
+      🤖 AI Opponent is playing in this room
+    </div>
+    <button class="button" onclick="window.location.href='index.html'">Home</button>
+  </main>
+  <footer>
+    &copy; 2025 Multiplayer Game
+  </footer>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>
