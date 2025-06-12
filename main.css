@@ -260,3 +260,65 @@ footer {
   font-weight: bold;
   letter-spacing: 1px;
 }
+
+/* Responsive styles for smaller screens */
+@media (max-width: 600px) {
+  main {
+    max-width: 98vw;
+    margin: 1rem 0.5vw;
+    padding: 1rem 0.5rem;
+    border-radius: 8px;
+  }
+
+  .room-system,
+  .game-area {
+    padding: 0.5rem 0.2rem;
+    gap: 1rem;
+  }
+
+  .create-room, .join-room, .choose-letter, .word-input-area {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+  input[type="text"], select {
+    width: 100%;
+    font-size: 1rem;
+  }
+
+  .button {
+    width: 100%;
+    font-size: 1.05rem;
+    padding: 0.7rem 0;
+  }
+
+  .scoreboard {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.5rem 0.5rem;
+    font-size: 1rem;
+  }
+
+  .word-history {
+    padding: 0.7rem;
+    font-size: 0.98rem;
+  }
+
+  .last-words {
+    font-size: 1rem;
+    gap: 0.4rem;
+  }
+
+  .modal {
+    padding: 1rem 0.5rem;
+    min-width: 0;
+    width: 95vw;
+    font-size: 1rem;
+  }
+
+  footer {
+    font-size: 0.95rem;
+    padding: 0.7rem 0;
+  }
+}
