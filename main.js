@@ -37,8 +37,12 @@ document.addEventListener('DOMContentLoaded', () => {
       currentRoom = roomName;
       getUsername((uname) => {
         socket.emit('createRoom', { roomName, username: uname });
+        window.currentRoomName = roomName;
+        if (aiToggle.checked) {
+          socket.emit('addAI', { roomName });
+        }
         document.getElementById('choose-letter-section').style.display = 'block';
-        document.getElementById('waiting-message').style.display = 'block';
+        showWaitingMessage(); // <--- use here
       });
     } else {
       showModal('Please enter a room name!');
@@ -53,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
       currentRoom = roomName;
       getUsername((uname) => {
         socket.emit('joinRoom', { roomName, username: uname });
-        document.getElementById('waiting-message').style.display = 'block';
+        showWaitingMessage(); // <--- use here
       });
     }
   };
@@ -71,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('room-system').style.display = 'none';
     document.getElementById('game-area').style.display = 'block';
     document.getElementById('room-name-display').textContent = `Room: ${roomName}`;
-    document.getElementById('waiting-message').style.display = 'none';
+    hideWaitingMessage(); // <--- use here
   }
 
   socket.on('roomCreated', (roomName) => {
@@ -272,6 +276,25 @@ document.addEventListener('DOMContentLoaded', () => {
     showModal('At least 2 players are required to start the game!');
   });
 
+  // AI toggle logic
+  const aiToggle = document.getElementById('ai-toggle');
+  let aiEnabled = false;
+
+  aiToggle.addEventListener('change', function() {
+    aiEnabled = this.checked;
+    if (aiEnabled) {
+      if (window.currentRoomName) {
+        socket.emit('addAI', { roomName: window.currentRoomName });
+      }
+      document.getElementById('ai-indicator').style.display = 'block';
+    } else {
+      if (window.currentRoomName) {
+        socket.emit('removeAI', { roomName: window.currentRoomName });
+      }
+      document.getElementById('ai-indicator').style.display = 'none';
+    }
+  });
+
   document.getElementById('add-ai-btn').onclick = () => {
     if (!currentRoom) {
       showModal('Create a room first!');
@@ -283,5 +306,10 @@ document.addEventListener('DOMContentLoaded', () => {
   socket.on('aiAdded', () => {
     showModal('AI opponent has been added to this room!');
     document.getElementById('ai-indicator').style.display = 'block';
+  });
+
+  socket.on('aiRemoved', () => {
+    showModal('AI opponent has been removed from this room!');
+    document.getElementById('ai-indicator').style.display = 'none';
   });
 });

@@ -15,7 +15,11 @@
       <div class="create-room">
         <input type="text" id="create-room-name" placeholder="Room name">
         <button id="create-room-btn" class="button">Create Room</button>
-        <button id="add-ai-btn" class="button" style="margin-left: 0.5rem;">Add AI Opponent</button>
+        <label class="switch">
+          <input type="checkbox" id="ai-toggle">
+          <span class="slider"></span>
+        </label>
+        <span style="margin-left: 0.5rem;">AI Opponent</span>
       </div>
       <div class="join-room">
         <input type="text" id="join-room-name" placeholder="Room name">
@@ -30,6 +34,7 @@
         <button id="choose-letter-btn" class="button">Start Game</button>
       </div>
       <div id="waiting-message" class="waiting-message" style="display:none;">
+        <div class="spinner"></div>
         Waiting for opponent to join...
       </div>
     </section>
@@ -77,7 +82,7 @@
     <button class="button" onclick="window.location.href='loading.html'">Home</button>
   </main>
   <footer>
-    &copy; 2025 Multiplayer Game
+    &copy; 2025 Letter-leap - Multiplayer.
   </footer>
   <script src="/socket.io/socket.io.js"></script>
   <script src="main.js"></script>

@@ -24,6 +24,8 @@ const playerTimeLeft = {}; // { roomName: { socketId: secondsLeft, ... } }
 const roomTimers = {};
 const roomUsernames = {};
 
+const roomPlayerOrder = {}; // <-- Add this line
+
 const AI_ID = 'AI_PLAYER';
 const AI_NAME = 'AI Bot';
 
@@ -70,12 +72,12 @@ io.on('connection', (socket) => {
     roomScores[roomName] = {};
     roomScores[roomName][socket.id] = 0;
     roomTurns[roomName] = socket.id;
+    roomPlayerOrder[roomName] = [socket.id]; // <-- Add this line
     if (!roomUsernames[roomName]) roomUsernames[roomName] = {};
     roomUsernames[roomName][socket.id] = username || 'Player';
     socket.emit('roomCreated', roomName);
     io.to(roomName).emit('turnChanged', roomTurns[roomName]);
     io.to(roomName).emit('updateUsernames', roomUsernames[roomName]);
-    startTurnTimer(roomName);
     console.log(`Room created: ${roomName}`);
   });
 
@@ -150,17 +152,16 @@ io.on('connection', (socket) => {
         return;
       }
 
-      // Switch turn to the other player
+      // Switch turn to the next player (including AI and all humans)
       const playerIds = Object.keys(roomScores[roomName]);
-      const nextPlayer = playerIds.find(id => id !== socket.id);
-      if (nextPlayer) {
-        roomTurns[roomName] = nextPlayer;
-        io.to(roomName).emit('turnChanged', roomTurns[roomName]);
-        startTurnTimer(roomName);
-        // If it's AI's turn, make the AI play
-        if (roomTurns[roomName] === AI_ID) {
-          aiPlay(roomName);
-        }
+      const currentIdx = playerIds.indexOf(socket.id); // Use the player who just played
+      const nextIdx = (currentIdx + 1) % playerIds.length;
+      roomTurns[roomName] = playerIds[nextIdx];
+      io.to(roomName).emit('turnChanged', roomTurns[roomName]);
+      startTurnTimer(roomName);
+
+      if (roomTurns[roomName] === AI_ID) {
+        aiPlay(roomName);
       }
     }
   });
@@ -203,6 +204,7 @@ io.on('connection', (socket) => {
       startLetter = alphabet[Math.floor(Math.random() * 26)];
     }
     io.to(roomName).emit('startGame', startLetter);
+    startTurnTimer(roomName);
   });
 
   socket.on('disconnect', () => {
@@ -214,6 +216,7 @@ io.on('connection', (socket) => {
         // Optionally: clean up room state here
         delete roomUsernames[roomName][socket.id];
         delete roomScores[roomName][socket.id];
+        roomPlayerOrder[roomName] = roomPlayerOrder[roomName].filter(id => id !== socket.id); // <-- Add this line
       }
     }
   });
@@ -222,12 +225,26 @@ io.on('connection', (socket) => {
     if (!roomScores[roomName][AI_ID]) {
       roomScores[roomName][AI_ID] = 0;
       roomUsernames[roomName][AI_ID] = AI_NAME;
+      roomPlayerOrder[roomName].push(AI_ID); // <-- Add this line
       io.to(roomName).emit('updateScores', roomScores[roomName]);
       io.to(roomName).emit('updateUsernames', roomUsernames[roomName]);
       io.to(roomName).emit('aiAdded');
       if (!roomTurns[roomName]) {
-        roomTurns[roomName] = socket.id;
+        // Set turn to the creator if not set
+        roomTurns[roomName] = Object.keys(roomScores[roomName])[0];
       }
+    }
+  });
+
+  // Remove AI from the room
+  socket.on('removeAI', ({ roomName }) => {
+    if (roomScores[roomName] && roomScores[roomName][AI_ID]) {
+      delete roomScores[roomName][AI_ID];
+      delete roomUsernames[roomName][AI_ID];
+      roomPlayerOrder[roomName] = roomPlayerOrder[roomName].filter(id => id !== AI_ID); // <-- Add this line
+      io.to(roomName).emit('updateScores', roomScores[roomName]);
+      io.to(roomName).emit('updateUsernames', roomUsernames[roomName]);
+      io.to(roomName).emit('aiRemoved');
     }
   });
 
@@ -277,11 +294,19 @@ io.on('connection', (socket) => {
       roomScores[roomName][AI_ID]++;
       io.to(roomName).emit('updateWordChain', roomWordChains[roomName]);
       io.to(roomName).emit('updateScores', roomScores[roomName]);
-      // Switch turn back to human
-      const humanId = Object.keys(roomScores[roomName]).find(id => id !== AI_ID);
-      roomTurns[roomName] = humanId;
+
+      // Switch turn to the next player (including AI and all humans)
+      const playerIds = roomPlayerOrder[roomName];
+      const currentIdx = playerIds.indexOf(AI_ID);
+      const nextIdx = (currentIdx + 1) % playerIds.length;
+      roomTurns[roomName] = playerIds[nextIdx];
       io.to(roomName).emit('turnChanged', roomTurns[roomName]);
       startTurnTimer(roomName);
+
+      // If it's AI's turn again (shouldn't happen unless only AI is left)
+      if (roomTurns[roomName] === AI_ID) {
+        aiPlay(roomName);
+      }
     }, 1200); // 1.2s delay for realism
   }
 });
