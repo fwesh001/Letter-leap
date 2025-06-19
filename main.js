@@ -245,7 +245,6 @@ document.addEventListener('DOMContentLoaded', () => {
       list.appendChild(li);
     });
     updateNextLetter(lastLetter);
-    // updateMinLengthIndicator(wordChain); // REMOVE or COMMENT OUT this line
     updateMinLengthModal(wordChain);
 
     // Update last words display

@@ -23,9 +23,7 @@ const TURN_TIME = 60; // seconds per player
 const playerTimeLeft = {}; // { roomName: { socketId: secondsLeft, ... } }
 const roomTimers = {};
 const roomUsernames = {};
-
 const roomPlayerOrder = {}; // <-- Add this line
-
 const AI_ID = 'AI_PLAYER';
 const AI_NAME = 'AI Bot';
 
@@ -139,7 +137,7 @@ io.on('connection', (socket) => {
       // Increment score
       if (!roomScores[roomName]) roomScores[roomName] = {};
       if (!roomScores[roomName][socket.id]) roomScores[roomName][socket.id] = 0;
-      roomScores[roomName][socket.id] += 1;
+      roomScores[roomName][socket.id] += 5;
 
       io.to(roomName).emit('updateScores', roomScores[roomName]);
 
