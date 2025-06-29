@@ -137,12 +137,12 @@ io.on('connection', (socket) => {
       // Increment score
       if (!roomScores[roomName]) roomScores[roomName] = {};
       if (!roomScores[roomName][socket.id]) roomScores[roomName][socket.id] = 0;
-      roomScores[roomName][socket.id] += 5;
+      roomScores[roomName][socket.id] += 1;
 
       io.to(roomName).emit('updateScores', roomScores[roomName]);
 
       // Check for game over
-      if (roomScores[roomName][socket.id] >= 10) {
+      if (roomScores[roomName][socket.id] >= 20) {
         io.to(roomName).emit('gameOver', {
           winner: roomUsernames[roomName][socket.id] || 'Player',
           score: roomScores[roomName][socket.id]
