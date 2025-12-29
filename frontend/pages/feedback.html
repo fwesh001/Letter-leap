@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback - Letter-Leap</title>
+    <link rel="stylesheet" href="../css/HTP.css">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z424QVM52M"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-Z424QVM52M');
+    </script>
+</head>
+<body>
+    <!-- =========================
+         Feedback Form Container
+    ========================== -->
+    <div class="container">
+        <h1>Feedback</h1>
+        <form>
+            <!-- Name Input -->
+            <div class="inputbox">
+                <input type="text" name="Name" id="Name" placeholder="Enter Name" required>
+                <label for="Name">Name</label>
+            </div>
+            <!-- Email Input -->
+            <div class="inputbox">
+                <input type="email" name="email" id="email" placeholder="Enter email" required>
+                <label for="email">Email</label>
+            </div>
+            <!-- Mobile Number Input -->
+            <div class="inputbox">
+                <input type="number" name="number" id="number" placeholder="Enter Mobile number" required>
+                <label for="number">Mobile-number</label>
+            </div>
+            <!-- Subject Input -->
+            <div class="inputbox">
+                <input type="text" name="Subject" id="Subject" placeholder="Enter Subject" required>
+                <label for="Subject">Subject</label>
+            </div>
+            <!-- Message Input -->
+            <div class="inputbox">
+                <input type="text" name="Message" id="Message" placeholder="Enter Message" required>
+                <label for="Message">Message</label>
+            </div>
+            <!-- File Upload -->
+            <div class="uploadimg">
+                <input type="file">
+            </div>
+            <!-- Submit & Home Buttons -->
+            <div class="submit">
+                <a href="mailto:zabdielfwesh001@gmail.com">
+                    <input type="submit" id="feedbackBtn">
+                </a>
+                <button class="btn" type="button" onclick="window.location.href='loading.html'">Home</button>
+            </div>
+        </form>
+    </div>
+    <!-- =========================
+         Scripts
+    ========================== -->
+    <script src="../js/script2.js"></script>
+</body>
+</html>

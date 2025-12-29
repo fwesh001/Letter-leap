@@ -1,0 +1,83 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Letter-Leap Multiplayer Results</title>
+  <link rel="stylesheet" href="../css/resultmm.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+  <div class="container"> 
+    <header>
+      <h1 class="logo">LETTER-<span>LEAP</span></h1>
+      <p class="subtitle">Your multiplayer game results are in!</p>
+    </header>
+
+    <section id="game-summary" class="card">
+      <h2>Results</h2>
+      <p class="highlight" id="winner-announcement">🏆 <strong>Zabdiel</strong> wins! Reason: Opponent ran out of time</p>
+    </section>
+
+    <section id="player-stats" class="card">
+      <h2><i class="fas fa-chart-pie"></i> Player Breakdown</h2>
+      <!-- Dynamic players grid (up to 6) injected by resultmm.js -->
+      <div id="players-container" class="player-columns"></div>
+      <!-- Legacy two-player layout (hidden until JS is updated) -->
+      <div class="player-columns legacy-two-player" style="display:none;">
+        <!-- Player 1 -->
+        <div class="player-card" id="player1">
+          <h3 id="player1-name">Zabdiel</h3>
+          <ul>
+            <li>Score: <span id="p1-score">20</span></li>
+            <li>Total Words: <span id="p1-total">12</span></li>
+            <li>Accuracy: <span id="p1-accuracy">92%</span></li>
+            <li>Longest Word: <span id="p1-longest">"Magnificent"</span></li>
+          </ul>
+        </div>
+
+        <!-- Player 2 -->
+        <div class="player-card" id="player2">
+          <h3 id="player2-name">EnemyBot9000</h3>
+          <ul>
+            <li>Score: <span id="p2-score">17</span></li>
+            <li>Total Words: <span id="p2-total">10</span></li>
+            <li>Accuracy: <span id="p2-accuracy">81%</span></li>
+            <li>Longest Word: <span id="p2-longest">"Chaotic"</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="match-stats" class="card">
+      <h2><i class="fas fa-code-branch"></i> Game Chain Recap</h2>
+      <ul id="word-chain-list">
+        <!-- Words from both players will be shown in order -->
+    
+        <!-- ... -->
+      </ul>
+    </section>
+
+    <section id="funny-quotes" class="card">
+      <h2><i class="fas fa-comments"></i> Game Commentary</h2>
+      <p class="quote" id="funny-quote">“That last word? PURE pettiness. We loved it.”</p>
+      <p class="coach-roast" id="coach-quote">Coach says: "Next time, maybe try using the dictionary for fun.”</p>
+    </section>
+
+    <section id="multiplayer-badges" class="card">
+      <h2><i class="fas fa-award"></i> Battle Achievements</h2>
+      <div id="badge-list" class="badge-grid">
+        <!-- JS will inject achievement cards here -->
+      </div>
+    </section>
+
+    <div class="action-buttons">
+      <button onclick="window.location.href='mm.html'"class="btn">Replay</button>
+      <button onclick="window.location.href='loading.html'"class="btn">Home</button>
+      <button onclick="window.location.href='#'"class="btn">Share</button>
+    </div>
+  </div>
+
+  <script src="../js/resultmm.js"></script>
+</body>
+</html>

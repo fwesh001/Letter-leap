@@ -1,0 +1,137 @@
+# ============================================
+# Letter-Leap Game Project - .gitignore
+# ============================================
+
+# ============================================
+# Dependencies
+# ============================================
+# Node.js dependencies - installed via npm install
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ============================================
+# Build & Distribution
+# ============================================
+# Build output directories (if any build process is added later)
+dist/
+build/
+out/
+*.min.js
+*.min.css
+
+# ============================================
+# IDE & Editor Files
+# ============================================
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# IntelliJ IDEA / WebStorm / PyCharm
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# Vim
+*.swp
+*.swo
+*~
+.vim/
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+# ============================================
+# Operating System Files
+# ============================================
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# ============================================
+# Log Files
+# ============================================
+# Application logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# ============================================
+# Temporary Files
+# ============================================
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+*.swp
+*.swo
+*~
+
+# ============================================
+# Environment & Configuration
+# ============================================
+# Environment variables (if any)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ============================================
+# Testing & Coverage
+# ============================================
+# Test coverage reports
+coverage/
+.nyc_output/
+*.lcov
+
+# ============================================
+# Package Manager Locks (Optional)
+# ============================================
+# Uncomment if you want to ignore lock files
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# ============================================
+# Keep These Files Tracked
+# ============================================
+# The following are explicitly tracked and should NOT be ignored:
+# - frontend/pages/*.html (all HTML pages)
+# - frontend/css/*.css (all stylesheets)
+# - frontend/js/*.js (all JavaScript files)
+# - frontend/assets/images/* (all image files)
+# - frontend/assets/sounds/* (all audio files)
+# - frontend/data/* (data files like words.txt, db.json)
+# - server/server.js (main server file)
+# - package.json (dependencies manifest)
+# - package-lock.json (dependency lock file)
+# - tsconfig.json (TypeScript config if present)
+# - launch.json (VS Code launch config if present)
+

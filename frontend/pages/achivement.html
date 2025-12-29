@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Letter Leap — Achievements & Medals</title>
+  <link rel="stylesheet" href="../css/./achivement.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="topbar">
+    <button class="back-btn" onclick="window.location.href='loading.html'" aria-label="Go back">⟵ Back</button>
+    <h1>Achievements & Medals</h1>
+  </header>
+
+  <main class="container">
+    <section class="intro">
+      <p>Master Letter Leap by stacking streaks, hunting rare letters, playing long words, and unlocking unique challenges. This explains how every medal and achievement works so you can plan your path to glory.</p>
+    </section>
+
+    <section class="medals">
+      <h2 class="section-title">Medals Overview</h2>
+
+      <div class="medal-grid">
+        <article class="card">
+          <h3>Streak Medals</h3>
+          <p>Earned by playing correct words in a row without mistakes. Hitting these streaks also grants in-game score bonuses.</p>
+          <ul class="tiers">
+            <li><span class="badge bronze">Bronze</span> 3-streak — Bonus +1</li>
+            <li><span class="badge silver">Silver</span> 5-streak — Bonus +3</li>
+            <li><span class="badge gold">Gold</span> 7-streak — Bonus +5</li>
+            <li><span class="badge platinum">Platinum</span> 10-streak — Bonus +7</li>
+            <li><span class="badge diamond">Diamond</span> 15-streak — Bonus +10</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>Rare Letters Medal</h3>
+          <p>Play words that contain rare letters to earn score bonuses and progress this medal.</p>
+          <div class="hint">Counts letters: q, x, u, z, v, w, y — plus special words: “leap”, “letter”.</div>
+          <ul class="tiers">
+            <li><span class="badge bronze">Bronze</span> Use 1 rare-letter word</li>
+            <li><span class="badge silver">Silver</span> Use 5 rare-letter words</li>
+            <li><span class="badge gold">Gold</span> Use 10 rare-letter words</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>Long Words Medal</h3>
+          <p>Play long words to boost your score and medal progress.</p>
+          <div class="hint">Counts any word with length ≥ 12.</div>
+          <ul class="tiers">
+            <li><span class="badge bronze">Bronze</span> Play 1 long word</li>
+            <li><span class="badge silver">Silver</span> Play 5 long words</li>
+            <li><span class="badge gold">Gold</span> Play 10 long words</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="achievements">
+      <div class="section-header">
+        <h2 class="section-title">In‑Game Achievements</h2>
+        <input id="search" class="search" type="search" placeholder="Search achievements…" aria-label="Search achievements" />
+      </div>
+
+      <div id="achievementList" class="achievements-grid">
+        <details class="ach-card" data-text="double trouble consecutive letters aa letter coffee bottle">
+          <summary>
+            <span class="emoji">🅰🅰</span>
+            <div class="meta">
+              <div class="name">Double Trouble</div>
+              <div class="desc">Use a word that has two consecutive identical letters.</div>
+            </div>
+          </summary>
+          <div class="how">Tip: Examples include “letter”, “coffee”, “bottle”.</div>
+        </details>
+
+        <details class="ach-card" data-text="vowel master 4 vowels aeiou audio equation audience">
+          <summary>
+            <span class="emoji">🎤</span>
+            <div class="meta">
+              <div class="name">Vowel Master</div>
+              <div class="desc">Play a word with at least 4 vowels.</div>
+            </div>
+          </summary>
+          <div class="how">Look for long or vowel-heavy words like “equation”, “audience”.</div>
+        </details>
+
+        <details class="ach-card" data-text="consonant crusher 5 consonants strength transcript construct">
+          <summary>
+            <span class="emoji">🔨</span>
+            <div class="meta">
+              <div class="name">Consonant Crusher</div>
+              <div class="desc">Play a word with 5 or more consonants.</div>
+            </div>
+          </summary>
+          <div class="how">Try dense words like “strength”, “transcript”, “construct”.</div>
+        </details>
+
+        <details class="ach-card" data-text="quick thinker timer 30 seconds streak fifteen 15 plays">
+          <summary>
+            <span class="emoji">🧠💡</span>
+            <div class="meta">
+              <div class="name">Quick Thinker</div>
+              <div class="desc">Play 15 words in a row without letting the timer drop below 30 seconds.</div>
+            </div>
+          </summary>
+          <div class="how">Keep a fast rhythm: submit quickly when it’s your turn to maintain ≥ 30s left.</div>
+        </details>
+
+        <details class="ach-card" data-text="rebounder ai last letter longer word counter play">
+          <summary>
+            <span class="emoji">🔁</span>
+            <div class="meta">
+              <div class="name">Rebounder</div>
+              <div class="desc">Play a word that starts with the last letter of the AI’s word and is longer.</div>
+            </div>
+          </summary>
+          <div class="how">Check the AI’s last word; respond with a longer word starting with its last letter.</div>
+        </details>
+
+        <details class="ach-card" data-text="silent but deadly no vowels y rhythm myth glyph crypt">
+          <summary>
+            <span class="emoji">🤫</span>
+            <div class="meta">
+              <div class="name">Silent but Deadly</div>
+              <div class="desc">Use a word with no traditional vowels.</div>
+            </div>
+          </summary>
+          <div class="how">Think words like “rhythm”, “myth”, “crypt”, “glyph”.</div>
+        </details>
+
+        <details class="ach-card" data-text="wildcard all five vowels a e i o u sequoia education aurelio">
+          <summary>
+            <span class="emoji">🃏</span>
+            <div class="meta">
+              <div class="name">Wildcard</div>
+              <div class="desc">Use a word that contains all 5 vowels.</div>
+            </div>
+          </summary>
+          <div class="how">Examples: “sequoia”, “education”, “aurelio”.</div>
+        </details>
+
+        <details class="ach-card" data-text="letter jumper skip alphabet next letter jump">
+          <summary>
+            <span class="emoji">🦘</span>
+            <div class="meta">
+              <div class="name">Letter Jumper</div>
+              <div class="desc">Play a word that skips the next alphabetical letter from the previous word’s end.</div>
+            </div>
+          </summary>
+          <div class="how">If the previous word ended with “c”, a valid jump start might be “e” (skips “d”).</div>
+        </details>
+
+        <details class="ach-card" data-text="last second hero 10 seconds timer clutch save">
+          <summary>
+            <span class="emoji">⏰</span>
+            <div class="meta">
+              <div class="name">Last Second Hero</div>
+              <div class="desc">Still alive when only 10 seconds remain.</div>
+            </div>
+          </summary>
+          <div class="how">Survive with exactly 10 seconds left on your turn timer.</div>
+        </details>
+      </div>
+
+      <div class="notes">
+        <p class="muted">Note: In matches, your extra stats include Max Streak, Long Words used, Rare Letters used, and total Achievements unlocked.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div>Letter Leap • Achievements Guide</div>
+  </footer>
+
+  <script src="../js/./achivement.js"></script>
+</body>
+</html>
