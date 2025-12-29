@@ -1,0 +1,88 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Play - Letter-Leap</title>
+    <link rel="stylesheet" href="HTP.css">
+    <script defer src="HTP.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>📖 How to Play Letter-Leap</h1>
+
+        <!-- Tabs -->
+        <div class="tab-buttons">
+            <button id="tab-single" class="active">👤 Single Player</button>
+            <button id="tab-multi">👥 Multiplayer</button>
+        </div>
+
+            <!-- =========================
+         Sidebar Settings Menu
+    ========================== -->
+    <aside id="settingsSidebar" aria-label="Settings Menu">
+        <button id="muteBtn" class="settings-btn" aria-pressed="false">
+            🔇 Mute
+        </button>
+        <button id="darkModeBtn" class="settings-btn" aria-pressed="false">
+            🌙 Dark Mode
+        </button>
+        <button id="Howtoplay" class="settings-btn" onclick="window.location.href='htp.html'">
+            📘 How to play
+        </button>
+        <button id="feedbackBtn" class="settings-btn" onclick="window.location.href='feedback.html'">
+            📝 Feedback
+        </button>
+        <button id="Tips" class="settings-btn" onclick="window.location.href='tips.html'">
+            🎁Tips
+        </button>
+    </aside>
+
+
+        <!-- SINGLE PLAYER SECTION -->
+        <div id="single-section" class="tab-content active">
+            <div class="section">
+                <h2>👤 Single Player</h2>
+                <hr>
+                <p>1. You’ll get a random starting letter.</p>
+                <img src="1.png" class="screenshot">
+                <hr>
+                <p>2. Type a valid word starting with that letter.</p>
+                <img src="2.png" class="screenshot">
+                <hr>
+                <p>3. The AI responds with the last letter — your turn again!</p>
+                <img src="3.png" class="screenshot">
+                <hr>
+                <p>4. +5 seconds for every correct word ⏳</p>
+                <p>5. Score big, unlock achievements, laugh at the game-over quotes 😂</p>
+            </div>
+        </div>
+
+        <!-- MULTIPLAYER SECTION -->
+        <div id="multi-section" class="tab-content">
+            <div class="section">
+                <h2>👥 Multiplayer Mode</h2>
+                <hr>
+                    <p>1. Create or join a room with your custom username.</p>
+                    <img src="mm1.png" class="screenshot">
+                    <hr>
+                    <p>2. Room creator sets the starting letter — or let the game choose.</p>
+                    <img src="mm2.png" class="screenshot">
+                    <hr>
+                    <p>3. Take turns sending words. First letter must match opponent’s last letter.</p>
+                    <img src="mm3.png" class="screenshot">
+                    <hr>
+                    <li>+1 point per word, bonus points for streaks & rare letters 💎</li>
+                    <li>-1 point after every 2 incorrect attempts 🚫</li>
+                    <li>Run out of time? You lose ⏳</li>
+                    <li>Optional: Add an AI bot to spice things up 🤖</li>
+                    <li>First to reach the score limit (default 20) wins 🏆</li>
+                <p style="text-align:center; font-style:italic;">Tip: Watch the timer and plan your next word fast!</p>
+            </div>
+        </div>
+
+        <button class="btn" onclick="window.location.href='loading.html'">Start Playing</button>
+    </div>
+    <script src="script2.js"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Game Over - Letter-leap</title>
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+  <main class="end-game">
+    <h1>Game Over!</h1>
+    <div id="end-message"></div>
+    <button onclick="window.location.href='index.html'" class="button">Back to Home</button>
+  </main>
+  <script>
+    // Optionally, you can pass winner/reason via localStorage or query params for more details
+    // For now, just show a static message
+    document.getElementById('end-message').textContent = "Thanks for playing!";
+  </script>
+</body>
+</html>
