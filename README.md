@@ -137,11 +137,3 @@ If you need to change the port, edit `server/server.js` (default `PORT = 3000`).
 
 ---
 
-If you'd like, I can also:
-
-- Add a `LICENSE` file (MIT) and link it here (✅)
-- Create a short `CONTRIBUTING.md` with commit/PR guidelines (✅)
-- Add a quick-start script to `package.json` (if desired)
-
-Would you like me to add a `LICENSE` and `CONTRIBUTING.md` now? (Yes/No)
-
