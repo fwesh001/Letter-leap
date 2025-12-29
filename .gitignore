@@ -110,7 +110,6 @@ lerna-debug.log*
 coverage/
 .nyc_output/
 *.lcov
-REORGANIZATION_SUMMARY.md
 # ============================================
 # Package Manager Locks (Optional)
 # ============================================
