@@ -130,10 +130,3 @@ If you need to change the port, edit `server/server.js` (default `PORT = 3000`).
 
 ## 📜 License / Credits
 
-- **License:** _Choose a license for the project_. A common recommendation is the MIT License — update `LICENSE` and this section if you pick a license (🔒).
-- **Credits & third-party libraries:**
-	- Express, Socket.io, uuid, ws
-	- Any images, icons, or sounds included in `frontend/assets/` should list their original authors and licenses here (🎨, 🎵).
-
----
-
