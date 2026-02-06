@@ -26,7 +26,7 @@ const levelsData = {
       '🏅 Achievement Unlock Tip: Type 5+ correct words to unlock “Word Rookie” badge',
     ],
     flavorText: '“For fun.”',
-    url: 'sm.html'
+    url: 'frontend/pages/sm.html'
   },
   normal: {
     title: 'Level Normal: Word Warrior',
@@ -38,7 +38,7 @@ const levelsData = {
       '🏅 Achievement Unlock Tip: Type 12+ correct words to earn “Keyboard Samurai” badge',
     ],
     flavorText: '“Focus up, it\'s getting real now! Precision is key.”',
-    url: 'sm-normal.html'
+    url: 'frontend/pages/sm-normal.html'
   },
   hard: {
     title: 'Level Hard: Word Expert',
@@ -50,7 +50,7 @@ const levelsData = {
       '🏅 Achievement Unlock Tip: Type 12+ correct words to earn “Keyboard Warrior” badge',
     ],
     flavorText: '“Type fast. Think faster. No second chances in Word Expert mode!”',
-    url: 'sm-hard.html'
+    url: 'frontend/pages/sm-hard.html'
   }
 };
 
