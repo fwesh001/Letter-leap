@@ -19,7 +19,7 @@ body {
    Game Container
    =========================== */
 .game-container {
-    background-image: url(sm.jpg);
+    background-image: url(/assets/images/sm.jpg);
     background-size: cover;
     align-items: center;
     justify-content: center;
@@ -155,7 +155,7 @@ li:nth-child(odd) b {
     transform: translate(-50%, -50%);
     width: 100%; /* adjust this width as needed */
     height: 100%; /* adjust this height as needed */
-    background-image: url('gameover.png'); /* your PNG background */
+    background-image: url('/assets/images/gameover.png'); /* your PNG background */
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
