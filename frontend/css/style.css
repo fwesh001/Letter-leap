@@ -47,7 +47,7 @@ a {
    Game Containers & Modes
    =========================== */
 .game-container {
-    background-image: url(bq.jpg);
+    background-image: url(frontend/assets/images/bq.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     align-items: center;
