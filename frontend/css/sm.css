@@ -14,7 +14,7 @@ body {
 
 
 .game-container {
-  background-image:url(sm.jpg);
+  background-image:url(frontend/assets/images/sm.jpg);
   background-size: cover;
   align-items: center;
   justify-content: center;
