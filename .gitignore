@@ -134,3 +134,4 @@ coverage/
 # - tsconfig.json (TypeScript config if present)
 # - launch.json (VS Code launch config if present)
 
+REORGANIZATION_SUMMARY.txt
