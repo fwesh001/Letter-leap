@@ -55,20 +55,17 @@
         <h1 style="text-align: center; color: var(--text-primary); margin-bottom: 2rem;">Choose a Level</h1>
         <div class="game-container">
             <!-- Easy Level -->
-            <div class="level mode-card" id="easyLevel" style="border-color: var(--success-color); cursor:pointer;"
-                onclick="selectLevel('easy')">
+            <div class="level mode-card" id="easyLevel" style="border-color: var(--success-color); cursor:pointer;">
                 <i class="ph ph-smiley mode-icon" style="color: var(--success-color);"></i>
                 <span class="mode-title" style="color: var(--success-color);">Easy</span>
             </div>
             <!-- Normal Level -->
-            <div class="level mode-card" id="normalLevel" style="border-color: var(--accent-color); cursor:pointer;"
-                onclick="selectLevel('normal')">
+            <div class="level mode-card" id="normalLevel" style="border-color: var(--accent-color); cursor:pointer;">
                 <i class="ph ph-meh mode-icon" style="color: var(--accent-color);"></i>
                 <span class="mode-title" style="color: var(--accent-color);">Normal</span>
             </div>
             <!-- Hard Level -->
-            <div class="level mode-card" id="hardLevel" style="border-color: var(--danger-color); cursor:pointer;"
-                onclick="selectLevel('hard')">
+            <div class="level mode-card" id="hardLevel" style="border-color: var(--danger-color); cursor:pointer;">
                 <i class="ph ph-skull mode-icon" style="color: var(--danger-color);"></i>
                 <span class="mode-title" style="color: var(--danger-color);">Hard</span>
             </div>
@@ -134,46 +131,8 @@
     <!-- =========================
          Scripts
     ========================== -->
-    <!-- Custom script for this page to handle clicks if diffculty.js doesn't do it automatically or if I changed IDs -->
     <script src="/js/difficulty.js"></script>
     <script src="/js/script2.js"></script>
-    <script>
-        // Inline script to handle icon changes for Mute/Dark Mode (Same as index)
-        const muteButton = document.getElementById('muteBtn');
-
-        // Initial State
-        updateMuteIcon();
-
-        muteButton.addEventListener('click', () => {
-            setTimeout(updateMuteIcon, 50);
-        });
-
-        function updateMuteIcon() {
-            const isMuted = localStorage.getItem('isMuted') === 'true';
-            const icon = muteButton.querySelector('i');
-            const text = muteButton.querySelector('span');
-            if (isMuted) {
-                icon.classList.replace('ph-speaker-simple-high', 'ph-speaker-slash');
-                text.textContent = "Unmute";
-            } else {
-                icon.classList.replace('ph-speaker-slash', 'ph-speaker-simple-high');
-                text.textContent = "Mute";
-            }
-        }
-
-        const dmButton = document.getElementById('darkModeBtn');
-        dmButton.addEventListener('click', () => {
-            const icon = dmButton.querySelector('i');
-            const text = dmButton.querySelector('span');
-            if (document.body.classList.contains('light-mode')) {
-                icon.classList.replace('ph-moon', 'ph-sun');
-                text.textContent = "Light Mode";
-            } else {
-                icon.classList.replace('ph-sun', 'ph-moon');
-                text.textContent = "Dark Mode";
-            }
-        });
-    </script>
 </body>
 
 </html>
