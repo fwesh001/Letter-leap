@@ -19,23 +19,23 @@ const levelsData = {
   easy: {
     title: 'Level Easy: Easy Peasy',
     descriptionList: [
-      '🕒 Time Limit: 60 seconds',
-      '🔤 Minimum Words: 2',
-      '⏳ Bonus Time per Word: +15 seconds',
-      '💡 Tips: None',
-      '🏅 Achievement Unlock Tip: Type 5+ correct words to unlock “Word Rookie” badge',
+      '<i class="ph ph-timer"></i> Time Limit: 60 seconds',
+      '<i class="ph ph-text-aa"></i> Minimum Words: 2',
+      '<i class="ph ph-plus-circle"></i> Bonus Time per Word: +15 seconds',
+      '<i class="ph ph-lightbulb"></i> Tips: None',
+      '<i class="ph ph-medal"></i> Achievement: Unlock “Word Rookie” with 5+ words',
     ],
     flavorText: '“For fun.”',
-    url: '/sm.html'
+    url: '../frontend/pages/sm.html'
   },
   normal: {
     title: 'Level Normal: Word Warrior',
     descriptionList: [
-      '🕒 Time Limit: 40 seconds',
-      '🔤 Minimum Words: 3',
-      '⏳ Bonus Time per Word: +10 seconds',
-      '💡 Tips: None',
-      '🏅 Achievement Unlock Tip: Type 12+ correct words to earn “Keyboard Samurai” badge',
+      '<i class="ph ph-timer"></i> Time Limit: 40 seconds',
+      '<i class="ph ph-text-aa"></i> Minimum Words: 3',
+      '<i class="ph ph-plus-circle"></i> Bonus Time per Word: +10 seconds',
+      '<i class="ph ph-lightbulb"></i> Tips: None',
+      '<i class="ph ph-medal"></i> Achievement: Unlock “Keyboard Samurai” with 12+ words',
     ],
     flavorText: '“Focus up, it\'s getting real now! Precision is key.”',
     url: '/sm-normal.html'
@@ -43,11 +43,11 @@ const levelsData = {
   hard: {
     title: 'Level Hard: Word Expert',
     descriptionList: [
-      '🕒 Time Limit: 30 seconds',
-      '🔤 Minimum Words: 5',
-      '⏳ Bonus Time per Word: +5 seconds',
-      '💡 Tips: None',
-      '🏅 Achievement Unlock Tip: Type 12+ correct words to earn “Keyboard Warrior” badge',
+      '<i class="ph ph-timer"></i> Time Limit: 30 seconds',
+      '<i class="ph ph-text-aa"></i> Minimum Words: 5',
+      '<i class="ph ph-plus-circle"></i> Bonus Time per Word: +5 seconds',
+      '<i class="ph ph-lightbulb"></i> Tips: None',
+      '<i class="ph ph-medal"></i> Achievement: Unlock “Keyboard Warrior” with 12+ words',
     ],
     flavorText: '“Type fast. Think faster. No second chances in Word Expert mode!”',
     url: '/sm-hard.html'
