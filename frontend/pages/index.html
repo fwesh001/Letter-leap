@@ -3,8 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css">
     <title>Letter-Leap</title>
+
+    <!-- Design System & Styles -->
+    <link rel="stylesheet" href="/css/design-system.css">
+    <link rel="stylesheet" href="/css/main.css">
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z424QVM52M"></script>
@@ -21,30 +27,40 @@
     <!-- =========================
          Header Section
     ========================== -->
-    <header class="game-header">
-        <span class="welcome-text">👋 Welcome to Letter-Leap!</span>
-        <a href="HTP.html" class="header-link">📘 How to Play</a>
-        <!-- Settings Toggle Button -->
-        <button id="settingsToggleBtn" aria-label="Open Settings">⚙️</button>
+    <header>
+        <div style="display: flex; justify-content: space-between; align-items: center; max-width: 800px; margin: 0 auto; padding: 0 1rem;">
+            <div class="welcome-text" style="color: var(--text-primary); display: flex; align-items: center; gap: 0.5rem;">
+                <i class="ph ph-hand-waving" style="font-size: 1.5rem; color: var(--accent-color);"></i>
+                <span>Welcome to Letter-Leap!</span>
+            </div>
+            
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <a href="HTP.html" class="button" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none;">
+                    <i class="ph ph-book-open"></i> How to Play
+                </a>
+                <!-- Settings Toggle Button (Moved inside header for desktop, absolute for mobile) -->
+                <button id="settingsToggleBtn" aria-label="Open Settings">
+                    <i class="ph ph-gear"></i>
+                </button>
+            </div>
+        </div>
     </header>
 
     <!-- =========================
          Main Content Section
     ========================== -->
     <main>
-        <h1>💈 Choose a mode 💈</h1>
+        <h1 style="text-align: center; color: var(--text-primary); margin-bottom: 2rem;">Choose a Mode</h1>
         <div class="game-container">
             <!-- Single-player Mode -->
-            <a href="difficulty.html">
-                <div class="singlemode">
-                    👤Single-player mode
-                </div>
+            <a href="difficulty.html" class="mode-card">
+                <i class="ph ph-user mode-icon"></i>
+                <span class="mode-title">Single Player</span>
             </a>
             <!-- Multi-player Mode -->
-            <a href="mm.html">
-                <div class="multiplayermode">
-                    👥 Multi-player mode
-                </div>
+            <a href="mm.html" class="mode-card">
+                <i class="ph ph-users mode-icon"></i>
+                <span class="mode-title">Multiplayer</span>
             </a>
         </div>
     </main>
@@ -53,23 +69,32 @@
          Sidebar Settings Menu
     ========================== -->
     <aside id="settingsSidebar" aria-label="Settings Menu">
+        <h2 style="color: var(--text-primary); margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Settings</h2>
+        
         <button id="muteBtn" class="settings-btn" aria-pressed="false">
-            🔇 Mute
+            <i class="ph ph-speaker-simple-high"></i> <span>Mute</span>
         </button>
-        <button id="darkModeBtn" class="settings-btn" aria-pressed="false">
-            🌙 Dark Mode
+        
+        <button id="darkModeBtn" class="settings-btn" aria-pressed="true">
+            <i class="ph ph-moon"></i> <span>Dark Mode</span>
         </button>
+        
+        <div style="margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 1rem;"></div>
+
         <button id="Howtoplay" class="settings-btn" onclick="window.location.href='HTP.html'">
-            📘 How to play
+            <i class="ph ph-book-open"></i> <span>How to Play</span>
         </button>
+        
         <button id="feedbackBtn" class="settings-btn" onclick="window.location.href='feedback.html'">
-            📝 Feedback
+            <i class="ph ph-pencil-simple"></i> <span>Feedback</span>
         </button>
+        
         <button id="Tips" class="settings-btn" onclick="window.location.href='tips.html'">
-            🎁Tips
+            <i class="ph ph-gift"></i> <span>Tips</span>
         </button>
+        
         <button id="achievementsBtn" class="settings-btn" onclick="window.location.href='achivement.html'">
-            🏅 Achievements
+            <i class="ph ph-medal"></i> <span>Achievements</span>
         </button>
     </aside>
 
@@ -82,11 +107,51 @@
          Scripts
     ========================== -->
     <script src="/js/script2.js"></script>
+    <script>
+        // Inline script to handle icon changes for Mute/Dark Mode
+        const muteButton = document.getElementById('muteBtn');
+        let isMutedState = localStorage.getItem('isMuted') === 'true';
+        
+        // Initial State
+        updateMuteIcon();
+        
+        muteButton.addEventListener('click', () => {
+             // Logic is handled in script2.js, but we need to update icon here
+             setTimeout(updateMuteIcon, 50); // Small delay to let script2 update state
+        });
+
+        function updateMuteIcon() {
+             const isMuted = localStorage.getItem('isMuted') === 'true';
+             const icon = muteButton.querySelector('i');
+             const text = muteButton.querySelector('span');
+             if (isMuted) {
+                 icon.classList.replace('ph-speaker-simple-high', 'ph-speaker-slash');
+                 text.textContent = "Unmute";
+             } else {
+                 icon.classList.replace('ph-speaker-slash', 'ph-speaker-simple-high');
+                 text.textContent = "Mute";
+             }
+        }
+
+        const dmButton = document.getElementById('darkModeBtn');
+        dmButton.addEventListener('click', () => {
+             const icon = dmButton.querySelector('i');
+             const text = dmButton.querySelector('span');
+             // script2 toggles body.light-mode
+             if (document.body.classList.contains('light-mode')) {
+                 icon.classList.replace('ph-moon', 'ph-sun');
+                 text.textContent = "Light Mode";
+             } else {
+                 icon.classList.replace('ph-sun', 'ph-moon');
+                 text.textContent = "Dark Mode";
+             }
+        });
+    </script>
 
     <!-- =========================
          Footer Section
     ========================== -->
-    <footer class="game-footer">
+    <footer>
         <p>© 2025 Letter-Leap. All rights reserved.</p>
         <p>Made with 💙 by zabdiel.</p>
     </footer>
