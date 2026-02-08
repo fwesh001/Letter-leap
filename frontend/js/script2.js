@@ -1,83 +1,110 @@
 // ==========================
-// DOM ELEMENT REFERENCES
+// SETTINGS LOGIC - CONSOLIDATED
 // ==========================
-const sidebar = document.getElementById('settingsSidebar');
-const toggleBtn = document.getElementById('settingsToggleBtn');
-const muteBtn = document.getElementById('muteBtn');
-const darkModeBtn = document.getElementById('darkModeBtn');
-const restartBtn = document.getElementById('restartBtn');
 
-// ==========================
-// SIDEBAR TOGGLE
-// ==========================
-toggleBtn.addEventListener('click', () => {
-  sidebar.classList.toggle('open');
-});
-
-// ==========================
-// MUTE TOGGLE
-// ==========================
-let isMuted = false;
-muteBtn.addEventListener('click', () => {
-  isMuted = !isMuted;
-  muteBtn.innerHTML = isMuted ? '<i class="ph ph-speaker-high"></i> Unmute' : '<i class="ph ph-speaker-slash"></i> Mute';
-  muteBtn.setAttribute('aria-pressed', isMuted);
-  console.log(isMuted ? 'Sound muted' : 'Sound unmuted');
-  localStorage.setItem('isMuted', isMuted); // Save preference
-});
-
-// ==========================
-// DARK MODE TOGGLE BUTTON 
-// ==========================
-let isDarkMode = true;
-darkModeBtn.addEventListener('click', () => {
-  isDarkMode = !isDarkMode;
-  document.body.classList.toggle('light-mode', !isDarkMode);
-  darkModeBtn.innerHTML = isDarkMode ? '<i class="ph ph-moon"></i> Dark Mode' : '<i class="ph ph-sun"></i> Light Mode';
-  darkModeBtn.setAttribute('aria-pressed', isDarkMode);
-});
-
-// ==========================
-// RESTART BUTTON PLACEHOLDER
-// ==========================
-restartBtn.addEventListener('click', () => {
-  alert('Restarting game...');
-});
-
-// ==========================
-// DARK MODE TOGGLE SWITCH (Checkbox)
-// ==========================
 document.addEventListener('DOMContentLoaded', () => {
-  const toggle = document.getElementById('darkModeToggle');
-  const prefersDark = localStorage.getItem('darkMode') === 'true';
+  // DOM Elements
+  const sidebar = document.getElementById('settingsSidebar');
+  const toggleBtn = document.getElementById('settingsToggleBtn');
+  const muteBtn = document.getElementById('muteBtn');
+  const darkModeBtn = document.getElementById('darkModeBtn');
 
-  if (prefersDark) {
-    document.body.classList.add('dark-mode');
-    toggle.checked = true;
+  // ==========================
+  // SIDEBAR TOGGLE
+  // ==========================
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      if (sidebar) sidebar.classList.toggle('open');
+    });
   }
 
-  toggle.addEventListener('change', () => {
-    const enabled = toggle.checked;
-    document.body.classList.toggle('dark-mode', enabled);
-    localStorage.setItem('darkMode', enabled);
-  });
-});
-
-// ==========================
-// LOAD/SAVE MUTE PREFERENCE
-// ==========================
-window.addEventListener('DOMContentLoaded', () => {
+  // ==========================
+  // LOAD INITIAL STATE FROM STORAGE
+  // ==========================
   const savedMute = localStorage.getItem('isMuted') === 'true';
-  isMuted = savedMute;
-  toggleMute(isMuted);
-  const muteToggle = document.getElementById('muteToggle');
-  if (muteToggle) muteToggle.innerHTML = isMuted ? '<i class="ph ph-speaker-slash"></i>' : '<i class="ph ph-speaker-high"></i>';
-});
+  const savedDarkMode = localStorage.getItem('darkMode') !== 'false'; // default true
 
-// ==========================
-// MUTE HELPER FUNCTION
-// ==========================
-function toggleMute(mute) {
-  // Implement mute logic
-}
+  // Initialize mute state
+  if (savedMute && muteBtn) {
+    muteBtn.setAttribute('aria-pressed', 'true');
+    updateMuteIcon();
+  }
+
+  // Initialize dark mode state
+  if (!savedDarkMode) {
+    document.body.classList.add('light-mode');
+  }
+  if (darkModeBtn) {
+    const isDark = !document.body.classList.contains('light-mode');
+    darkModeBtn.setAttribute('aria-pressed', isDark);
+    updateDarkModeIcon();
+  }
+
+  // ==========================
+  // MUTE TOGGLE
+  // ==========================
+  if (muteBtn) {
+    muteBtn.addEventListener('click', () => {
+      const isMuted = localStorage.getItem('isMuted') === 'true';
+      localStorage.setItem('isMuted', !isMuted);
+      updateMuteIcon();
+      muteBtn.setAttribute('aria-pressed', !isMuted);
+      console.log(!isMuted ? 'Sound muted' : 'Sound unmuted');
+    });
+  }
+
+  // ==========================
+  // DARK MODE TOGGLE
+  // ==========================
+  if (darkModeBtn) {
+    darkModeBtn.addEventListener('click', () => {
+      const isDark = !document.body.classList.contains('light-mode');
+      document.body.classList.toggle('light-mode', isDark);
+      localStorage.setItem('darkMode', !isDark);
+      updateDarkModeIcon();
+      darkModeBtn.setAttribute('aria-pressed', !isDark);
+    });
+  }
+
+  // ==========================
+  // HELPER FUNCTIONS
+  // ==========================
+  function updateMuteIcon() {
+    if (!muteBtn) return;
+    const isMuted = localStorage.getItem('isMuted') === 'true';
+    const icon = muteBtn.querySelector('i');
+    const text = muteBtn.querySelector('span');
+    if (icon) {
+      if (isMuted) {
+        icon.classList.remove('ph-speaker-simple-high');
+        icon.classList.add('ph-speaker-slash');
+      } else {
+        icon.classList.remove('ph-speaker-slash');
+        icon.classList.add('ph-speaker-simple-high');
+      }
+    }
+    if (text) {
+      text.textContent = isMuted ? 'Unmute' : 'Mute';
+    }
+  }
+
+  function updateDarkModeIcon() {
+    if (!darkModeBtn) return;
+    const isDark = !document.body.classList.contains('light-mode');
+    const icon = darkModeBtn.querySelector('i');
+    const text = darkModeBtn.querySelector('span');
+    if (icon) {
+      if (isDark) {
+        icon.classList.remove('ph-sun');
+        icon.classList.add('ph-moon');
+      } else {
+        icon.classList.remove('ph-moon');
+        icon.classList.add('ph-sun');
+      }
+    }
+    if (text) {
+      text.textContent = isDark ? 'Dark Mode' : 'Light Mode';
+    }
+  }
+});
 
