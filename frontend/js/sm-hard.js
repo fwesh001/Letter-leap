@@ -1,5 +1,5 @@
 // =======================
-// 🔤 DOM ELEMENTS
+// DOM ELEMENTS
 // =======================
 const letterElement = document.getElementById('letter');
 const wordInput = document.getElementById('word-input');
@@ -18,7 +18,7 @@ const wrongSound = document.getElementById('wrong-sound');
 const gameoverSound = document.getElementById('gameover-sound');
 
 // =======================
-// 🧠 GAME STATE VARIABLES
+// GAME STATE VARIABLES
 // =======================
 let words = [];
 let currentLetter = '';
@@ -38,7 +38,7 @@ let achievements = [];
 
 
 // =======================
-// 📦 WORD LIST FETCH
+// WORD LIST FETCH
 // =======================
 fetch('../data/words.txt')
   .then(res => res.text())
@@ -48,11 +48,11 @@ fetch('../data/words.txt')
   })
   .catch(err => {
     console.error('Failed to load word list:', err);
-    showPopup('⚠️ Failed to load words list. Game cannot start.', 5000);
+    showPopup('Failed to load words list. Game cannot start.', 5000);
   });
 
 // =======================
-// 🔊 SOUND FX
+// SOUND FX
 // =======================
 function playClickSound() {
   if (clickSound) {
@@ -100,10 +100,10 @@ function startGame() {
 }
 
 // =======================
-// ⏱️ TIMER + DISPLAY
+// TIMER + DISPLAY
 // =======================
 function updateTimerDisplay() {
-  timerElement.textContent = `⏳ Time left: ${timeLeft}s`;
+  timerElement.innerHTML = `<i class="ph ph-timer"></i> Time left: ${timeLeft}s`;
   timerElement.style.color = timeLeft > 25 ? 'green' : timeLeft > 10 ? 'yellow' : 'red';
 }
 
@@ -114,7 +114,7 @@ function formatTime(seconds) {
 }
 
 // =======================
-// 🔠 WORD HANDLING
+// WORD HANDLING
 // =======================
 function getRandomLetter() {
   const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -142,7 +142,7 @@ function aiPickWord(startLetter) {
 // =======================
 function updateGame() {
   wordChainElement.innerHTML = wordChain.map((word, i) => {
-    const speaker = i % 2 === 0 ? '👤You' : '🤖AI';
+    const speaker = i % 2 === 0 ? 'You' : 'AI';
     return `<li><b>${speaker}:</b> ${word}</li>`;
   }).join('');
   scoreElement.textContent = score;
@@ -153,7 +153,7 @@ function updateGame() {
 function updateLastWords() {
   const playerWord = wordChain.length >= 2 ? wordChain[wordChain.length - 2] : 'None';
   const aiWord = wordChain.length >= 1 ? wordChain[wordChain.length - 1] : 'None';
-  lastWordsElement.innerHTML = `<p>⛓️ : <b>${playerWord}</b>➡️ ${aiWord}</p>`;
+  lastWordsElement.innerHTML = `<i class="ph ph-link"></i> <b>${playerWord}</b> <i class="ph ph-arrow-right"></i> <b>${aiWord}</b>`;
 }
 
 function showPopup(msg, duration = 5000) {
@@ -164,17 +164,17 @@ function showPopup(msg, duration = 5000) {
 }
 
 function popAchievementBadge(badgeName) {
-  popup.textContent = `🏆 Achievement Unlocked: ${badgeName}`;
+  popup.textContent = `Achievement Unlocked: ${badgeName}`;
   popup.style.display = 'block';
   popup.style.backgroundColor = '#FFD700';
 }
 
 // =======================
-// 🧠 MAIN GAME LOOP
+// MAIN GAME LOOP
 // =======================
 function handleSubmission() {
   if (gameOver) {
-    showPopup("⛔ Game is over! Hit restart to play again.");
+    showPopup("Game is over! Hit restart to play again.");
     return;
   }
 
@@ -182,63 +182,58 @@ function handleSubmission() {
   playerAttempts++;
 
   if (!playerWord) {
-    showPopup("💤 Blank Input — You typed nothing and expected greatness?");
+    showPopup("Blank Input - You typed nothing.");
     wrongSound.currentTime = 0; wrongSound.play();
     incorrectWordsCount++; wordInput.value = ''; return;
   }
 
   if (usedWords.has(playerWord)) {
-    showPopup("📛 Already Used — Nice try, but we’ve seen that one.");
+    showPopup("Already Used - Try a different word.");
     wrongSound.currentTime = 0; wrongSound.play();
     incorrectWordsCount++; wordInput.value = ''; return;
   }
 
   if (playerWord.length < minWordLength) {
-    showPopup(`🔤 Too Short — Use at least ${minWordLength} letters!`);
+    showPopup(`Too Short - Use at least ${minWordLength} letters!`);
     wrongSound.currentTime = 0; wrongSound.play();
     incorrectWordsCount++; wordInput.value = ''; return;
   }
 
   if (!playerWord.startsWith(currentLetter)) {
-    showPopup(`🅰 Wrong Start Letter — Must start with ‘${currentLetter}’`);
+    showPopup(`Wrong Start Letter - Must start with "${currentLetter}"`);
     wrongSound.currentTime = 0; wrongSound.play();
     incorrectWordsCount++; wordInput.value = ''; return;
   }
 
   if (!isValidWord(playerWord)) {
-    showPopup(`❌ Invalid Word — ‘${playerWord}’? That’s not even in alien dictionaries`);
+    showPopup(`Invalid Word - "${playerWord}" is not in the dictionary.`);
     wrongSound.currentTime = 0; wrongSound.play();
     incorrectWordsCount++; wordInput.value = ''; return;
   }
 
-  // 🔥 VALID ENTRY
+  // VALID ENTRY
   correctSound.currentTime = 0; correctSound.play();
   wordChain.push(playerWord); usedWords.add(playerWord);
   score++; totalWordsExchanged++;
   currentLetter = playerWord.slice(-1);
   timeLeft += 5; totalTimeSpent += 5;
   const gameState = {
-  wordChain,
-  timeTaken: 3, 
-  lastAIWord: wordChain[wordChain.length - 2] || '',
-  lastWord: wordChain[wordChain.length - 3] || '',
-  streakWithoutTimerDrop: 0 
-};
+    wordChain,
+    timeTaken: 3,
+    lastAIWord: wordChain[wordChain.length - 2] || '',
+    lastWord: wordChain[wordChain.length - 3] || '',
+    streakWithoutTimerDrop: 0
+  };
 
-checkAchievements(playerWord, gameState);
+  checkAchievements(playerWord, gameState);
 
 
   if (totalWordsExchanged % 7 === 0) {
     minWordLength++;
-    showPopup(`🎉 Minimum word length now set to ${minWordLength}!`);
+    showPopup(`Minimum word length increased to ${minWordLength}!`);
   }
 
-  if (score === 1) popAchievementBadge("First Blood 🩸");
-  if (score === 3) popAchievementBadge("Trifecta 🎯");
-  if (score === 5) popAchievementBadge("Halfway Hero 🏅");
-  if (score === 10) popAchievementBadge("Word Wizard 🧙");
-  if (playerWord.length >= 12) popAchievementBadge("Keyboard Warrior 💪");
-  if (score >= 5 && timeLeft < 10) popAchievementBadge("Late Bloomer 🌙");
+  if (playerWord.length >= 12) popAchievementBadge("Keyboard Warrior");
 
   updateGame(); updateTimerDisplay();
   wordInput.value = ''; wordInput.focus();
@@ -253,7 +248,7 @@ checkAchievements(playerWord, gameState);
     letterElement.style.display = 'block';
 
     if (!aiWord) {
-      showPopup("🎉 You Win! AI couldn't find a word.", 1000);
+      showPopup("You Win! AI could not find a word.", 1000);
       endGame(); return;
     }
 
@@ -262,7 +257,7 @@ checkAchievements(playerWord, gameState);
 
     if (totalWordsExchanged % 7 === 0) {
       minWordLength++;
-      showPopup(`🎉 Minimum word length now set to ${minWordLength}!`);
+      showPopup(`Minimum word length increased to ${minWordLength}!`);
     }
 
     updateGame(); updateTimerDisplay();
@@ -270,87 +265,79 @@ checkAchievements(playerWord, gameState);
 }
 
 // =======================
-// 🏆 ACHIEVEMENT CHECKER
+// ACHIEVEMENT CHECKER
 // =======================
 function checkAchievements(word, gameState) {
   const achievements = [
-  {
-    id: "double_trouble",
-    name: "Double Trouble",
-    emoji: "🅰🅰",
-    description: "Use a word that has two consecutive identical letters.",
-    checkCondition: (word, gameState) => /(.)\1/.test(word),
-  },
-  
-  {
-    id: "vowel_master",
-    name: "Vowel Master",
-    emoji: "🎤",
-    description: "Play a word with at least 4 vowels.",
-    checkCondition: (word, gameState) =>
-      (word.match(/[aeiou]/gi) || []).length >= 4,
-  },
-  {
-    id: "consonant_crusher",
-    name: "Consonant Crusher",
-    emoji: "🔨",
-    description: "Play a word with 5 or more consonants.",
-    checkCondition: (word, gameState) =>
-      (word.match(/[^aeiou]/gi) || []).length >= 5,
-  },
-  {
-    id: "quick_thinker",
-    name: "Quick Thinker",
-    emoji: "🧠💡",
-    description:
-      "Play 5 words in a row without letting the timer drop below 30 seconds.",
-    checkCondition: (word, gameState) =>
-      gameState.streakWithoutTimerDrop >= 5,
-  },
-  {
-    id: "rebounder",
-    name: "Rebounder",
-    emoji: "🔁",
-    description:
-      "Play a word that starts with the last letter of the AI’s word and is longer.",
-    checkCondition: (word, gameState) =>
-      gameState.lastAIWord &&
-      word[0].toLowerCase() ===
-        gameState.lastAIWord.slice(-1).toLowerCase() &&
-      word.length > gameState.lastAIWord.length,
-  },
-  {
-    id: "silent_but_deadly",
-    name: "Silent but Deadly",
-    emoji: "🤫",
-    description: "Use a word with no traditional vowels.",
-    checkCondition: (word) => !/[aeiou]/i.test(word),
-  },
-  {
-    id: "wildcard",
-    name: "Wildcard",
-    emoji: "🃏",
-    description: "Use a word that contains all 5 vowels.",
-    checkCondition: (word) =>
-      ["a", "e", "i", "o", "u"].every((v) => word.includes(v)),
-  },
-  {
-    id: "letter_jumper",
-    name: "Letter Jumper",
-    emoji: "🦘",
-    description:
-      "Play a word that skips the next alphabetical letter from the previous word's end.",
-    checkCondition: (word, gameState) => {
-      if (!gameState.lastWord) return false;
-      const prevEnd = gameState.lastWord.slice(-1).toLowerCase().charCodeAt(0);
-      const nextStart = word[0].toLowerCase().charCodeAt(0);
-      return nextStart - prevEnd > 1;
+    {
+      id: "double_trouble",
+      name: "Double Trouble",
+      description: "Use a word that has two consecutive identical letters.",
+      checkCondition: (word, gameState) => /(.)\1/.test(word),
     },
-  },
-];
+
+    {
+      id: "vowel_master",
+      name: "Vowel Master",
+      description: "Play a word with at least 4 vowels.",
+      checkCondition: (word, gameState) =>
+        (word.match(/[aeiou]/gi) || []).length >= 4,
+    },
+    {
+      id: "consonant_crusher",
+      name: "Consonant Crusher",
+      description: "Play a word with 5 or more consonants.",
+      checkCondition: (word, gameState) =>
+        (word.match(/[^aeiou]/gi) || []).length >= 5,
+    },
+    {
+      id: "quick_thinker",
+      name: "Quick Thinker",
+      description:
+        "Play 5 words in a row without letting the timer drop below 30 seconds.",
+      checkCondition: (word, gameState) =>
+        gameState.streakWithoutTimerDrop >= 5,
+    },
+    {
+      id: "rebounder",
+      name: "Rebounder",
+      description:
+        "Play a word that starts with the last letter of the AI's word and is longer.",
+      checkCondition: (word, gameState) =>
+        gameState.lastAIWord &&
+        word[0].toLowerCase() ===
+        gameState.lastAIWord.slice(-1).toLowerCase() &&
+        word.length > gameState.lastAIWord.length,
+    },
+    {
+      id: "silent_but_deadly",
+      name: "Silent but Deadly",
+      description: "Use a word with no traditional vowels.",
+      checkCondition: (word) => !/[aeiou]/i.test(word),
+    },
+    {
+      id: "wildcard",
+      name: "Wildcard",
+      description: "Use a word that contains all 5 vowels.",
+      checkCondition: (word) =>
+        ["a", "e", "i", "o", "u"].every((v) => word.includes(v)),
+    },
+    {
+      id: "letter_jumper",
+      name: "Letter Jumper",
+      description:
+        "Play a word that skips the next alphabetical letter from the previous word's end.",
+      checkCondition: (word, gameState) => {
+        if (!gameState.lastWord) return false;
+        const prevEnd = gameState.lastWord.slice(-1).toLowerCase().charCodeAt(0);
+        const nextStart = word[0].toLowerCase().charCodeAt(0);
+        return nextStart - prevEnd > 1;
+      },
+    },
+  ];
   achievements.forEach(achievement => {
     if (achievement.checkCondition(word, gameState)) {
-      popAchievementBadge(`${achievement.name} ${achievement.emoji}`);
+      popAchievementBadge(achievement.name);
     }
   });
 }
@@ -363,13 +350,13 @@ function showGameOverScreen() {
   document.getElementById('game-over-screen').classList.remove('hidden');
 
   const quotes = [
-    "RIP, Brain Cells 💀", "Oops! That escalated quickly...",
-    "Your vocabulary went on vacation 🌴", "You vs Time: Time wins again ⏳😵",
-    "That was... something 😅", "You tried... and the letters laughed. 😂",
-    "Word on the street is... you need more practice.😅", "That's not how you spell 'victory'. 😅",
-    "Letters were thrown. No survivors. 💀", "You and the keyboard had a disagreement. 👊⌨️",
-    "Grammar police are on their way. 🚨📝", "Your brain: 404 - Word Not Found. 🧠❌",
-    "Well... that was a journey. 🛣️", "Let’s pretend that didn’t happen.😅"
+    "Game Over", "Oops! That escalated quickly...",
+    "Your vocabulary went on vacation", "Time wins again",
+    "That was... something", "You tried your best.",
+    "Word on the street is... you need more practice.", "That is not how you spell victory.",
+    "Letters were thrown.", "You and the keyboard had a disagreement.",
+    "Grammar police are on their way.", "Your brain: 404 - Word Not Found.",
+    "Well... that was a journey.", "Let's pretend that didn't happen."
   ];
   const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
   lastRandomQuote = randomQuote; // Set this BEFORE saveGameResult()
@@ -379,7 +366,7 @@ function showGameOverScreen() {
   document.getElementById('word-count').textContent = wordChain.length;
   document.getElementById('incorrect-words-count').textContent = incorrectWordsCount;
   document.getElementById('time-spent').textContent = formatTime(totalTimeSpent);
-  document.getElementById('accuracy').textContent = Math.round((score / (playerAttempts || 1)) + 100) + '%';
+  document.getElementById('accuracy').textContent = Math.round((score / (playerAttempts || 1)) * 100) + '%';
 
   const list = document.getElementById('word-list');
   list.innerHTML = '';
@@ -391,7 +378,7 @@ function showGameOverScreen() {
 
   if (typeof challenges !== 'undefined' && challenges.length) {
     const challengeText = challenges[Math.floor(Math.random() * challenges.length)];
-    document.getElementById('game-over-challenge').textContent = `🎮 Challenge for next round: ${challengeText}`;
+    document.getElementById('game-over-challenge').textContent = `Challenge for next round: ${challengeText}`;
   }
 
   const longestWord = wordChain.reduce((longest, word) =>
@@ -401,7 +388,7 @@ function showGameOverScreen() {
 }
 
 // =======================
-// 💾 SAVE TO LOCAL STORAGE
+// SAVE TO LOCAL STORAGE
 // =======================
 function saveGameResult() {
   const data = {
@@ -417,17 +404,17 @@ function saveGameResult() {
 
   // Retrieve the existing game history, if any
   const history = JSON.parse(localStorage.getItem('gameHistory')) || [];
-  
+
   // Add the new game result to history
   history.push(data);
-  
+
   // Save the updated history back to localStorage
   localStorage.setItem('gameHistory', JSON.stringify(history));
 }
 
 
 // =======================
-// 🧠 END GAME
+// END GAME
 // =======================
 function endGame() {
   gameOver = true;
@@ -440,11 +427,11 @@ function endGame() {
 }
 
 // =======================
-// 🤖 EVENT LISTENERS
+// EVENT LISTENERS
 // =======================
 hintBtn.addEventListener('click', () => {
   playClickSound();
-  showPopup("🧠 Hint system coming soon!");
+  showPopup("Hint system coming soon!");
 });
 
 wordInput.addEventListener('keydown', (e) => {
@@ -470,7 +457,7 @@ startBtn.addEventListener('click', () => {
 });
 
 // =======================
-// ✍️ TYPEWRITER EFFECT
+// TYPEWRITER EFFECT
 // =======================
 function typewriterEffect(text, targetId) {
   const target = document.getElementById(targetId);
