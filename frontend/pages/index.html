@@ -107,46 +107,6 @@
          Scripts
     ========================== -->
     <script src="/js/script2.js"></script>
-    <script>
-        // Inline script to handle icon changes for Mute/Dark Mode
-        const muteButton = document.getElementById('muteBtn');
-        let isMutedState = localStorage.getItem('isMuted') === 'true';
-        
-        // Initial State
-        updateMuteIcon();
-        
-        muteButton.addEventListener('click', () => {
-             // Logic is handled in script2.js, but we need to update icon here
-             setTimeout(updateMuteIcon, 50); // Small delay to let script2 update state
-        });
-
-        function updateMuteIcon() {
-             const isMuted = localStorage.getItem('isMuted') === 'true';
-             const icon = muteButton.querySelector('i');
-             const text = muteButton.querySelector('span');
-             if (isMuted) {
-                 icon.classList.replace('ph-speaker-simple-high', 'ph-speaker-slash');
-                 text.textContent = "Unmute";
-             } else {
-                 icon.classList.replace('ph-speaker-slash', 'ph-speaker-simple-high');
-                 text.textContent = "Mute";
-             }
-        }
-
-        const dmButton = document.getElementById('darkModeBtn');
-        dmButton.addEventListener('click', () => {
-             const icon = dmButton.querySelector('i');
-             const text = dmButton.querySelector('span');
-             // script2 toggles body.light-mode
-             if (document.body.classList.contains('light-mode')) {
-                 icon.classList.replace('ph-moon', 'ph-sun');
-                 text.textContent = "Light Mode";
-             } else {
-                 icon.classList.replace('ph-sun', 'ph-moon');
-                 text.textContent = "Dark Mode";
-             }
-        });
-    </script>
 
     <!-- =========================
          Footer Section
