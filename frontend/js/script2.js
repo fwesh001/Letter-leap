@@ -1,5 +1,5 @@
 // ==========================
-// 🌐 DOM ELEMENT REFERENCES
+// DOM ELEMENT REFERENCES
 // ==========================
 const sidebar = document.getElementById('settingsSidebar');
 const toggleBtn = document.getElementById('settingsToggleBtn');
@@ -8,44 +8,44 @@ const darkModeBtn = document.getElementById('darkModeBtn');
 const restartBtn = document.getElementById('restartBtn');
 
 // ==========================
-// 📂 SIDEBAR TOGGLE
+// SIDEBAR TOGGLE
 // ==========================
 toggleBtn.addEventListener('click', () => {
   sidebar.classList.toggle('open');
 });
 
 // ==========================
-// 🔇 MUTE TOGGLE
+// MUTE TOGGLE
 // ==========================
 let isMuted = false;
 muteBtn.addEventListener('click', () => {
   isMuted = !isMuted;
-  muteBtn.textContent = isMuted ? '🔈 Unmute' : '🔇 Mute';
+  muteBtn.innerHTML = isMuted ? '<i class="ph ph-speaker-high"></i> Unmute' : '<i class="ph ph-speaker-slash"></i> Mute';
   muteBtn.setAttribute('aria-pressed', isMuted);
   console.log(isMuted ? 'Sound muted' : 'Sound unmuted');
   localStorage.setItem('isMuted', isMuted); // Save preference
 });
 
 // ==========================
-// 🌙 DARK MODE TOGGLE BUTTON 
+// DARK MODE TOGGLE BUTTON 
 // ==========================
 let isDarkMode = true;
 darkModeBtn.addEventListener('click', () => {
   isDarkMode = !isDarkMode;
   document.body.classList.toggle('light-mode', !isDarkMode);
-  darkModeBtn.textContent = isDarkMode ? '🌙 Dark Mode' : '☀️ Light Mode';
+  darkModeBtn.innerHTML = isDarkMode ? '<i class="ph ph-moon"></i> Dark Mode' : '<i class="ph ph-sun"></i> Light Mode';
   darkModeBtn.setAttribute('aria-pressed', isDarkMode);
 });
 
 // ==========================
-// 🔄 RESTART BUTTON PLACEHOLDER
+// RESTART BUTTON PLACEHOLDER
 // ==========================
 restartBtn.addEventListener('click', () => {
-  alert('Restarting game... (Hook this to your actual game reset)');
+  alert('Restarting game...');
 });
 
 // ==========================
-// 🌗 DARK MODE TOGGLE SWITCH (Checkbox)
+// DARK MODE TOGGLE SWITCH (Checkbox)
 // ==========================
 document.addEventListener('DOMContentLoaded', () => {
   const toggle = document.getElementById('darkModeToggle');
@@ -64,21 +64,20 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ==========================
-// 💾 LOAD/SAVE MUTE PREFERENCE
+// LOAD/SAVE MUTE PREFERENCE
 // ==========================
 window.addEventListener('DOMContentLoaded', () => {
   const savedMute = localStorage.getItem('isMuted') === 'true';
   isMuted = savedMute;
   toggleMute(isMuted);
   const muteToggle = document.getElementById('muteToggle');
-  if (muteToggle) muteToggle.textContent = isMuted ? '🔇' : '🔊';
+  if (muteToggle) muteToggle.innerHTML = isMuted ? '<i class="ph ph-speaker-slash"></i>' : '<i class="ph ph-speaker-high"></i>';
 });
 
 // ==========================
-// 🔈 MUTE HELPER FUNCTION
+// MUTE HELPER FUNCTION
 // ==========================
 function toggleMute(mute) {
-  // Implement your mute logic here (e.g., mute/unmute audio elements)
-  // Example: document.querySelectorAll('audio').forEach(a => a.muted = mute);
+  // Implement mute logic
 }
 
