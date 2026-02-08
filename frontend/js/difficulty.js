@@ -26,7 +26,7 @@ const levelsData = {
       '<i class="ph ph-medal"></i> Achievement: Unlock “Word Rookie” with 5+ words',
     ],
     flavorText: '“For fun.”',
-    url: '/pages/sm.html'
+    url: 'sm.html'
   },
   normal: {
     title: 'Level Normal: Word Warrior',
@@ -38,7 +38,7 @@ const levelsData = {
       '<i class="ph ph-medal"></i> Achievement: Unlock “Keyboard Samurai” with 12+ words',
     ],
     flavorText: '“Focus up, it\'s getting real now! Precision is key.”',
-    url: '/pages/sm-normal.html'
+    url: 'sm-normal.html'
   },
   hard: {
     title: 'Level Hard: Word Expert',
@@ -50,7 +50,7 @@ const levelsData = {
       '<i class="ph ph-medal"></i> Achievement: Unlock “Keyboard Warrior” with 12+ words',
     ],
     flavorText: '“Type fast. Think faster. No second chances in Word Expert mode!”',
-    url: '/pages/sm-hard.html'
+    url: 'sm-hard.html'
   }
 };
 
