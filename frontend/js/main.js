@@ -1,10 +1,10 @@
-document.addEventListener('DOMContentLoaded', () => { 
+document.addEventListener('DOMContentLoaded', () => {
   const socket = io();
   let username = '';
-  let isCreator = false; 
+  let isCreator = false;
   let currentRoom = '';
   let usernames = {};
-  let scoresState = {}; 
+  let scoresState = {};
   let currentTurnIdState = null;
   let waitingForOpponent = false;
   let lastMinLength = 2;
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   socket.on('playerJoined', (name) => {
-    showToast(`🔥 ${name} just joined!`,currentRoom);
+    showToast(`${name} just joined!`, currentRoom);
   });
 
   // Start game
@@ -258,12 +258,12 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   socket.on('achievementUnlocked', ({ id, name, emoji }) => {
-    showToast(`${emoji || '🏆'} ${name || 'Achievement unlocked'}`);
+    showToast(`${name || 'Achievement unlocked'}`);
   });
 
   socket.on('playerAchievement', ({ playerId, username, id, name, emoji }) => {
     if (playerId === socket.id) return;
-    showToast(`${emoji || '🏆'} ${name}`);
+    showToast(name);
   });
 
   socket.on('opponentLeft', (name) => {
@@ -279,7 +279,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateMinLengthIndicator(wordChain) {
     const minLength = (wordChain.length >= 10) ? 3 : 2;
     document.getElementById('min-length-indicator').textContent =
-      `Minimum word length: ${minLength}`;
+      `Minimum word length: ${minLength} `;
   }
 
   function updateMinLengthModal(wordChain) {
@@ -321,14 +321,14 @@ document.addEventListener('DOMContentLoaded', () => {
       playSound('correct');
     } catch (err) {
       console.error('[client] error handling updateWordChain sound:', err);
-    } 
+    }
   });
 
   socket.on('waitingForOpponent', () => {
     document.getElementById('waiting-message').style.display = 'block';
   });
 
-  document.getElementById('word-input').addEventListener('keydown', function(e) {
+  document.getElementById('word-input').addEventListener('keydown', function (e) {
     if (e.key === 'Enter' && !this.disabled) {
       document.getElementById('submit-word-btn').click();
     }
@@ -423,16 +423,16 @@ document.addEventListener('DOMContentLoaded', () => {
       list.forEach((id) => {
         const row = document.createElement('div');
         row.className = 'player-score';
-        row.id = `player-${id}`;
+        row.id = `player - ${id} `;
         if (id === currentTurnIdState) row.classList.add('active');
         const name = usernames[id] || (id === socket.id ? 'You' : 'Player');
         const score = (scoresState && typeof scoresState[id] === 'number') ? scoresState[id] : 0;
         const crownDisplay = id === currentTurnIdState ? 'inline' : 'none';
         row.innerHTML = `
-          <span class="player-name">${name}</span>
-          <span class="player-crown" style="display: ${crownDisplay};">👑</span>
+  < span class="player-name" > ${name}</span >
+    <span class="player-crown" style="display: ${crownDisplay};"><i class="ph ph-crown"></i> </span>
           : <span class="player-score-value">${score}</span>
-        `;
+`;
         board.appendChild(row);
       });
     } catch (e) {
@@ -453,7 +453,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function blinkEffect(color) {
   document.body.classList.remove('blink-green', 'blink-red');
   void document.body.offsetWidth;
-  document.body.classList.add(`blink-${color}`);
+  document.body.classList.add(`blink - ${color} `);
 }
 
 // Global error logging
@@ -469,8 +469,8 @@ function playSound(kind) {
   try {
     const id = kind === 'correct' ? 'sound-correct'
       : kind === 'wrong' ? 'sound-wrong'
-      : kind === 'click' ? 'sound-click'
-      : null;
+        : kind === 'click' ? 'sound-click'
+          : null;
     if (!id) return;
     const el = document.getElementById(id);
     if (!el) {
