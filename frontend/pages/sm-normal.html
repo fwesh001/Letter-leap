@@ -3,120 +3,46 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Single-player (😐Normal) mode - Letter-Leap</title>
-  <link rel="stylesheet" href="/css/sm-normal.css" />
-
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z424QVM52M"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-Z424QVM52M');
-  </script>
+  <title>Single Player (Normal) - Letter-Leap</title>
+  <link rel="stylesheet" href="/css/design-system.css">
+  <link rel="stylesheet" href="/css/main.css">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 <body>
-  <!-- =========================
-       Game Container
-  ========================== -->
-  <div class="game-container">
-    <h1>👤Single-player</h1>
-
-    <!-- =========================
-         Starting Letter
-    ========================== -->
-    <p id="prompt" style="color: red; font-weight: bold;">
-      Starting Letter: <b class="lettercolor"><span id="letter">A</span></b>
-    </p>
-
-    <!-- =========================
-         AI Thinking Indicator
-    ========================== -->
-    <div id="thinking-indicator" style="display: none;">
-      🤖 Thinking<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>
+  <header>
+    <div style="display: flex; align-items: center; justify-content: center; position: relative; max-width: 800px; margin: 0 auto;">
+        <a href="difficulty.html" style="position: absolute; left: 1rem; color: var(--text-primary); text-decoration: none;"><i class="ph ph-arrow-left"></i></a>
+        <span>Normal Mode</span>
     </div>
-    
-    <!-- =========================
-         Timer
-    ========================== -->
-    <div id="timer">⏳Time left: 60s</div>
-    
-    <!-- =========================
-         Last Words (Player & AI)
-    ========================== -->
-    <div id="last-words" style="margin-bottom: 20px; font-weight: bold; color:white;"></div>
-
-    <!-- =========================
-         Popup Message
-    ========================== -->
-    <div id="popup-message" class="popup"></div>
-
-    <!-- =========================
-         Input Box for Words
-    ========================== -->
-    <input type="text" id="word-input" autocomplete="off" autocorrect="off" placeholder="Your word here" />
-    
-    <!-- =========================
-         Score Display
-    ========================== -->
-    <p>Score🏆: <span id="score">0</span></p>
-    
-    <!-- =========================
-         Submit & Hint Buttons
-    ========================== -->
-    <p>
-      <button id="submit-btn">✅Submit</button>
-      <button id="hint-btn">💡Hint</button>
-    </p>
-
-    <!-- =========================
-         Word Chain List
-    ========================== -->
-    <h3>Word Chain⛓️:</h3>
-    <ul id="word-chain">
-      <!-- Words will appear here -->
-    </ul>
-
-    <!-- =========================
-         Restart & Home Buttons
-    ========================== -->
-    <div>
-      <button id="restart-btn">🔄 Restart</button>
-      <a href="loading.html">
-        <button>🏠Home</button>
-      </a>
+  </header>
+  <main>
+    <div class="game-container">
+        <div id="prompt" style="text-align: center; margin-bottom: 1.5rem;">
+            <span style="color: var(--text-secondary); font-size: var(--font-size-lg);">Starting Letter</span>
+            <div class="lettercolor" style="font-size: 4rem; color: var(--accent-color); font-weight: 800; line-height: 1;"><span id="letter">A</span></div>
+        </div>
+        <div id="thinking-indicator" style="display: none; text-align: center; color: var(--accent-color); margin-bottom: 1rem;">
+            <i class="ph ph-robot"></i> Thinking<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; background: var(--bg-primary); padding: 1rem; border-radius: var(--radius-md);">
+            <div id="timer" style="color: var(--accent-color); font-weight: bold; display: flex; align-items: center; gap: 0.5rem;"><i class="ph ph-timer"></i> <span id="timer-text">60s</span></div>
+            <div style="font-weight: bold; color: var(--text-primary); display: flex; align-items: center; gap: 0.5rem;"><i class="ph ph-trophy" style="color: var(--accent-color);"></i> Score: <span id="score">0</span></div>
+        </div>
+        <div id="last-words" style="margin-bottom: 1.5rem; text-align: center; min-height: 1.5rem;"></div>
+        <div id="popup-message" class="popup" style="margin-bottom: 1rem;"></div>
+        <div class="word-input-area" style="margin-bottom: 1.5rem;"><input type="text" id="word-input" autocomplete="off" placeholder="Type word here..." style="width: 100%;" /></div>
+        <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem;">
+            <button id="submit-btn" class="button">Submit</button>
+            <button id="hint-btn" class="button" style="background: var(--bg-tertiary); color: var(--text-primary);">Hint</button>
+        </div>
+        <div class="word-history"><h3>Word Chain <i class="ph ph-link"></i></h3><ul id="word-chain"></ul></div>
+        <div style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: center;">
+            <button id="restart-btn" class="button">Restart</button>
+            <a href="index.html" class="button" style="text-decoration: none; background: var(--bg-tertiary); color: var(--text-primary);">Home</a>
+        </div>
     </div>
-  </div>
-  
-  <!-- =========================
-       Game Over Screen
-  ========================== -->
-  <div id="game-over-screen" class="hidden">
-    <div class="game-over-content">
-      <h3 id="game-over-quote">💀 Game Over</h3>
-      <p><strong>🏆 Score:</strong> <span id="final-score"></span></p>
-      <p><strong>📝 Total Words:</strong> <span id="word-count"></span></p>
-      <p><strong>⏳ Time Spent:</strong> <span id="time-spent"></span></p>
-      <p><strong>❌ Incorrect Words:</strong> <span id="incorrect-words-count">0</span></p>
-      <p><strong>🎯 Accuracy:</strong> <span id="accuracy"></span></p>
-      <a href="lr.html" id="see-results-btn"><button>👀 See Results</button></a>
-      <button onclick="startGame()">🔁 Restart</button><br>
-      <a href="index.html"><button>🏠 Home</button></a>
-    </div>
-  </div>
-
-  <!-- =========================
-       Audio Clips
-  ========================== -->
-  <audio id="click-sound" src="/assets/sounds/click.mp3" preload="auto"></audio>
-  <audio id="correct-sound" src="/assets/sounds/ding.mp3"></audio>
-  <audio id="wrong-sound" src="/assets/sounds/buzz.mp3"></audio>
-  <audio id="gameover-sound" src="/assets/sounds/gameover.mp3"></audio>
-
-  <!-- =========================
-       Scripts
-  ========================== -->
+  </main>
+  <div id="game-over-screen" class="modal-overlay hidden"><div class="modal"><h3>Game Over</h3><div style="background: var(--bg-primary); padding: 1.5rem; border-radius: var(--radius-lg); margin-bottom: 1.5rem;"><p>Score: <span id="final-score"></span></p></div><button onclick="startGame()" class="button">Play Again</button></div></div>
   <script src="/js/sm-normal.js"></script>
 </body>
 </html>
