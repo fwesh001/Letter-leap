@@ -3,40 +3,36 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Tips Lounge™ - Letter-Leap</title>
-  <link rel="stylesheet" href="/css/tips.css">
-
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z424QVM52M"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-Z424QVM52M');
-  </script>
+  <title>Tips - Letter-Leap</title>
+  <link rel="stylesheet" href="/css/design-system.css">
+  <link rel="stylesheet" href="/css/main.css">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <style>
+    .word-list-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; padding: 1rem; }
+    .tip-card { background: var(--bg-secondary); border: 1px solid var(--border-color); padding: 1rem; border-radius: var(--radius-md); text-align: center; color: var(--text-primary); transition: transform 0.2s; }
+    .tip-card:hover { transform: scale(1.05); border-color: var(--primary-color); }
+  </style>
 </head>
 <body>
-  <!-- =========================
-       Header Section
-  ========================== -->
   <header>
-    <p>
-      <a href="loading.html" class="home-btn">Home</a>
-      <button class="refresh-btn" id="refreshBtn">🔀</button>
-    </p>
+    <div style="display: flex; align-items: center; justify-content: center; position: relative; max-width: 800px; margin: 0 auto;">
+        <a href="index.html" style="position: absolute; left: 1rem; color: var(--text-primary); text-decoration: none;"><i class="ph ph-arrow-left"></i></a>
+        <span>Word Tips</span>
+    </div>
   </header>
 
-  <!-- =========================
-       Tips Word List Container
-  ========================== -->
-  <div class="word-list-container" id="wordListContainer">
-    <!-- Words will be loaded here -->
-  </div>
+  <main class="container" style="max-width: 800px; margin: 0 auto; padding: 2rem 1rem;">
+    <div style="text-align: center; margin-bottom: 2rem;">
+        <h1><i class="ph ph-lightbulb" style="color: var(--accent-color);"></i> Expand Your Vocabulary</h1>
+        <p style="color: var(--text-secondary);">Rare and useful words to help you win matches.</p>
+        <button class="button" id="refreshBtn" style="margin-top: 1rem;"><i class="ph ph-arrows-clockwise"></i> Get New Tips</button>
+    </div>
 
-  <!-- =========================
-       Scripts
-  ========================== -->
+    <div class="word-list-container" id="wordListContainer">
+        <!-- Words will be loaded here by tips.js -->
+    </div>
+  </main>
+
   <script src="/js/tips.js"></script>
 </body>
 </html>
