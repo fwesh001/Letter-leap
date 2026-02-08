@@ -3,8 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Single-player (🥺Easy) mode - Letter-Leap</title>
-  <link rel="stylesheet" href="/css/sm.css" />
+  <title>Single Player - Letter-Leap</title>
+  
+  <!-- Design System & Styles -->
+  <link rel="stylesheet" href="/css/design-system.css">
+  <link rel="stylesheet" href="/css/main.css">
+
+  <!-- Phosphor Icons -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z424QVM52M"></script>
@@ -17,104 +23,100 @@
   </script>
 </head>
 <body>
-  <!-- =========================
-       Game Container
-  ========================== -->
-  <div class="game-container">
-    <h1>👤Single-player</h1>
-
-    <!-- =========================
-         Starting Letter
-    ========================== -->
-    <p id="prompt" style="color: red; font-weight: bold;">
-      Starting Letter: <b class="lettercolor"><span id="letter">A</span></b>
-    </p>
-
-    <!-- =========================
-         AI Thinking Indicator
-    ========================== -->
-    <div id="thinking-indicator" style="display: none;">
-      🤖 Thinking<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>
+  <header>
+    <div style="display: flex; align-items: center; justify-content: center; position: relative; max-width: 800px; margin: 0 auto;">
+        <a href="difficulty.html" style="position: absolute; left: 1rem; color: var(--text-primary); text-decoration: none;"><i class="ph ph-arrow-left"></i></a>
+        <span>Single Player</span>
     </div>
-    
-    <!-- =========================
-         Timer
-    ========================== -->
-    <div id="timer">⏳Time left: 60s</div>
-    
-    <!-- =========================
-         Last Words (Player & AI)
-    ========================== -->
-    <div id="last-words" style="margin-bottom: 20px; font-weight: bold; color:white;"></div>
+  </header>
 
-    <!-- =========================
-         Popup Message
-    ========================== -->
-    <div id="popup-message" class="popup"></div>
+  <main>
+    <div class="game-container">
+        <!-- Starting Letter -->
+        <div id="prompt" style="text-align: center; margin-bottom: 1.5rem;">
+            <span style="color: var(--text-secondary); font-size: var(--font-size-lg);">Starting Letter</span>
+            <div class="lettercolor" style="font-size: 4rem; color: var(--primary-color); font-weight: 800; line-height: 1;">
+                <span id="letter">A</span>
+            </div>
+        </div>
 
-    <!-- =========================
-         Input Box for Words
-    ========================== -->
-    <input type="text" id="word-input" autocomplete="off" autocorrect="off" placeholder="Your word here" />
-    
-    <!-- =========================
-         Score Display
-    ========================== -->
-    <p>Score🏆: <span id="score">0</span></p>
-    
-    <!-- =========================
-         Submit & Hint Buttons
-    ========================== -->
-    <p>
-      <button id="submit-btn">✅Submit</button>
-      <button id="hint-btn">💡Hint</button>
-    </p>
+        <!-- AI Thinking Indicator -->
+        <div id="thinking-indicator" style="display: none; text-align: center; color: var(--accent-color); margin-bottom: 1rem;">
+            <i class="ph ph-robot"></i> Thinking<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>
+        </div>
+        
+        <!-- Timer & Score -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; background: var(--bg-primary); padding: 1rem; border-radius: var(--radius-md);">
+            <div id="timer" style="color: var(--accent-color); font-weight: bold; display: flex; align-items: center; gap: 0.5rem;">
+                <i class="ph ph-timer"></i> <span id="timer-text">60s</span>
+            </div>
+            <div style="font-weight: bold; color: var(--text-primary); display: flex; align-items: center; gap: 0.5rem;">
+                <i class="ph ph-trophy" style="color: var(--accent-color);"></i> Score: <span id="score">0</span>
+            </div>
+        </div>
+        
+        <!-- Last Words List (Simplified view) -->
+        <div id="last-words" style="margin-bottom: 1.5rem; text-align: center; min-height: 1.5rem;"></div>
 
-    <!-- =========================
-         Word Chain List
-    ========================== -->
-    <h3>Word Chain⛓️:</h3>
-    <ul id="word-chain">
-      <!-- Words will appear here -->
-    </ul>
+        <!-- Popup Message (Notifications) -->
+        <div id="popup-message" class="popup" style="margin-bottom: 1rem;"></div>
 
-    <!-- =========================
-         Restart & Home Buttons
-    ========================== -->
-    <div>
-      <button id="restart-btn">🔄 Restart</button>
-      <a href="index.html">
-        <button>🏠Home</button>
-      </a>
+        <!-- Input Box for Words -->
+        <div class="word-input-area" style="margin-bottom: 1.5rem;">
+            <input type="text" id="word-input" autocomplete="off" autocorrect="off" placeholder="Type word here..." style="width: 100%; max-width: none;" />
+        </div>
+        
+        <!-- Actions -->
+        <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem;">
+            <button id="submit-btn" class="button"><i class="ph ph-check-circle"></i> Submit</button>
+            <button id="hint-btn" class="button" style="background: var(--bg-tertiary); color: var(--text-primary);"><i class="ph ph-lightbulb"></i> Hint</button>
+        </div>
+
+        <!-- Word Chain List -->
+        <div class="word-history">
+            <h3>Word Chain <i class="ph ph-link" style="font-size: 0.9em;"></i></h3>
+            <ul id="word-chain">
+              <!-- Words will appear here -->
+            </ul>
+        </div>
+
+        <!-- Restart & Home Buttons -->
+        <div style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: center;">
+            <button id="restart-btn" class="button"><i class="ph ph-arrows-clockwise"></i> Restart</button>
+            <a href="index.html" class="button" style="text-decoration: none; background: var(--bg-tertiary); color: var(--text-primary);"><i class="ph ph-house"></i> Home</a>
+        </div>
     </div>
-  </div>
+  </main>
   
   <!-- =========================
        Game Over Screen
   ========================== -->
-  <div id="game-over-screen" class="hidden">
-    <div class="game-over-content">
-      <h3 id="game-over-quote">💀 Game Over</h3>
-      <p><strong>🏆 Score:</strong> <span id="final-score"></span></p>
-      <p><strong>📝 Total Words:</strong> <span id="word-count"></span></p>
-      <p><strong>⏳ Time Spent:</strong> <span id="time-spent"></span></p>
-      <p><strong>❌ Incorrect Words:</strong> <span id="incorrect-words-count">0</span></p>
-      <p><strong>🎯 Accuracy:</strong> <span id="accuracy"></span></p>
-      <a href="lr.html" id="see-results-btn"><button>👀 See Results</button></a>
-      <button onclick="startGame()">🔁 Restart</button><br>
-      <a href="loading.html"><button>🏠 Home</button></a>
+  <div id="game-over-screen" class="modal-overlay hidden">
+    <div class="modal">
+      <h3 id="game-over-quote" style="font-size: 2rem; color: var(--danger-color); margin-bottom: 1rem;"><i class="ph ph-skull"></i> Game Over</h3>
+      
+      <div style="text-align: left; background: var(--bg-primary); padding: 1.5rem; border-radius: var(--radius-lg); margin-bottom: 1.5rem;">
+          <p style="margin-bottom: 0.5rem;"><i class="ph ph-trophy" style="color: var(--accent-color);"></i> <strong>Final Score:</strong> <span id="final-score" style="color: var(--text-primary); float: right;"></span></p>
+          <p style="margin-bottom: 0.5rem;"><i class="ph ph-text-aa"></i> <strong>Total Words:</strong> <span id="word-count" style="color: var(--text-primary); float: right;"></span></p>
+          <p style="margin-bottom: 0.5rem;"><i class="ph ph-hourglass"></i> <strong>Time Spent:</strong> <span id="time-spent" style="color: var(--text-primary); float: right;"></span></p>
+          <p style="margin-bottom: 0.5rem;"><i class="ph ph-x-circle" style="color: var(--danger-color);"></i> <strong>Incorrect Words:</strong> <span id="incorrect-words-count" style="color: var(--text-primary); float: right;">0</span></p>
+          <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 0.5rem 0;">
+          <p><i class="ph ph-target"></i> <strong>Accuracy:</strong> <span id="accuracy" style="color: var(--primary-color); float: right; font-weight: bold;"></span></p>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+          <a href="lr.html" id="see-results-btn" style="text-decoration: none;"><button class="button" style="width: 100%;"><i class="ph ph-eye"></i> See Detailed Results</button></a>
+          <button onclick="startGame()" class="button" style="background: var(--success-color); color: white;"><i class="ph ph-arrows-clockwise"></i> Play Again</button>
+          <a href="index.html" style="text-decoration: none;"><button class="button" style="width: 100%; background: var(--bg-tertiary); color: var(--text-primary);"><i class="ph ph-house"></i> Back to Home</button></a>
+      </div>
     </div>
   </div>
 
-  <!-- =========================
-       Audio Clips
-  ========================== -->
   <audio id="click-sound" src="/assets/sounds/click.mp3" preload="auto"></audio>
   <audio id="correct-sound" src="/assets/sounds/ding.mp3"></audio>
   <audio id="wrong-sound" src="/assets/sounds/buzz.mp3"></audio>
   <audio id="gameover-sound" src="/assets/sounds/gameover.mp3"></audio>
 
-  <!-- =========================
-       Scripts
-  ========================== -->
   <script src="/js/script.js"></script>
+</body>
+</html>
