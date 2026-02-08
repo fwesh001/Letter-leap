@@ -49,6 +49,7 @@
                     <span class="badge bronze">Bronze x3</span>
                     <span class="badge silver">Silver x5</span>
                     <span class="badge gold">Gold x7</span>
+                    <span class="badge platinum">Platinum x10</span>
                     <span class="badge diamond">Diamond x15</span>
                 </div>
             </div>
@@ -70,43 +71,115 @@
             <input id="search" type="search" placeholder="Search..." style="background: var(--bg-primary); border: 1px solid var(--border-color); color: white; padding: 0.4rem 1rem; border-radius: var(--radius-md);">
         </div>
 
-        <div id="achievementList">
-            <details class="ach-card">
-                <summary>
-                    <i class="ph ph-copy" style="font-size: 1.5rem; color: var(--primary-color);"></i>
-                    <div class="meta">
-                        <div class="name">Double Trouble</div>
-                        <div class="desc">Two consecutive identical letters (e.g., "letter").</div>
-                    </div>
-                    <i class="ph ph-caret-down"></i>
-                </summary>
-                <div class="how">Focus on words like "coffee", "bottle", "supper".</div>
-            </details>
+                <div id="achievementList">
+                        <details class="ach-card" data-text="double trouble consecutive letters aa letter coffee bottle">
+                            <summary>
+                                <i class="ph ph-copy" style="font-size: 1.5rem; color: var(--primary-color);"></i>
+                                <div class="meta">
+                                    <div class="name">Double Trouble</div>
+                                    <div class="desc">Use a word that has two consecutive identical letters.</div>
+                                </div>
+                                <i class="ph ph-caret-down"></i>
+                            </summary>
+                            <div class="how">Tip: Examples include "letter", "coffee", "bottle".</div>
+                        </details>
 
-            <details class="ach-card">
-                <summary>
-                    <i class="ph ph-microphone-stage" style="font-size: 1.5rem; color: var(--primary-color);"></i>
-                    <div class="meta">
-                        <div class="name">Vowel Master</div>
-                        <div class="desc">Play a word with at least 4 vowels.</div>
-                    </div>
-                    <i class="ph ph-caret-down"></i>
-                </summary>
-                <div class="how">Try "equation", "audience", "beautiful".</div>
-            </details>
+                        <details class="ach-card" data-text="vowel master 4 vowels aeiou audio equation audience beautiful">
+                            <summary>
+                                <i class="ph ph-microphone-stage" style="font-size: 1.5rem; color: var(--primary-color);"></i>
+                                <div class="meta">
+                                    <div class="name">Vowel Master</div>
+                                    <div class="desc">Play a word with at least 4 vowels.</div>
+                                </div>
+                                <i class="ph ph-caret-down"></i>
+                            </summary>
+                            <div class="how">Look for long or vowel-heavy words like "equation", "audience".</div>
+                        </details>
 
-            <details class="ach-card">
-                <summary>
-                    <i class="ph ph-brain" style="font-size: 1.5rem; color: var(--primary-color);"></i>
-                    <div class="meta">
-                        <div class="name">Quick Thinker</div>
-                        <div class="desc">15 words without timer dropping below 30s.</div>
-                    </div>
-                    <i class="ph ph-caret-down"></i>
-                </summary>
-                <div class="how">Keep the pace high! Submit as fast as you can.</div>
-            </details>
-        </div>
+                        <details class="ach-card" data-text="consonant crusher 5 consonants strength transcript construct">
+                            <summary>
+                                <i class="ph ph-hammer" style="font-size: 1.5rem; color: var(--primary-color);"></i>
+                                <div class="meta">
+                                    <div class="name">Consonant Crusher</div>
+                                    <div class="desc">Play a word with 5 or more consonants.</div>
+                                </div>
+                                <i class="ph ph-caret-down"></i>
+                            </summary>
+                            <div class="how">Try dense words like "strength", "transcript", "construct".</div>
+                        </details>
+
+                        <details class="ach-card" data-text="quick thinker timer 30 seconds streak fifteen 15 plays">
+                            <summary>
+                                <i class="ph ph-brain" style="font-size: 1.5rem; color: var(--primary-color);"></i>
+                                <div class="meta">
+                                    <div class="name">Quick Thinker</div>
+                                    <div class="desc">Play 15 words in a row without letting the timer drop below 30 seconds.</div>
+                                </div>
+                                <i class="ph ph-caret-down"></i>
+                            </summary>
+                            <div class="how">Keep a fast rhythm: submit quickly when it’s your turn to maintain ≥ 30s left.</div>
+                        </details>
+
+                        <details class="ach-card" data-text="rebounder ai last letter longer word counter play repeat">
+                            <summary>
+                                <i class="ph ph-arrows-clockwise" style="font-size: 1.5rem; color: var(--primary-color);"></i>
+                                <div class="meta">
+                                    <div class="name">Rebounder</div>
+                                    <div class="desc">Play a word that starts with the last letter of the AI’s word and is longer.</div>
+                                </div>
+                                <i class="ph ph-caret-down"></i>
+                            </summary>
+                            <div class="how">Check the AI’s last word; respond with a longer word starting with its last letter.</div>
+                        </details>
+
+                        <details class="ach-card" data-text="silent but deadly no vowels y rhythm myth glyph crypt">
+                            <summary>
+                                <i class="ph ph-ghost" style="font-size: 1.5rem; color: var(--primary-color);"></i>
+                                <div class="meta">
+                                    <div class="name">Silent but Deadly</div>
+                                    <div class="desc">Use a word with no traditional vowels.</div>
+                                </div>
+                                <i class="ph ph-caret-down"></i>
+                            </summary>
+                            <div class="how">Think words like "rhythm", "myth", "crypt", "glyph".</div>
+                        </details>
+
+                        <details class="ach-card" data-text="wildcard all five vowels a e i o u sequoia education aurelio">
+                            <summary>
+                                <i class="ph ph-magic-wand" style="font-size: 1.5rem; color: var(--primary-color);"></i>
+                                <div class="meta">
+                                    <div class="name">Wildcard</div>
+                                    <div class="desc">Use a word that contains all 5 vowels.</div>
+                                </div>
+                                <i class="ph ph-caret-down"></i>
+                            </summary>
+                            <div class="how">Examples: "sequoia", "education", "aurelio".</div>
+                        </details>
+
+                        <details class="ach-card" data-text="letter jumper skip alphabet next letter jump">
+                            <summary>
+                                <i class="ph ph-arrow-right" style="font-size: 1.5rem; color: var(--primary-color);"></i>
+                                <div class="meta">
+                                    <div class="name">Letter Jumper</div>
+                                    <div class="desc">Play a word that skips the next alphabetical letter from the previous word’s end.</div>
+                                </div>
+                                <i class="ph ph-caret-down"></i>
+                            </summary>
+                            <div class="how">If the previous word ended with “c”, a valid jump start might be “e” (skips “d”).</div>
+                        </details>
+
+                        <details class="ach-card" data-text="last second hero 10 seconds timer clutch save">
+                            <summary>
+                                <i class="ph ph-timer" style="font-size: 1.5rem; color: var(--primary-color);"></i>
+                                <div class="meta">
+                                    <div class="name">Last Second Hero</div>
+                                    <div class="desc">Still alive when only 10 seconds remain.</div>
+                                </div>
+                                <i class="ph ph-caret-down"></i>
+                            </summary>
+                            <div class="how">Survive with exactly 10 seconds left on your turn timer.</div>
+                        </details>
+                </div>
     </section>
   </main>
   
