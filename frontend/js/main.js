@@ -423,16 +423,16 @@ document.addEventListener('DOMContentLoaded', () => {
       list.forEach((id) => {
         const row = document.createElement('div');
         row.className = 'player-score';
-        row.id = `player - ${id} `;
+        row.id = `player-${id}`;
         if (id === currentTurnIdState) row.classList.add('active');
         const name = usernames[id] || (id === socket.id ? 'You' : 'Player');
         const score = (scoresState && typeof scoresState[id] === 'number') ? scoresState[id] : 0;
         const crownDisplay = id === currentTurnIdState ? 'inline' : 'none';
         row.innerHTML = `
-  < span class="player-name" > ${name}</span >
-    <span class="player-crown" style="display: ${crownDisplay};"><i class="ph ph-crown"></i> </span>
+          <span class="player-name">${name}</span>
+          <span class="player-crown" style="display: ${crownDisplay};"><i class="ph ph-crown"></i></span>
           : <span class="player-score-value">${score}</span>
-`;
+        `;
         board.appendChild(row);
       });
     } catch (e) {
@@ -453,7 +453,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function blinkEffect(color) {
   document.body.classList.remove('blink-green', 'blink-red');
   void document.body.offsetWidth;
-  document.body.classList.add(`blink - ${color} `);
+  document.body.classList.add(`blink-${color}`);
 }
 
 // Global error logging
