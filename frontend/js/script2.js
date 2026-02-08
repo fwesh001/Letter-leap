@@ -1,110 +1,83 @@
-// ==========================
-// SETTINGS LOGIC - CONSOLIDATED
-// ==========================
-
+// Letter Leap — Global UI & Settings logic
 document.addEventListener('DOMContentLoaded', () => {
-  // DOM Elements
+  // DOM ELEMENT REFERENCES
   const sidebar = document.getElementById('settingsSidebar');
   const toggleBtn = document.getElementById('settingsToggleBtn');
   const muteBtn = document.getElementById('muteBtn');
   const darkModeBtn = document.getElementById('darkModeBtn');
 
-  // ==========================
-  // SIDEBAR TOGGLE
-  // ==========================
-  if (toggleBtn) {
-    toggleBtn.addEventListener('click', () => {
-      if (sidebar) sidebar.classList.toggle('open');
+  // 1. SIDEBAR TOGGLE
+  if (toggleBtn && sidebar) {
+    toggleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      sidebar.classList.toggle('open');
+    });
+
+    // Close sidebar if clicking outside
+    document.addEventListener('click', (e) => {
+      if (sidebar.classList.contains('open') && !sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
+        sidebar.classList.remove('open');
+      }
     });
   }
 
-  // ==========================
-  // LOAD INITIAL STATE FROM STORAGE
-  // ==========================
-  const savedMute = localStorage.getItem('isMuted') === 'true';
-  const savedDarkMode = localStorage.getItem('darkMode') !== 'false'; // default true
-
-  // Initialize mute state
-  if (savedMute && muteBtn) {
-    muteBtn.setAttribute('aria-pressed', 'true');
-    updateMuteIcon();
-  }
-
-  // Initialize dark mode state
-  if (!savedDarkMode) {
-    document.body.classList.add('light-mode');
-  }
-  if (darkModeBtn) {
-    const isDark = !document.body.classList.contains('light-mode');
-    darkModeBtn.setAttribute('aria-pressed', isDark);
-    updateDarkModeIcon();
-  }
-
-  // ==========================
-  // MUTE TOGGLE
-  // ==========================
+  // 2. MUTE LOGIC
   if (muteBtn) {
+    // Initial state from localStorage
+    let isMuted = localStorage.getItem('isMuted') === 'true';
+    updateMuteUI(isMuted);
+
     muteBtn.addEventListener('click', () => {
-      const isMuted = localStorage.getItem('isMuted') === 'true';
-      localStorage.setItem('isMuted', !isMuted);
-      updateMuteIcon();
-      muteBtn.setAttribute('aria-pressed', !isMuted);
-      console.log(!isMuted ? 'Sound muted' : 'Sound unmuted');
+      isMuted = !isMuted;
+      localStorage.setItem('isMuted', isMuted);
+      updateMuteUI(isMuted);
     });
   }
 
-  // ==========================
-  // DARK MODE TOGGLE
-  // ==========================
-  if (darkModeBtn) {
-    darkModeBtn.addEventListener('click', () => {
-      const isDark = !document.body.classList.contains('light-mode');
-      document.body.classList.toggle('light-mode', isDark);
-      localStorage.setItem('darkMode', !isDark);
-      updateDarkModeIcon();
-      darkModeBtn.setAttribute('aria-pressed', !isDark);
-    });
-  }
-
-  // ==========================
-  // HELPER FUNCTIONS
-  // ==========================
-  function updateMuteIcon() {
+  function updateMuteUI(muted) {
     if (!muteBtn) return;
-    const isMuted = localStorage.getItem('isMuted') === 'true';
     const icon = muteBtn.querySelector('i');
     const text = muteBtn.querySelector('span');
-    if (icon) {
-      if (isMuted) {
-        icon.classList.remove('ph-speaker-simple-high');
-        icon.classList.add('ph-speaker-slash');
-      } else {
-        icon.classList.remove('ph-speaker-slash');
-        icon.classList.add('ph-speaker-simple-high');
-      }
-    }
-    if (text) {
-      text.textContent = isMuted ? 'Unmute' : 'Mute';
+
+    if (muted) {
+      if (icon) icon.className = 'ph ph-speaker-slash';
+      if (text) text.textContent = 'Unmute';
+      muteBtn.setAttribute('aria-pressed', 'true');
+    } else {
+      if (icon) icon.className = 'ph ph-speaker-simple-high';
+      if (text) text.textContent = 'Mute';
+      muteBtn.setAttribute('aria-pressed', 'false');
     }
   }
 
-  function updateDarkModeIcon() {
+  // 3. DARK MODE LOGIC
+  if (darkModeBtn) {
+    // Initial state (default to dark)
+    let isDarkMode = localStorage.getItem('darkMode') !== 'false';
+    updateDarkModeUI(isDarkMode);
+
+    darkModeBtn.addEventListener('click', () => {
+      isDarkMode = !isDarkMode;
+      localStorage.setItem('darkMode', isDarkMode);
+      updateDarkModeUI(isDarkMode);
+    });
+  }
+
+  function updateDarkModeUI(dark) {
     if (!darkModeBtn) return;
-    const isDark = !document.body.classList.contains('light-mode');
     const icon = darkModeBtn.querySelector('i');
     const text = darkModeBtn.querySelector('span');
-    if (icon) {
-      if (isDark) {
-        icon.classList.remove('ph-sun');
-        icon.classList.add('ph-moon');
-      } else {
-        icon.classList.remove('ph-moon');
-        icon.classList.add('ph-sun');
-      }
-    }
-    if (text) {
-      text.textContent = isDark ? 'Dark Mode' : 'Light Mode';
+
+    if (dark) {
+      document.body.classList.remove('light-mode');
+      if (icon) icon.className = 'ph ph-moon';
+      if (text) text.textContent = 'Dark Mode';
+      darkModeBtn.setAttribute('aria-pressed', 'true');
+    } else {
+      document.body.classList.add('light-mode');
+      if (icon) icon.className = 'ph ph-sun';
+      if (text) text.textContent = 'Light Mode';
+      darkModeBtn.setAttribute('aria-pressed', 'false');
     }
   }
 });
-
