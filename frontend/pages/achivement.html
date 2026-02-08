@@ -8,181 +8,218 @@
   <link rel="stylesheet" href="/css/main.css">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <style>
-    .medal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 1rem; }
+    .medal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1rem; }
     .ach-card { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 1rem; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
-    .ach-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: var(--primary-color); }
+    .ach-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--primary-color); }
     .badge { padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; }
     .bronze { background: #cd7f32; color: white; }
     .silver { background: #c0c0c0; color: #333; }
     .gold { background: #ffd700; color: #333; }
     .platinum { background: #e5e4e2; color: #333; }
     .diamond { background: #b9f2ff; color: #333; }
-    summary { list-style: none; display: flex; align-items: center; gap: 1rem; }
+    summary { list-style: none; display: flex; align-items: center; gap: 1rem; position: relative; }
     summary::-webkit-details-marker { display: none; }
     .meta { flex: 1; }
-    .name { font-weight: bold; color: var(--text-primary); }
-    .desc { font-size: 0.9rem; color: var(--text-secondary); }
-    .how { margin-top: 1rem; padding: 1rem; background: var(--bg-primary); border-radius: var(--radius-md); font-size: 0.85rem; color: var(--accent-color); }
+    .name { font-weight: bold; color: var(--text-primary); font-size: 1.1rem; }
+    .desc { font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.2rem; }
+    .how { margin-top: 1rem; padding: 1rem; background: var(--bg-primary); border-radius: var(--radius-md); font-size: 0.85rem; color: var(--accent-color); border-left: 3px solid var(--primary-color); }
+    .achievements-grid { display: grid; grid-template-columns: 1fr; gap: 0.5rem; }
+    @media (min-width: 768px) {
+        .achievements-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+    }
   </style>
 </head>
 <body>
   <header>
-    <div style="display: flex; align-items: center; justify-content: center; position: relative; max-width: 800px; margin: 0 auto;">
-        <a href="index.html" style="position: absolute; left: 1rem; color: var(--text-primary); text-decoration: none;"><i class="ph ph-arrow-left"></i></a>
-        <span>Achievements</span>
+    <div style="display: flex; align-items: center; justify-content: center; position: relative; max-width: 1000px; margin: 0 auto; width: 100%;">
+        <a href="index.html" style="position: absolute; left: 1rem; color: var(--text-primary); text-decoration: none; font-size: 1.2rem;"><i class="ph ph-arrow-left"></i></a>
+        <span style="font-weight: 800; font-size: 1.2rem; letter-spacing: 1px; text-transform: uppercase;">Achievements</span>
     </div>
   </header>
 
-  <main class="container" style="max-width: 900px; margin: 0 auto; padding: 2rem 1rem;">
+  <main class="container" style="max-width: 1000px; margin: 0 auto; padding: 2rem 1rem;">
     <section style="text-align: center; margin-bottom: 3rem;">
-        <h1 style="color: var(--text-primary);"><i class="ph ph-medal" style="color: var(--accent-color);"></i> Master the Leap</h1>
-        <p style="color: var(--text-secondary);">Stack streaks, hunt rare letters, and unlock your path to glory.</p>
+        <h1 style="color: var(--text-primary); font-size: 2.5rem; margin-bottom: 0.5rem;"><i class="ph ph-medal" style="color: var(--accent-color);"></i> Master the Leap</h1>
+        <p style="color: var(--text-secondary); font-size: 1.1rem; max-width: 600px; margin: 0 auto;">Stack streaks, hunt rare letters, and unlock your path to glory. Every medal and achievement is a step towards becoming a Word Wizard.</p>
     </section>
 
-    <section style="margin-bottom: 3rem;">
-        <h2 style="border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 1.5rem;"><i class="ph ph-trophy"></i> Medal Overview</h2>
+    <section style="margin-bottom: 4rem;">
+        <h2 style="border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 2rem; display: flex; align-items: center; gap: 0.75rem;"><i class="ph ph-trophy"></i> Medal Overview</h2>
         <div class="medal-grid">
-            <div class="ach-card">
-                <h3>Streak Medals</h3>
-                <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1rem;">Correct words in a row without mistakes.</p>
-                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
-                    <span class="badge bronze">Bronze x3</span>
-                    <span class="badge silver">Silver x5</span>
-                    <span class="badge gold">Gold x7</span>
-                    <span class="badge platinum">Platinum x10</span>
-                    <span class="badge diamond">Diamond x15</span>
+            <div class="ach-card" style="cursor: default; transform: none; box-shadow: none;">
+                <h3 style="margin-bottom: 0.5rem;">Streak Medals</h3>
+                <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.25rem;">Earned by playing correct words in a row without mistakes. High streaks grant score bonuses.</p>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
+                    <span class="badge bronze" title="3-streak — Bonus +1">Bronze x3</span>
+                    <span class="badge silver" title="5-streak — Bonus +3">Silver x5</span>
+                    <span class="badge gold" title="7-streak — Bonus +5">Gold x7</span>
+                    <span class="badge platinum" title="10-streak — Bonus +7">Platinum x10</span>
+                    <span class="badge diamond" title="15-streak — Bonus +10">Diamond x15</span>
                 </div>
             </div>
-            <div class="ach-card">
-                <h3>Rare Letters</h3>
-                <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1rem;">Use: q, x, u, z, v, w, y.</p>
-                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
-                    <span class="badge bronze">1 word</span>
-                    <span class="badge silver">5 words</span>
-                    <span class="badge gold">10 words</span>
+            <div class="ach-card" style="cursor: default; transform: none; box-shadow: none;">
+                <h3 style="margin-bottom: 0.5rem;">Rare Letters</h3>
+                <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Use letters: q, x, u, z, v, w, y.</p>
+                <p style="font-size: 0.8rem; color: var(--accent-color); margin-bottom: 1rem;">Bonus points for special words like "leap" or "letter".</p>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
+                    <span class="badge bronze">Bronze (1 word)</span>
+                    <span class="badge silver">Silver (5 words)</span>
+                    <span class="badge gold">Gold (10 words)</span>
+                </div>
+            </div>
+            <div class="ach-card" style="cursor: default; transform: none; box-shadow: none;">
+                <h3 style="margin-bottom: 0.5rem;">Long Words</h3>
+                <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.25rem;">Play long words to boost your score and medal progress (Length ≥ 12).</p>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
+                    <span class="badge bronze">Bronze (1 word)</span>
+                    <span class="badge silver">Silver (5 words)</span>
+                    <span class="badge gold">Gold (10 words)</span>
                 </div>
             </div>
         </div>
     </section>
 
     <section>
-        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">
-            <h2><i class="ph ph-target"></i> In-Game Challenges</h2>
-            <input id="search" type="search" placeholder="Search..." style="background: var(--bg-primary); border: 1px solid var(--border-color); color: white; padding: 0.4rem 1rem; border-radius: var(--radius-md);">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 2rem;">
+            <h2 style="display: flex; align-items: center; gap: 0.75rem;"><i class="ph ph-target"></i> In-Game Challenges</h2>
+            <div style="position: relative;">
+                <i class="ph ph-magnifying-glass" style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: var(--text-secondary);"></i>
+                <input id="search" type="search" placeholder="Search achievements..." style="background: var(--bg-primary); border: 1px solid var(--border-color); color: white; padding: 0.5rem 1rem 0.5rem 2.5rem; border-radius: var(--radius-md); width: 250px; outline: none; transition: border-color 0.2s;">
+            </div>
         </div>
 
-                <div id="achievementList">
-                        <details class="ach-card" data-text="double trouble consecutive letters aa letter coffee bottle">
-                            <summary>
-                                <i class="ph ph-copy" style="font-size: 1.5rem; color: var(--primary-color);"></i>
-                                <div class="meta">
-                                    <div class="name">Double Trouble</div>
-                                    <div class="desc">Use a word that has two consecutive identical letters.</div>
-                                </div>
-                                <i class="ph ph-caret-down"></i>
-                            </summary>
-                            <div class="how">Tip: Examples include "letter", "coffee", "bottle".</div>
-                        </details>
+        <div id="achievementList" class="achievements-grid">
+            <details class="ach-card" data-text="double trouble consecutive identical letters letter coffee bottle">
+                <summary>
+                    <i class="ph ph-copy" style="font-size: 1.75rem; color: var(--primary-color);"></i>
+                    <div class="meta">
+                        <div class="name">Double Trouble</div>
+                        <div class="desc">Use a word with two consecutive identical letters.</div>
+                    </div>
+                    <i class="ph ph-caret-down"></i>
+                </summary>
+                <div class="how">Tip: Examples include "letter", "coffee", "bottle", "supper".</div>
+            </details>
 
-                        <details class="ach-card" data-text="vowel master 4 vowels aeiou audio equation audience beautiful">
-                            <summary>
-                                <i class="ph ph-microphone-stage" style="font-size: 1.5rem; color: var(--primary-color);"></i>
-                                <div class="meta">
-                                    <div class="name">Vowel Master</div>
-                                    <div class="desc">Play a word with at least 4 vowels.</div>
-                                </div>
-                                <i class="ph ph-caret-down"></i>
-                            </summary>
-                            <div class="how">Look for long or vowel-heavy words like "equation", "audience".</div>
-                        </details>
+            <details class="ach-card" data-text="vowel master 4 vowels aeiou audio equation audience beautiful">
+                <summary>
+                    <i class="ph ph-microphone-stage" style="font-size: 1.75rem; color: var(--primary-color);"></i>
+                    <div class="meta">
+                        <div class="name">Vowel Master</div>
+                        <div class="desc">Play a word with at least 4 vowels.</div>
+                    </div>
+                    <i class="ph ph-caret-down"></i>
+                </summary>
+                <div class="how">Look for vowel-heavy words like "equation", "audience", "beautiful".</div>
+            </details>
 
-                        <details class="ach-card" data-text="consonant crusher 5 consonants strength transcript construct">
-                            <summary>
-                                <i class="ph ph-hammer" style="font-size: 1.5rem; color: var(--primary-color);"></i>
-                                <div class="meta">
-                                    <div class="name">Consonant Crusher</div>
-                                    <div class="desc">Play a word with 5 or more consonants.</div>
-                                </div>
-                                <i class="ph ph-caret-down"></i>
-                            </summary>
-                            <div class="how">Try dense words like "strength", "transcript", "construct".</div>
-                        </details>
+            <details class="ach-card" data-text="consonant crusher 5 consonants strength transcript construct">
+                <summary>
+                    <i class="ph ph-hammer" style="font-size: 1.75rem; color: var(--primary-color);"></i>
+                    <div class="meta">
+                        <div class="name">Consonant Crusher</div>
+                        <div class="desc">Play a word with 5 or more consonants.</div>
+                    </div>
+                    <i class="ph ph-caret-down"></i>
+                </summary>
+                <div class="how">Try dense words like "strength", "transcript", "construct".</div>
+            </details>
 
-                        <details class="ach-card" data-text="quick thinker timer 30 seconds streak fifteen 15 plays">
-                            <summary>
-                                <i class="ph ph-brain" style="font-size: 1.5rem; color: var(--primary-color);"></i>
-                                <div class="meta">
-                                    <div class="name">Quick Thinker</div>
-                                    <div class="desc">Play 15 words in a row without letting the timer drop below 30 seconds.</div>
-                                </div>
-                                <i class="ph ph-caret-down"></i>
-                            </summary>
-                            <div class="how">Keep a fast rhythm: submit quickly when it’s your turn to maintain ≥ 30s left.</div>
-                        </details>
+            <details class="ach-card" data-text="quick thinker 15 words row timer 30 seconds rhythm speed">
+                <summary>
+                    <i class="ph ph-brain" style="font-size: 1.75rem; color: var(--primary-color);"></i>
+                    <div class="meta">
+                        <div class="name">Quick Thinker</div>
+                        <div class="desc">Play 15 words in a row without letting the timer drop below 30s.</div>
+                    </div>
+                    <i class="ph ph-caret-down"></i>
+                </summary>
+                <div class="how">Keep the pace high! Submit as fast as you can to maintain the bonus.</div>
+            </details>
 
-                        <details class="ach-card" data-text="rebounder ai last letter longer word counter play repeat">
-                            <summary>
-                                <i class="ph ph-arrows-clockwise" style="font-size: 1.5rem; color: var(--primary-color);"></i>
-                                <div class="meta">
-                                    <div class="name">Rebounder</div>
-                                    <div class="desc">Play a word that starts with the last letter of the AI’s word and is longer.</div>
-                                </div>
-                                <i class="ph ph-caret-down"></i>
-                            </summary>
-                            <div class="how">Check the AI’s last word; respond with a longer word starting with its last letter.</div>
-                        </details>
+            <details class="ach-card" data-text="rebounder start last letter ai word longer counter">
+                <summary>
+                    <i class="ph ph-arrows-counter-clockwise" style="font-size: 1.75rem; color: var(--primary-color);"></i>
+                    <div class="meta">
+                        <div class="name">Rebounder</div>
+                        <div class="desc">Play a word that starts with the last letter of the AI's word and is longer.</div>
+                    </div>
+                    <i class="ph ph-caret-down"></i>
+                </summary>
+                <div class="how">Check the AI's last word; respond with a longer word starting with its last letter.</div>
+            </details>
 
-                        <details class="ach-card" data-text="silent but deadly no vowels y rhythm myth glyph crypt">
-                            <summary>
-                                <i class="ph ph-ghost" style="font-size: 1.5rem; color: var(--primary-color);"></i>
-                                <div class="meta">
-                                    <div class="name">Silent but Deadly</div>
-                                    <div class="desc">Use a word with no traditional vowels.</div>
-                                </div>
-                                <i class="ph ph-caret-down"></i>
-                            </summary>
-                            <div class="how">Think words like "rhythm", "myth", "crypt", "glyph".</div>
-                        </details>
+            <details class="ach-card" data-text="silent but deadly no traditional vowels y rhythm myth glyph crypt">
+                <summary>
+                    <i class="ph ph-speaker-slash" style="font-size: 1.75rem; color: var(--primary-color);"></i>
+                    <div class="meta">
+                        <div class="name">Silent but Deadly</div>
+                        <div class="desc">Use a word with no traditional vowels (A, E, I, O, U).</div>
+                    </div>
+                    <i class="ph ph-caret-down"></i>
+                </summary>
+                <div class="how">Think words like "rhythm", "myth", "crypt", "glyph".</div>
+            </details>
 
-                        <details class="ach-card" data-text="wildcard all five vowels a e i o u sequoia education aurelio">
-                            <summary>
-                                <i class="ph ph-magic-wand" style="font-size: 1.5rem; color: var(--primary-color);"></i>
-                                <div class="meta">
-                                    <div class="name">Wildcard</div>
-                                    <div class="desc">Use a word that contains all 5 vowels.</div>
-                                </div>
-                                <i class="ph ph-caret-down"></i>
-                            </summary>
-                            <div class="how">Examples: "sequoia", "education", "aurelio".</div>
-                        </details>
+            <details class="ach-card" data-text="wildcard all five vowels a e i o u sequoia education aurelio">
+                <summary>
+                    <i class="ph ph-playing-cards" style="font-size: 1.75rem; color: var(--primary-color);"></i>
+                    <div class="meta">
+                        <div class="name">Wildcard</div>
+                        <div class="desc">Use a word that contains all 5 vowels.</div>
+                    </div>
+                    <i class="ph ph-caret-down"></i>
+                </summary>
+                <div class="how">Examples: "sequoia", "education", "aurelio".</div>
+            </details>
 
-                        <details class="ach-card" data-text="letter jumper skip alphabet next letter jump">
-                            <summary>
-                                <i class="ph ph-arrow-right" style="font-size: 1.5rem; color: var(--primary-color);"></i>
-                                <div class="meta">
-                                    <div class="name">Letter Jumper</div>
-                                    <div class="desc">Play a word that skips the next alphabetical letter from the previous word’s end.</div>
-                                </div>
-                                <i class="ph ph-caret-down"></i>
-                            </summary>
-                            <div class="how">If the previous word ended with “c”, a valid jump start might be “e” (skips “d”).</div>
-                        </details>
+            <details class="ach-card" data-text="letter jumper skip next alphabetical letter jump gap">
+                <summary>
+                    <i class="ph ph-rabbit" style="font-size: 1.75rem; color: var(--primary-color);"></i>
+                    <div class="meta">
+                        <div class="name">Letter Jumper</div>
+                        <div class="desc">Play a word that skips the next alphabetical letter from the previous word's end.</div>
+                    </div>
+                    <i class="ph ph-caret-down"></i>
+                </summary>
+                <div class="how">If the previous word ended with "C", a valid jump start might be "E" (skipping "D").</div>
+            </details>
 
-                        <details class="ach-card" data-text="last second hero 10 seconds timer clutch save">
-                            <summary>
-                                <i class="ph ph-timer" style="font-size: 1.5rem; color: var(--primary-color);"></i>
-                                <div class="meta">
-                                    <div class="name">Last Second Hero</div>
-                                    <div class="desc">Still alive when only 10 seconds remain.</div>
-                                </div>
-                                <i class="ph ph-caret-down"></i>
-                            </summary>
-                            <div class="how">Survive with exactly 10 seconds left on your turn timer.</div>
-                        </details>
-                </div>
+            <details class="ach-card" data-text="last second hero 10 seconds timer clutch save survival">
+                <summary>
+                    <i class="ph ph-clock-afternoon" style="font-size: 1.75rem; color: var(--primary-color);"></i>
+                    <div class="meta">
+                        <div class="name">Last Second Hero</div>
+                        <div class="desc">Still alive when only 10 seconds remain on your turn.</div>
+                    </div>
+                    <i class="ph ph-caret-down"></i>
+                </summary>
+                <div class="how">Survive with exactly or less than 10 seconds left on your turn timer.</div>
+            </details>
+        </div>
+
+        <div style="margin-top: 3rem; padding: 1.5rem; background: var(--bg-secondary); border-radius: var(--radius-lg); border-left: 4px solid var(--accent-color);">
+            <p style="color: var(--text-secondary); font-size: 0.95rem; margin: 0;"><strong>Pro Tip:</strong> Matches track Max Streak, Long Words, Rare Letters, and total Achievements unlocked. Aim for a balanced profile to dominate the leaderboard!</p>
+        </div>
     </section>
   </main>
   
+  <footer style="text-align: center; padding: 3rem 1rem; color: var(--text-secondary); font-size: 0.9rem; border-top: 1px solid var(--border-color); margin-top: 4rem;">
+    Letter Leap &bull; Achievement System v2.0
+  </footer>
+
   <script src="/js/achivement.js"></script>
+  <script>
+    // Search focus effect
+    const searchInput = document.getElementById('search');
+    searchInput.addEventListener('focus', () => {
+        searchInput.style.borderColor = 'var(--primary-color)';
+        searchInput.style.backgroundColor = 'var(--bg-secondary)';
+    });
+    searchInput.addEventListener('blur', () => {
+        searchInput.style.borderColor = 'var(--border-color)';
+        searchInput.style.backgroundColor = 'var(--bg-primary)';
+    });
+  </script>
 </body>
 </html>
