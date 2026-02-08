@@ -3,18 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <title>Game Over - Letter-leap</title>
+  <link rel="stylesheet" href="/css/design-system.css">
   <link rel="stylesheet" href="/css/main.css">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
-<body>
-  <main class="end-game">
-    <h1>Game Over!</h1>
-    <div id="end-message"></div>
-    <button onclick="window.location.href='index.html'" class="button">Back to Home</button>
+<body style="display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: var(--bg-primary);">
+  <main class="modal" style="text-align: center; max-width: 400px; width: 90%;">
+    <i class="ph ph-flag-checkered" style="font-size: 4rem; color: var(--accent-color); margin-bottom: 1rem;"></i>
+    <h1 style="color: var(--text-primary); margin-bottom: 1rem;">Game Over!</h1>
+    <div id="end-message" style="color: var(--text-secondary); margin-bottom: 2rem;">Thanks for playing Letter-Leap. Your progress has been saved.</div>
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <button onclick="window.location.href='index.html'" class="button"><i class="ph ph-house"></i> Back to Home</button>
+        <button onclick="window.location.href='difficulty.html'" class="button" style="background: var(--bg-tertiary); color: var(--text-primary);"><i class="ph ph-arrows-clockwise"></i> Play Again</button>
+    </div>
   </main>
-  <script>
-    // Optionally, you can pass winner/reason via localStorage or query params for more details
-    // For now, just show a static message
-    document.getElementById('end-message').textContent = "Thanks for playing!";
-  </script>
 </body>
 </html>
