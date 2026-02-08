@@ -1,10 +1,18 @@
-<!DOCTYPE html> 
-<html lang="en">  
-<head> 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Multiplayer - Letter-leap</title>
+
+  <!-- Design System & Styles -->
+  <link rel="stylesheet" href="/css/design-system.css">
   <link rel="stylesheet" href="/css/main.css">
+
+  <!-- Phosphor Icons -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
   <style>
     .room-menu {
       display: flex;
@@ -14,19 +22,24 @@
     }
   </style>
 </head>
+
 <body>
   <header>
-    Multiplayer - Letter-leap
+    <div style="display: flex; align-items: center; justify-content: center; position: relative;">
+      <a href="index.html" style="position: absolute; left: 1rem; color: var(--text-primary); text-decoration: none;"><i
+          class="ph ph-arrow-left"></i></a>
+      Multiplayer - Letter-leap
+    </div>
   </header>
   <main>
     <section class="room-system" id="room-system">
       <div class="room-menu" id="room-menu">
-        <button id="menu-create-btn" class="button">Create Room</button>
-        <button id="menu-join-btn" class="button">Join Room</button>
+        <button id="menu-create-btn" class="button"><i class="ph ph-plus-circle"></i> Create Room</button>
+        <button id="menu-join-btn" class="button"><i class="ph ph-sign-in"></i> Join Room</button>
       </div>
       <div class="create-room" style="display:none;">
         <input type="text" id="create-room-name" placeholder="Room name">
-        <button id="create-room-btn" class="button">Create Room</button>
+        <button id="create-room-btn" class="button">Create</button>
         <label class="switch">
           <input type="checkbox" id="ai-toggle">
           <span class="slider"></span>
@@ -35,13 +48,13 @@
       </div>
       <div class="join-room" style="display:none;">
         <input type="text" id="join-room-name" placeholder="Room name">
-        <button id="join-room-btn" class="button">Join Room</button>
+        <button id="join-room-btn" class="button">Join</button>
       </div>
 
-            <!-- Player Count Display -->
-<div id="player-counter" class="player-counter" style="display:none;">
-  0 players in the room
-</div>
+      <!-- Player Count Display -->
+      <div id="player-counter" class="player-counter" style="display:none;">
+        0 players in the room
+      </div>
 
 
       <div class="choose-letter" id="choose-letter-section" style="display:none;">
@@ -60,10 +73,10 @@
 
     <section class="game-area" id="game-area" style="display:none;">
       <div id="room-name-display" class="room-name"></div>
-<!-- Dynamic Scoreboard -->
-<div class="scoreboard" id="scoreboard">
-  <!-- JS will inject player rows here -->
-</div>
+      <!-- Dynamic Scoreboard -->
+      <div class="scoreboard" id="scoreboard">
+        <!-- JS will inject player rows here -->
+      </div>
       <div class="timer">
         Time left: <span id="timer-value">15s</span>
       </div>
@@ -72,13 +85,13 @@
       <!-- Move last-words display here -->
       <div class="last-words" id="last-words-display">
         <span id="last-word-prev">none</span>
-        <span class="arrow">➡️</span>
+        <span class="arrow"><i class="ph ph-arrow-right"></i></span>
         <span id="last-word-current">none</span>
       </div>
 
       <div class="word-input-area">
         <input type="text" id="word-input" placeholder="Type your word..." autocomplete="off">
-        <button id="submit-word-btn" class="button">Submit</button>
+        <button id="submit-word-btn" class="button"><i class="ph ph-check"></i> Submit</button>
       </div>
       <div class="word-history">
         <h3>Word Chain History</h3>
@@ -93,26 +106,28 @@
       </div>
     </div>
     <div id="ai-indicator" class="ai-indicator" style="display:none;">
-      🤖 AI Opponent is playing in this room
-    </div> 
-    <button class="button" onclick="window.location.href='loading.html'">Home</button><p></p>
-    <button class="button" onclick="window.location.href='mm.html'">Back</button>
-    
+      <i class="ph ph-robot"></i> AI Opponent is playing in this room
+    </div>
+
+    <div style="text-align: center; margin-top: 1rem; display: flex; gap: 1rem; justify-content: center;">
+      <button class="button" onclick="window.location.href='index.html'"><i class="ph ph-house"></i> Home</button>
+    </div>
+
     <!--Audio-->
-<audio id="sound-click" src="/assets/sounds/click.mp3" preload="auto"></audio>
-<audio id="sound-correct" src="/assets/sounds/ding.mp3" preload="auto"></audio>
-<audio id="sound-wrong" src="/assets/sounds/buzz.mp3" preload="auto"></audio>
+    <audio id="sound-click" src="/assets/sounds/click.mp3" preload="auto"></audio>
+    <audio id="sound-correct" src="/assets/sounds/ding.mp3" preload="auto"></audio>
+    <audio id="sound-wrong" src="/assets/sounds/buzz.mp3" preload="auto"></audio>
 
 
   </main>
-  
+
   <footer>
     &copy; 2025 Letter-leap - Multiplayer.
   </footer>
   <script src="/socket.io/socket.io.js"></script>
   <script src="/js/main.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       var menu = document.getElementById('room-menu');
       var createForm = document.querySelector('.create-room');
       var joinForm = document.querySelector('.join-room');
@@ -122,7 +137,7 @@
       var menuCreate = document.getElementById('menu-create-btn');
       var menuJoin = document.getElementById('menu-join-btn');
       if (menuCreate) {
-        menuCreate.addEventListener('click', function() {
+        menuCreate.addEventListener('click', function () {
           if (menu) menu.style.display = 'none';
           if (createForm) createForm.style.display = 'flex';
           if (joinForm) joinForm.style.display = 'none';
@@ -131,7 +146,7 @@
         });
       }
       if (menuJoin) {
-        menuJoin.addEventListener('click', function() {
+        menuJoin.addEventListener('click', function () {
           if (menu) menu.style.display = 'none';
           if (joinForm) joinForm.style.display = 'flex';
           if (createForm) createForm.style.display = 'none';
@@ -141,12 +156,12 @@
       }
       var createBtn = document.getElementById('create-room-btn');
       var joinBtn = document.getElementById('join-room-btn');
-      if (createBtn) createBtn.addEventListener('click', function() {
+      if (createBtn) createBtn.addEventListener('click', function () {
         if (createForm) createForm.style.display = 'none';
         if (joinForm) joinForm.style.display = 'none';
         if (playerCounter) playerCounter.style.display = 'block';
       });
-      if (joinBtn) joinBtn.addEventListener('click', function() {
+      if (joinBtn) joinBtn.addEventListener('click', function () {
         if (createForm) createForm.style.display = 'none';
         if (joinForm) joinForm.style.display = 'none';
         if (playerCounter) playerCounter.style.display = 'block';
@@ -154,4 +169,5 @@
     });
   </script>
 </body>
+
 </html>
