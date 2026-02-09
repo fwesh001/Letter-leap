@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multiplayer - Letter-leap</title>
+
+  <!-- Design System & Styles -->
+  <link rel="stylesheet" href="/css/design-system.css">
+  <link rel="stylesheet" href="/css/main.css">
+
+  <!-- Phosphor Icons -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+  <style>
+    .room-menu {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-bottom: 0.5rem;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div style="display: flex; align-items: center; justify-content: center; position: relative;">
+      <a href="index.html" style="position: absolute; left: 1rem; color: var(--text-primary); text-decoration: none;"><i
+          class="ph ph-arrow-left"></i></a>
+      Multiplayer - Letter-leap
+      <button id="settingsToggleBtn" aria-label="Open Settings" style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);">
+        <i class="ph ph-gear"></i>
+      </button>
+    </div>
+  </header>
+  <main>
+    <section class="room-system" id="room-system">
+      <div class="room-menu" id="room-menu">
+        <button id="menu-create-btn" class="button"><i class="ph ph-plus-circle"></i> Create Room</button>
+        <button id="menu-join-btn" class="button"><i class="ph ph-sign-in"></i> Join Room</button>
+      </div>
+      <div class="create-room" style="display:none;">
+        <input type="text" id="create-room-name" placeholder="Room name">
+        <button id="create-room-btn" class="button">Create</button>
+        <label class="switch">
+          <input type="checkbox" id="ai-toggle">
+          <span class="slider"></span>
+        </label>
+        <span style="margin-left: 0.5rem;">AI Opponent</span>
+      </div>
+      <div class="join-room" style="display:none;">
+        <input type="text" id="join-room-name" placeholder="Room name">
+        <button id="join-room-btn" class="button">Join</button>
+      </div>
+
+      <!-- Player Count Display -->
+      <div id="player-counter" class="player-counter" style="display:none;">
+        0 players in the room
+      </div>
+
+
+      <div class="choose-letter" id="choose-letter-section" style="display:none;">
+        <label for="start-letter">Choose starting letter:</label>
+        <select id="start-letter">
+          <option value="">Random</option>
+          <!-- JS will fill A-Z -->
+        </select>
+        <button id="choose-letter-btn" class="button">Start Game</button>
+      </div>
+      <div id="waiting-message" class="waiting-message" style="display:none;">
+        <div class="spinner"></div>
+        Waiting for opponent to join...
+      </div>
+    </section>
+
+    <section class="game-area" id="game-area" style="display:none;">
+      <div id="room-name-display" class="room-name"></div>
+      <!-- Dynamic Scoreboard -->
+      <div class="scoreboard" id="scoreboard">
+        <!-- JS will inject player rows here -->
+      </div>
+      <div class="timer">
+        Time left: <span id="timer-value">15s</span>
+      </div>
+      <div id="next-letter-display" class="next-letter"></div>
+
+      <!-- Move last-words display here -->
+      <div class="last-words" id="last-words-display">
+        <span id="last-word-prev">none</span>
+        <span class="arrow"><i class="ph ph-arrow-right"></i></span>
+        <span id="last-word-current">none</span>
+      </div>
+
+      <div class="word-input-area">
+        <input type="text" id="word-input" placeholder="Type your word..." autocomplete="off">
+        <button id="submit-word-btn" class="button"><i class="ph ph-check"></i> Submit</button>
+      </div>
+      <div class="word-history">
+        <h3>Word Chain History</h3>
+        <ul id="word-chain-list"></ul>
+      </div>
+    </section>
+    <div id="modal-overlay" class="modal-overlay" style="display:none;">
+      <div class="modal">
+        <span id="modal-message"></span>
+        <input id="modal-input" style="display:none; margin-top:1rem;" class="modal-input" type="text" />
+        <button id="modal-close-btn" class="button">OK</button>
+      </div>
+    </div>
+    <div id="ai-indicator" class="ai-indicator" style="display:none;">
+      <i class="ph ph-robot"></i> AI Opponent is playing in this room
+    </div>
+
+    <div style="text-align: center; margin-top: 1rem; display: flex; gap: 1rem; justify-content: center;">
+      <button class="button" onclick="window.location.href='index.html'"><i class="ph ph-house"></i> Home</button>
+    </div>
+
+    <!--Audio-->
+    <audio id="sound-click" src="/assets/sounds/click.mp3" preload="auto"></audio>
+    <audio id="sound-correct" src="/assets/sounds/ding.mp3" preload="auto"></audio>
+    <audio id="sound-wrong" src="/assets/sounds/buzz.mp3" preload="auto"></audio>
+
+
+  </main>
+
+    <aside id="settingsSidebar" aria-label="Settings Menu">
+      <h2
+        style="color: var(--text-primary); margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+        Settings</h2>
+
+      <button id="muteBtn" class="settings-btn" aria-pressed="false">
+        <i class="ph ph-speaker-simple-high"></i> <span>Mute</span>
+      </button>
+      <button id="darkModeBtn" class="settings-btn" aria-pressed="false">
+        <i class="ph ph-moon"></i> <span>Dark Mode</span>
+      </button>
+
+      <div style="margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 1rem;"></div>
+
+      <button id="Howtoplay" class="settings-btn" onclick="window.location.href='HTP.html'">
+        <i class="ph ph-book-open"></i> <span>How to Play</span>
+      </button>
+      <button id="feedbackBtn" class="settings-btn" onclick="window.location.href='feedback.html'">
+        <i class="ph ph-pencil-simple"></i> <span>Feedback</span>
+      </button>
+      <button id="Tips" class="settings-btn" onclick="window.location.href='tips.html'">
+        <i class="ph ph-gift"></i> <span>Tips</span>
+      </button>
+    </aside>
+
+  <footer>
+    &copy; 2025 Letter-leap - Multiplayer.
+  </footer>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var menu = document.getElementById('room-menu');
+      var createForm = document.querySelector('.create-room');
+      var joinForm = document.querySelector('.join-room');
+      var playerCounter = document.getElementById('player-counter');
+      var chooseLetter = document.getElementById('choose-letter-section');
+      var waiting = document.getElementById('waiting-message');
+      var menuCreate = document.getElementById('menu-create-btn');
+      var menuJoin = document.getElementById('menu-join-btn');
+      if (menuCreate) {
+        menuCreate.addEventListener('click', function () {
+          if (menu) menu.style.display = 'none';
+          if (createForm) createForm.style.display = 'flex';
+          if (joinForm) joinForm.style.display = 'none';
+          if (chooseLetter) chooseLetter.style.display = 'none';
+          if (waiting) waiting.style.display = 'none';
+        });
+      }
+      if (menuJoin) {
+        menuJoin.addEventListener('click', function () {
+          if (menu) menu.style.display = 'none';
+          if (joinForm) joinForm.style.display = 'flex';
+          if (createForm) createForm.style.display = 'none';
+          if (chooseLetter) chooseLetter.style.display = 'none';
+          if (waiting) waiting.style.display = 'none';
+        });
+      }
+      var createBtn = document.getElementById('create-room-btn');
+      var joinBtn = document.getElementById('join-room-btn');
+      if (createBtn) createBtn.addEventListener('click', function () {
+        if (createForm) createForm.style.display = 'none';
+        if (joinForm) joinForm.style.display = 'none';
+        if (playerCounter) playerCounter.style.display = 'block';
+      });
+      if (joinBtn) joinBtn.addEventListener('click', function () {
+        if (createForm) createForm.style.display = 'none';
+        if (joinForm) joinForm.style.display = 'none';
+        if (playerCounter) playerCounter.style.display = 'block';
+      });
+    });
+  </script>
+  <script src="/js/script2.js"></script>
+</body>
+
+</html>

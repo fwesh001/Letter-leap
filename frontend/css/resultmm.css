@@ -1,0 +1,219 @@
+/* =========================
+   General Layout
+========================= */ 
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #121212;
+  color: #f1f1f1;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Players grid */
+.player-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  align-items: stretch;
+}
+.player-card {
+  background-color: #1e1e1e;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+.player-card h3 {
+  margin: 0 0 0.5rem 0;
+  color: #f9aa33;
+}
+.player-card ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.player-card li {
+  padding: 4px 0;
+  border-bottom: 1px solid #2a2a2a;
+}
+.player-card li:last-child {
+  border-bottom: none;
+}
+
+
+.card {
+  background-color: #1e1e1e;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+h1, h2, h3 {
+  color: #f9aa33;
+  margin-top: 0;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.highlight {
+  color: #4dd0e1;
+  font-weight: bold;
+}
+
+/* =========================
+   Badges & Achievements
+========================= */
+/* Badge Grid Layout */
+.badge-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+/* Individual Badge Card */
+.badge-card {
+  background: linear-gradient(145deg, #222, #2a2a2a);
+  border: 1px solid #444;
+  border-radius: 14px;
+  padding: 15px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.badge-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+}
+
+/* Badge Icon */
+.badge-card .icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+/* Badge Text */
+.badge-card .details {
+  display: flex;
+  flex-direction: column;
+}
+
+.badge-card .title {
+  font-weight: 600;
+  color: #4dd0e1;
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+}
+
+.badge-card .desc {
+  font-size: 0.85rem;
+  color: #ccc;
+}
+
+/* Legacy styles for backward compatibility */
+.badge-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+.badge {
+  background: #333;
+  padding: 10px 15px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  color: #fff;
+  border: 1px solid #4dd0e1;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.achievement-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 0.75rem;
+}
+
+.achievement-item i {
+  font-size: 1.2rem;
+  color: #ffd700;
+} 
+
+/* =========================
+   Buttons
+========================= */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.btn {
+  padding: 12px 20px;
+  background-color: #f9aa33;
+  color: #000;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #ffd54f;
+}
+
+/* =========================
+   Word Lists
+========================= */
+.word-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+.word-list li {
+  background-color: #2c2c2c;
+  padding: 8px 12px;
+  border-radius: 6px;
+  text-align: center;
+}
+
+/* =========================
+   Quotes, Roasts, and Style Feedback
+========================= */
+.quote, #funny-quote, #coach-quote, .coach-roast {
+  font-style: italic;
+  font-size: 1.05rem;
+  color: #e6e6e6;
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0));
+  border-left: 4px solid #4dd0e1;
+  padding: 10px 12px;
+  border-radius: 8px;
+}
+
+#funny-quotes .quote {
+  border-left-color: #f9aa33;
+}
+
+#coach-quote {
+  margin-top: 10px;
+  opacity: 0.95;
+}

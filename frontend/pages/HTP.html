@@ -1,0 +1,126 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Play - Letter-Leap</title>
+    <link rel="stylesheet" href="/css/design-system.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        .tab-buttons { display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .screenshot { max-width: 100%; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin: 1rem 0; }
+        .section { background: var(--bg-secondary); padding: 1.5rem; border-radius: var(--radius-lg); margin-bottom: 1rem; }
+        .step-num { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: var(--primary-color); color: white; border-radius: 50%; margin-right: 0.5rem; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <div style="display: flex; align-items: center; justify-content: center; position: relative; max-width: 800px; margin: 0 auto;">
+            <a href="index.html" style="position: absolute; left: 1rem; color: var(--text-primary); text-decoration: none;"><i class="ph ph-arrow-left"></i></a>
+            <span>How to Play</span>
+                        <button id="settingsToggleBtn" aria-label="Open Settings" style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);">
+                            <i class="ph ph-gear"></i>
+                        </button>
+        </div>
+    </header>
+
+    <main class="container" style="max-width: 800px; margin: 0 auto; padding: 2rem 1rem;">
+        <div class="tab-buttons">
+            <button id="tab-single" class="button active" onclick="showTab('single')"><i class="ph ph-user"></i> Single Player</button>
+            <button id="tab-multi" class="button" style="background: var(--bg-tertiary); color: var(--text-primary);" onclick="showTab('multi')"><i class="ph ph-users"></i> Multiplayer</button>
+        </div>
+
+        <div id="single-section" class="tab-content active">
+            <div class="section">
+                <h2><i class="ph ph-user"></i> Single Player</h2>
+                <p><span class="step-num">1</span> You will get a random starting letter.</p>
+                <img src="../assets/images/1.png" class="screenshot">
+                <p><span class="step-num">2</span> Type a valid word starting with that letter.</p>
+                <img src="../assets/images/2.png" class="screenshot">
+                <p><span class="step-num">3</span> The AI responds with the last letter  your turn again!</p>
+                <img src="../assets/images/3.png" class="screenshot">
+                <p><i class="ph ph-timer" style="color: var(--accent-color);"></i> <strong>Tip:</strong> +5 seconds for every correct word.</p>
+            </div>
+        </div>
+
+        <div id="multi-section" class="tab-content">
+            <div class="section">
+                <h2><i class="ph ph-users"></i> Multiplayer Mode</h2>
+                <p><span class="step-num">1</span> Create or join a room with your custom username.</p>
+                <img src="../assets/images/mm1.png" class="screenshot">
+                <p><span class="step-num">2</span> Room creator sets the starting letter  or let the game choose.</p>
+                <img src="../assets/images/mm2.png" class="screenshot">
+                <p><span class="step-num">3</span> Take turns sending words. First letter must match opponents last letter.</p>
+                <img src="../assets/images/mm3.png" class="screenshot">
+                <ul style="margin-top: 1rem; list-style: none; padding: 0;">
+                    <li><i class="ph ph-star" style="color: var(--accent-color);"></i> +1 point per word, bonus for streaks & rare letters.</li>
+                    <li><i class="ph ph-warning" style="color: var(--danger-color);"></i> -1 point after every 2 incorrect attempts.</li>
+                    <li><i class="ph ph-clock" style="color: var(--accent-color);"></i> Run out of time? You lose.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 2rem;">
+            <button class="button" onclick="window.location.href='index.html'">Start Playing</button>
+        </div>
+    </main>
+
+    <aside id="settingsSidebar" aria-label="Settings Menu">
+        <h2
+            style="color: var(--text-primary); margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+            Settings</h2>
+
+        <button id="muteBtn" class="settings-btn" aria-pressed="false">
+            <i class="ph ph-speaker-simple-high"></i> <span>Mute</span>
+        </button>
+        <button id="darkModeBtn" class="settings-btn" aria-pressed="false">
+            <i class="ph ph-moon"></i> <span>Dark Mode</span>
+        </button>
+
+        <div style="margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 1rem;"></div>
+
+        <button id="Howtoplay" class="settings-btn" onclick="window.location.href='HTP.html'">
+            <i class="ph ph-book-open"></i> <span>How to Play</span>
+        </button>
+        <button id="feedbackBtn" class="settings-btn" onclick="window.location.href='feedback.html'">
+            <i class="ph ph-pencil-simple"></i> <span>Feedback</span>
+        </button>
+        <button id="Tips" class="settings-btn" onclick="window.location.href='tips.html'">
+            <i class="ph ph-gift"></i> <span>Tips</span>
+        </button>
+    </aside>
+
+    <script>
+        function showTab(type) {
+            const singleBtn = document.getElementById('tab-single');
+            const multiBtn = document.getElementById('tab-multi');
+            const singleSec = document.getElementById('single-section');
+            const multiSec = document.getElementById('multi-section');
+
+            if (type === 'single') {
+                singleBtn.classList.add('active');
+                singleBtn.style.background = 'var(--primary-color)';
+                singleBtn.style.color = 'white';
+                multiBtn.classList.remove('active');
+                multiBtn.style.background = 'var(--bg-tertiary)';
+                multiBtn.style.color = 'var(--text-primary)';
+                singleSec.classList.add('active');
+                multiSec.classList.remove('active');
+            } else {
+                multiBtn.classList.add('active');
+                multiBtn.style.background = 'var(--primary-color)';
+                multiBtn.style.color = 'white';
+                singleBtn.classList.remove('active');
+                singleBtn.style.background = 'var(--bg-tertiary)';
+                singleBtn.style.color = 'var(--text-primary)';
+                multiSec.classList.add('active');
+                singleSec.classList.remove('active');
+            }
+        }
+    </script>
+    <script src="/js/script2.js"></script>
+</body>
+</html>

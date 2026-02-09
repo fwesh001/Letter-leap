@@ -1,0 +1,107 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Letter-Leap Multiplayer Results</title>
+  <link rel="stylesheet" href="/css/design-system.css">
+  <link rel="stylesheet" href="/css/resultmm.css">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+  <div class="container"> 
+    <header style="position: relative;">
+      <h1 class="logo">LETTER-<span>LEAP</span></h1>
+      <p class="subtitle">Your multiplayer game results are in!</p>
+      <button id="settingsToggleBtn" aria-label="Open Settings" style="position: absolute; right: 0; top: 0;">
+        <i class="ph ph-gear"></i>
+      </button>
+    </header>
+
+    <section id="game-summary" class="card">
+      <h2>Results</h2>
+      <p class="highlight" id="winner-announcement"><i class="ph ph-crown"></i> <strong>Winner</strong> wins! Reason: Match finished</p>
+    </section>
+
+    <section id="player-stats" class="card">
+      <h2><i class="ph ph-chart-pie"></i> Player Breakdown</h2>
+      <!-- Dynamic players grid (up to 6) injected by resultmm.js -->
+      <div id="players-container" class="player-columns"></div>
+      <!-- Legacy two-player layout (hidden until JS is updated) -->
+      <div class="player-columns legacy-two-player" style="display:none;">
+        <div class="player-card" id="player1">
+          <h3 id="player1-name">Player 1</h3>
+          <ul>
+            <li>Score: <span id="p1-score">0</span></li>
+            <li>Total Words: <span id="p1-total">0</span></li>
+            <li>Accuracy: <span id="p1-accuracy">0%</span></li>
+            <li>Longest Word: <span id="p1-longest">""</span></li>
+          </ul>
+        </div>
+
+        <div class="player-card" id="player2">
+          <h3 id="player2-name">Player 2</h3>
+          <ul>
+            <li>Score: <span id="p2-score">0</span></li>
+            <li>Total Words: <span id="p2-total">0</span></li>
+            <li>Accuracy: <span id="p2-accuracy">0%</span></li>
+            <li>Longest Word: <span id="p2-longest">""</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="match-stats" class="card">
+      <h2><i class="ph ph-link-simple"></i> Game Chain Recap</h2>
+      <ul id="word-chain-list"></ul>
+    </section>
+
+    <section id="funny-quotes" class="card">
+      <h2><i class="ph ph-chat-centered-text"></i> Game Commentary</h2>
+      <p class="quote" id="funny-quote">Results are coming in...</p>
+      <p class="coach-roast" id="coach-quote">Coach says: Loading feedback...</p>
+    </section>
+
+    <section id="multiplayer-badges" class="card">
+      <h2><i class="ph ph-medal"></i> Battle Achievements</h2>
+      <div id="badge-list" class="badge-grid">
+        <!-- JS will inject achievement cards here -->
+      </div>
+    </section>
+
+    <div class="action-buttons">
+      <button onclick="window.location.href='mm.html'" class="btn">Replay</button>
+      <button onclick="window.location.href='index.html'" class="btn">Home</button>
+      <button onclick="window.location.href='#'" class="btn">Share</button>
+    </div>
+  </div>
+
+    <aside id="settingsSidebar" aria-label="Settings Menu">
+      <h2
+        style="color: var(--text-primary); margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+        Settings</h2>
+
+      <button id="muteBtn" class="settings-btn" aria-pressed="false">
+        <i class="ph ph-speaker-simple-high"></i> <span>Mute</span>
+      </button>
+      <button id="darkModeBtn" class="settings-btn" aria-pressed="false">
+        <i class="ph ph-moon"></i> <span>Dark Mode</span>
+      </button>
+
+      <div style="margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 1rem;"></div>
+
+      <button id="Howtoplay" class="settings-btn" onclick="window.location.href='HTP.html'">
+        <i class="ph ph-book-open"></i> <span>How to Play</span>
+      </button>
+      <button id="feedbackBtn" class="settings-btn" onclick="window.location.href='feedback.html'">
+        <i class="ph ph-pencil-simple"></i> <span>Feedback</span>
+      </button>
+      <button id="Tips" class="settings-btn" onclick="window.location.href='tips.html'">
+        <i class="ph ph-gift"></i> <span>Tips</span>
+      </button>
+    </aside>
+
+  <script src="/js/resultmm.js"></script>
+  <script src="/js/script2.js"></script>
+</body>
+</html>

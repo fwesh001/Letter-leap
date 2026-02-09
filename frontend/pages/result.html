@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Results - Letter-Leap</title>
+  <link rel="stylesheet" href="/css/design-system.css">
+  <link rel="stylesheet" href="/css/main.css">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+  <header>
+    <div style="display: flex; align-items: center; justify-content: center; position: relative; max-width: 800px; margin: 0 auto;">
+        <a href="index.html" style="position: absolute; left: 1rem; color: var(--text-primary); text-decoration: none;"><i class="ph ph-house"></i></a>
+        <span>Game Results</span>
+                <button id="settingsToggleBtn" aria-label="Open Settings" style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);">
+                    <i class="ph ph-gear"></i>
+                </button>
+    </div>
+  </header>
+
+  <main class="container" style="max-width: 800px; margin: 0 auto; padding: 2rem 1rem;">
+    <section style="text-align: center; margin-bottom: 2rem;">
+        <div id="game-over-quote" style="background: var(--bg-secondary); padding: 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color);">
+            <i class="ph ph-skull" style="font-size: 3rem; color: var(--danger-color); margin-bottom: 1rem;"></i>
+            <h2 id="quote-text" style="font-style: italic; color: var(--text-primary);">"You didnt lose... you just prematurely celebrated."</h2>
+        </div>
+    </section>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+        <section class="card" style="background: var(--bg-secondary); padding: 1.5rem; border-radius: var(--radius-lg);">
+            <h3><i class="ph ph-chart-bar" style="color: var(--accent-color);"></i> Performance</h3>
+            <ul style="list-style: none; padding: 0; margin-top: 1rem;">
+                <li style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;"><span>Words Attempted</span> <span id="total-attempts" class="highlight">24</span></li>
+                <li style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;"><span>Time Spent</span> <span id="time-spent" class="highlight">2:45</span></li>
+                <li style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;"><span>Accuracy</span> <span id="accuracy" class="highlight">79%</span></li>
+                <li style="display: flex; justify-content: space-between;"><span>Longest Word</span> <span id="longest-word" class="highlight">"Extraordinary"</span></li>
+            </ul>
+        </section>
+
+        <section class="card" style="background: var(--bg-secondary); padding: 1.5rem; border-radius: var(--radius-lg);">
+            <h3><i class="ph ph-brain" style="color: var(--accent-color);"></i> Play Style</h3>
+            <p id="style-description" style="font-weight: bold; color: var(--primary-color); margin-top: 1rem;">The Speedy Typo Tornado</p>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.5rem;">You typed like your keyboard was on fire! Speed was your friend, but accuracy took a vacation.</p>
+        </section>
+    </div>
+
+    <section style="margin-top: 2rem; background: var(--bg-secondary); padding: 1.5rem; border-radius: var(--radius-lg);">
+        <h3><i class="ph ph-medal" style="color: var(--accent-color);"></i> Achievements Unlocked</h3>
+        <div id="badge-container" style="display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1rem;">
+            <span class="button" style="padding: 0.5rem 1rem; font-size: 0.8rem; background: var(--bg-primary);"><i class="ph ph-magic-wand"></i> Word Wizard</span>
+            <span class="button" style="padding: 0.5rem 1rem; font-size: 0.8rem; background: var(--bg-primary);"><i class="ph ph-keyboard"></i> Keyboard Warrior</span>
+        </div>
+    </section>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 3rem;">
+        <button class="button" onclick="window.location.href='difficulty.html'"><i class="ph ph-arrows-clockwise"></i> Play Again</button>
+        <button class="button" style="background: var(--bg-tertiary); color: var(--text-primary);" onclick="window.location.href='index.html'"><i class="ph ph-house"></i> Back to Home</button>
+    </div>
+  </main>
+
+  <aside id="settingsSidebar" aria-label="Settings Menu">
+      <h2
+          style="color: var(--text-primary); margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+          Settings</h2>
+
+      <button id="muteBtn" class="settings-btn" aria-pressed="false">
+          <i class="ph ph-speaker-simple-high"></i> <span>Mute</span>
+      </button>
+      <button id="darkModeBtn" class="settings-btn" aria-pressed="false">
+          <i class="ph ph-moon"></i> <span>Dark Mode</span>
+      </button>
+
+      <div style="margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 1rem;"></div>
+
+      <button id="Howtoplay" class="settings-btn" onclick="window.location.href='HTP.html'">
+          <i class="ph ph-book-open"></i> <span>How to Play</span>
+      </button>
+      <button id="feedbackBtn" class="settings-btn" onclick="window.location.href='feedback.html'">
+          <i class="ph ph-pencil-simple"></i> <span>Feedback</span>
+      </button>
+      <button id="Tips" class="settings-btn" onclick="window.location.href='tips.html'">
+          <i class="ph ph-gift"></i> <span>Tips</span>
+      </button>
+  </aside>
+  
+    <script src="/js/result.js"></script>
+    <script src="/js/script2.js"></script>
+</body>
+</html>

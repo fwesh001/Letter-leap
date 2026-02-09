@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Single Player (Normal) - Letter-Leap</title>
+  <link rel="stylesheet" href="/css/design-system.css">
+  <link rel="stylesheet" href="/css/main.css">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+  <header>
+    <div style="display: flex; align-items: center; justify-content: center; position: relative; max-width: 800px; margin: 0 auto;">
+        <a href="difficulty.html" style="position: absolute; left: 1rem; color: var(--text-primary); text-decoration: none;"><i class="ph ph-arrow-left"></i></a>
+        <span>Normal Mode</span>
+    </div>
+  </header>
+  <main>
+    <div class="game-container">
+        <div id="prompt" style="text-align: center; margin-bottom: 1.5rem;">
+            <span style="color: var(--text-secondary); font-size: var(--font-size-lg);">Starting Letter</span>
+            <div class="lettercolor" style="font-size: 4rem; color: var(--accent-color); font-weight: 800; line-height: 1;"><span id="letter">A</span></div>
+        </div>
+        <div id="thinking-indicator" style="display: none; text-align: center; color: var(--accent-color); margin-bottom: 1rem;">
+            <i class="ph ph-robot"></i> Thinking<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; background: var(--bg-primary); padding: 1rem; border-radius: var(--radius-md);">
+            <div id="timer" style="color: var(--accent-color); font-weight: bold; display: flex; align-items: center; gap: 0.5rem;"><i class="ph ph-timer"></i> <span id="timer-text">60s</span></div>
+            <div style="font-weight: bold; color: var(--text-primary); display: flex; align-items: center; gap: 0.5rem;"><i class="ph ph-trophy" style="color: var(--accent-color);"></i> Score: <span id="score">0</span></div>
+        </div>
+        <div id="last-words" style="margin-bottom: 1.5rem; text-align: center; min-height: 1.5rem;"></div>
+        <div id="popup-message" class="popup" style="margin-bottom: 1rem;"></div>
+        <div class="word-input-area" style="margin-bottom: 1.5rem;"><input type="text" id="word-input" autocomplete="off" placeholder="Type word here..." style="width: 100%;" /></div>
+        <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem;">
+            <button id="submit-btn" class="button">Submit</button>
+            <button id="hint-btn" class="button" style="background: var(--bg-tertiary); color: var(--text-primary);">Hint</button>
+        </div>
+        <div class="word-history"><h3>Word Chain <i class="ph ph-link"></i></h3><ul id="word-chain"></ul></div>
+        <div style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: center;">
+            <button id="restart-btn" class="button">Restart</button>
+            <a href="index.html" class="button" style="text-decoration: none; background: var(--bg-tertiary); color: var(--text-primary);">Home</a>
+        </div>
+    </div>
+  </main>
+  <div id="game-over-screen" class="modal-overlay hidden"><div class="modal"><h3>Game Over</h3><div style="background: var(--bg-primary); padding: 1.5rem; border-radius: var(--radius-lg); margin-bottom: 1.5rem;"><p>Score: <span id="final-score"></span></p></div><button onclick="startGame()" class="button">Play Again</button></div></div>
+  <script src="/js/sm-normal.js"></script>
+  <script src="/js/script2.js"></script>
+</body>
+</html>

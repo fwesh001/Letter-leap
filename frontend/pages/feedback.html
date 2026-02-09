@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback - Letter-Leap</title>
+    <link rel="stylesheet" href="/css/design-system.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        .form-group { margin-bottom: 1.5rem; text-align: left; }
+        .form-group label { display: block; margin-bottom: 0.5rem; color: var(--text-secondary); }
+        .form-group input, .form-group textarea { width: 100%; padding: 0.75rem; background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: var(--radius-md); color: var(--text-primary); transition: border-color 0.2s; }
+        .form-group input:focus { border-color: var(--primary-color); outline: none; }
+    </style>
+</head>
+<body>
+    <header>
+        <div style="display: flex; align-items: center; justify-content: center; position: relative; max-width: 800px; margin: 0 auto;">
+            <a href="index.html" style="position: absolute; left: 1rem; color: var(--text-primary); text-decoration: none;"><i class="ph ph-arrow-left"></i></a>
+            <span>Feedback</span>
+                        <button id="settingsToggleBtn" aria-label="Open Settings" style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);">
+                            <i class="ph ph-gear"></i>
+                        </button>
+        </div>
+    </header>
+
+    <main class="container" style="max-width: 600px; margin: 0 auto; padding: 2rem 1rem;">
+        <div style="background: var(--bg-secondary); padding: 2rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-md);">
+            <h1 style="text-align: center; margin-bottom: 1rem;"><i class="ph ph-pencil-simple" style="color: var(--accent-color);"></i> We value your feedback</h1>
+            <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">Help us improve Letter-Leap by sharing your thoughts.</p>
+            
+            <form action="mailto:zabdielfwesh001@gmail.com" method="post" enctype="text/plain">
+                <div class="form-group">
+                    <label for="Name">Full Name</label>
+                    <input type="text" name="Name" id="Name" placeholder="Your Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" name="email" id="email" placeholder="email@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="Subject">Subject</label>
+                    <input type="text" name="Subject" id="Subject" placeholder="What is this about?" required>
+                </div>
+                <div class="form-group">
+                    <label for="Message">Message</label>
+                    <textarea name="Message" id="Message" rows="4" placeholder="How can we help?" required style="width:100%; border-radius: var(--radius-md); background: var(--bg-primary); color: white; border: 1px solid var(--border-color);"></textarea>
+                </div>
+                
+                <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
+                    <button type="submit" class="button" style="width: 100%;"><i class="ph ph-paper-plane-tilt"></i> Send Feedback</button>
+                    <button type="button" class="button" style="background: var(--bg-tertiary); color: var(--text-primary); width: 100%;" onclick="window.location.href='index.html'"><i class="ph ph-house"></i> Home</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <aside id="settingsSidebar" aria-label="Settings Menu">
+        <h2
+            style="color: var(--text-primary); margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+            Settings</h2>
+
+        <button id="muteBtn" class="settings-btn" aria-pressed="false">
+            <i class="ph ph-speaker-simple-high"></i> <span>Mute</span>
+        </button>
+        <button id="darkModeBtn" class="settings-btn" aria-pressed="false">
+            <i class="ph ph-moon"></i> <span>Dark Mode</span>
+        </button>
+
+        <div style="margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 1rem;"></div>
+
+        <button id="Howtoplay" class="settings-btn" onclick="window.location.href='HTP.html'">
+            <i class="ph ph-book-open"></i> <span>How to Play</span>
+        </button>
+        <button id="feedbackBtn" class="settings-btn" onclick="window.location.href='feedback.html'">
+            <i class="ph ph-pencil-simple"></i> <span>Feedback</span>
+        </button>
+        <button id="Tips" class="settings-btn" onclick="window.location.href='tips.html'">
+            <i class="ph ph-gift"></i> <span>Tips</span>
+        </button>
+    </aside>
+    <script src="/js/script2.js"></script>
+</body>
+</html>

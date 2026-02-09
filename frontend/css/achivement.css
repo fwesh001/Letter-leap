@@ -1,0 +1,99 @@
+/* Letter Leap — Achievements & Medals */
+:root{
+  --bg:#0b0f17;
+  --surface:#121826;
+  --surface-2:#0f1624;
+  --text:#e6edf7;
+  --muted:#9aa3b2;
+  --accent:#6aa2ff;
+  --green:#2ecc71;
+  --danger:#ff6b6b;
+  --bronze:#cd7f32;
+  --silver:#bfc7d5;
+  --gold:#ffd166;
+  --platinum:#a5f3fc;
+  --diamond:#9b8cff;
+  --card-shadow: 0 10px 30px rgba(0,0,0,.35);
+  --radius:14px;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  background:linear-gradient(180deg,var(--surface-2),var(--bg));
+  color:var(--text);
+}
+.topbar{
+  position:sticky;top:0;z-index:10;
+  display:flex;align-items:center;gap:12px;
+  padding:16px 20px;backdrop-filter: blur(8px);
+  background:linear-gradient(180deg,rgba(10,14,24,.95),rgba(10,14,24,.6));
+  border-bottom:1px solid rgba(255,255,255,.05);
+}
+.topbar h1{font-size:20px;margin:0;font-weight:800;letter-spacing:.3px}
+.back-btn{
+  appearance:none;border:0;background:#1a2134;color:var(--text);
+  padding:8px 12px;border-radius:10px;cursor:pointer;
+  transition:transform .15s ease, background .2s ease; font-weight:600
+}
+.back-btn:hover{transform:translateY(-1px);background:#1f2740}
+
+.container{max-width:1100px;margin:28px auto;padding:0 20px}
+.intro{margin-bottom:24px;color:var(--muted)}
+.section-title{font-size:18px;margin:12px 0 16px 0;letter-spacing:.2px}
+
+.medal-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px
+}
+.card{
+  background:linear-gradient(180deg,var(--surface),#0f1624);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:var(--radius);
+  padding:16px;box-shadow:var(--card-shadow);
+}
+.card h3{margin:0 0 8px 0}
+.card .hint{font-size:13px;color:var(--muted);margin:8px 0 10px 0}
+.tiers{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.tiers li{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.03);padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,.04)}
+
+.badge{display:inline-flex;align-items:center;gap:8px;padding:4px 10px;border-radius:999px;color:#0c1220;font-weight:800;font-size:12px}
+.badge.bronze{background:var(--bronze);}
+.badge.silver{background:var(--silver)}
+.badge.gold{background:var(--gold)}
+.badge.platinum{background:var(--platinum)}
+.badge.diamond{background:var(--diamond)}
+
+.achievements{margin-top:28px}
+.section-header{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.search{
+  width:260px;max-width:55vw; padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.08);
+  background:#0f1524;color:var(--text);outline:none
+}
+.search:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(106,162,255,.1)}
+
+.achievements-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:16px
+}
+.ach-card{
+  background:linear-gradient(180deg,var(--surface),#0f1624);border:1px solid rgba(255,255,255,.06);
+  border-radius:var(--radius);box-shadow:var(--card-shadow);
+}
+.ach-card>summary{
+  list-style:none;display:flex;align-items:center;gap:12px;cursor:pointer;padding:14px 16px
+}
+.ach-card>summary::-webkit-details-marker{display:none}
+.ach-card .emoji{font-size:20px}
+.ach-card .meta{display:flex;flex-direction:column}
+.ach-card .name{font-weight:800}
+.ach-card .desc{color:var(--muted);font-size:13px}
+.ach-card .how{padding:0 16px 16px 48px;color:#c6d1e8}
+
+.notes{margin-top:14px;color:var(--muted);font-size:13px}
+.footer{margin:36px 0;color:var(--muted);text-align:center}
+
+@media (max-width:600px){
+  .topbar h1{font-size:18px}
+  .search{width:100%}
+  .section-header{flex-direction:column;align-items:stretch}
+}

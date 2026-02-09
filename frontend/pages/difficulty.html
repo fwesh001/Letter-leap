@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Difficulty - Letter-Leap</title>
+
+    <!-- Design System & Styles -->
+    <link rel="stylesheet" href="/css/design-system.css">
+    <link rel="stylesheet" href="/css/main.css">
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z424QVM52M"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-Z424QVM52M');
+    </script>
+</head>
+
+<body>
+    <!-- =========================
+         Header Section
+    ========================== -->
+    <header>
+        <div
+            style="display: flex; justify-content: space-between; align-items: center; max-width: 800px; margin: 0 auto; padding: 0 1rem;">
+            <a href="index.html"
+                style="text-decoration: none; color: var(--text-primary); font-weight: bold; font-size: 1.2rem; display: flex; align-items: center; gap: 0.5rem;">
+                <i class="ph ph-arrow-left"></i> Letter-Leap!
+            </a>
+
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <a href="HTP.html" class="button"
+                    style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none;">
+                    <i class="ph ph-book-open"></i> How to Play
+                </a>
+                <button id="settingsToggleBtn" aria-label="Open Settings">
+                    <i class="ph ph-gear"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- =========================
+         Main Content Section
+    ========================== -->
+    <main>
+        <h1 style="text-align: center; color: var(--text-primary); margin-bottom: 2rem;">Choose a Level</h1>
+        <div class="game-container">
+            <!-- Easy Level -->
+            <div class="level mode-card" id="easyLevel" style="border-color: var(--success-color); cursor:pointer;">
+                <i class="ph ph-smiley mode-icon" style="color: var(--success-color);"></i>
+                <span class="mode-title" style="color: var(--success-color);">Easy</span>
+            </div>
+            <!-- Normal Level -->
+            <div class="level mode-card" id="normalLevel" style="border-color: var(--accent-color); cursor:pointer;">
+                <i class="ph ph-meh mode-icon" style="color: var(--accent-color);"></i>
+                <span class="mode-title" style="color: var(--accent-color);">Normal</span>
+            </div>
+            <!-- Hard Level -->
+            <div class="level mode-card" id="hardLevel" style="border-color: var(--danger-color); cursor:pointer;">
+                <i class="ph ph-skull mode-icon" style="color: var(--danger-color);"></i>
+                <span class="mode-title" style="color: var(--danger-color);">Hard</span>
+            </div>
+        </div>
+    </main>
+
+    <!-- =========================
+         Sidebar Settings Menu
+    ========================== -->
+    <aside id="settingsSidebar" aria-label="Settings Menu">
+        <h2
+            style="color: var(--text-primary); margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+            Settings</h2>
+
+        <button id="muteBtn" class="settings-btn" aria-pressed="false">
+            <i class="ph ph-speaker-simple-high"></i> <span>Mute</span>
+        </button>
+        <button id="darkModeBtn" class="settings-btn" aria-pressed="false">
+            <i class="ph ph-moon"></i> <span>Dark Mode</span>
+        </button>
+
+        <div style="margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 1rem;"></div>
+
+        <button id="Howtoplay" class="settings-btn" onclick="window.location.href='HTP.html'">
+            <i class="ph ph-book-open"></i> <span>How to Play</span>
+        </button>
+        <button id="feedbackBtn" class="settings-btn" onclick="window.location.href='feedback.html'">
+            <i class="ph ph-pencil-simple"></i> <span>Feedback</span>
+        </button>
+        <button id="Tips" class="settings-btn" onclick="window.location.href='tips.html'">
+            <i class="ph ph-gift"></i> <span>Tips</span>
+        </button>
+    </aside>
+
+    <!-- =========================
+         Level Info Popup
+    ========================== -->
+    <div id="levelInfoPopup" class="popup-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="popupTitle"
+        aria-describedby="popupDesc">
+        <div class="popup-box modal">
+            <button id="closePopupBtn" class="close-btn" aria-label="Close Popup"
+                style="position: absolute; right: 1rem; top: 1rem; color: var(--text-secondary);"><i
+                    class="ph ph-x"></i></button>
+            <header class="popup-header">
+                <h2 id="popupTitle" style="color: var(--primary-color);">Level Selection</h2>
+            </header>
+            <section class="popup-info" id="popupDesc" style="text-align: left; margin: 1rem 0;">
+                <!-- Content injected via JS -->
+                <p>Select a level to see details.</p>
+            </section>
+            <button id="startLevelBtn" class="button start-btn" style="width: 100%;">Play</button>
+        </div>
+    </div>
+
+    <!-- =========================
+         Footer Section
+    ========================== -->
+    <footer>
+        <p>© 2025 Letter-Leap. All rights reserved.</p>
+        <p>Made with 💙 by zabdiel.</p>
+    </footer>
+
+    <!-- =========================
+         Scripts
+    ========================== -->
+    <script src="/js/difficulty.js"></script>
+    <script src="/js/script2.js"></script>
+</body>
+
+</html>

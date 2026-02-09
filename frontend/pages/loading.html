@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Loading - Letter-Leap</title>
+  <link rel="stylesheet" href="/css/design-system.css">
+  <link rel="stylesheet" href="/css/main.css">
+  <style>
+    body, html { margin: 0; padding: 0; height: 100vh; width: 100vw; background: var(--bg-primary); display: flex; justify-content: center; align-items: center; overflow: hidden; }
+    #letter-leap-loader { font-size: clamp(2.5rem, 10vw, 6rem); font-weight: 800; display: flex; gap: 0.1em; color: var(--text-primary); pointer-events: none; }
+    .letter { position: relative; display: inline-block; transform-origin: bottom center; }
+    .letter.jump { animation: jump 0.6s ease-out forwards; color: var(--primary-color); text-shadow: 0 0 20px var(--primary-color); }
+    @keyframes jump { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-30%); } }
+  </style>
+</head>
+<body>
+  <div id="letter-leap-loader" aria-label="Loading LETTER-LEAP">
+    <span class="letter">L</span><span class="letter">E</span><span class="letter">A</span><span class="letter">P</span>
+  </div>
+  <script>
+    const letters = document.querySelectorAll('.letter');
+    let index = 0;
+    function animate() {
+      letters[index].classList.add('jump');
+      setTimeout(() => letters[index].classList.remove('jump'), 600);
+      index = (index + 1) % letters.length;
+    }
+    setInterval(animate, 200);
+    setTimeout(() => { window.location.href = "index.html"; }, 1500);
+  </script>
+  <script src="/js/script2.js"></script>
+</body>
+</html>

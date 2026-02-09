@@ -1,0 +1,211 @@
+/* ===========================
+   Base Styles
+   =========================== */
+body {
+  margin: 0;
+  background: linear-gradient(120deg, #1e3c72, #2a5298);
+  font-family: 'Nunito', sans-serif;
+  color: #a0e9ff;
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+  min-height: 100vh;
+  user-select: text;
+}
+
+/* ===========================
+   Word List Layout
+   =========================== */
+.word-list-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px 24px;
+  justify-content: center;
+  margin: 20px auto;
+  max-width: 1200px;
+  width: 100%;
+  overflow-x: auto;
+  padding: 10px;
+}
+
+/* ===========================
+   Column Styles
+   =========================== */
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 90px;
+  margin: 16px 4px;
+  flex: 1 1 90px;
+  max-width: 120px;
+}
+
+/* ===========================
+   Letter Header
+   =========================== */
+.letter-header {
+  font-weight: 800;
+  font-size: 2rem;
+  margin-bottom: 12px;
+  color: #fff;
+  text-shadow: 0 0 10px #0ff;
+  user-select: none;
+}
+
+/* ===========================
+   Word Styles
+   =========================== */
+.word {
+  font-size: 1.4rem;
+  color: #a0e9ff;
+  cursor: pointer;
+  text-shadow:
+    0 0 5px #0ff,
+    0 0 10px #0ff;
+  transition: text-shadow 0.3s ease;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.word:hover {
+  text-shadow:
+    0 0 15px #7afcff,
+    0 0 25px #0ff,
+    0 0 35px #0ff;
+  color: #fff;
+}
+
+/* ===========================
+   (Unused) Old Word List Container
+   =========================== */
+#wordListContainer {
+  /* display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, auto);
+  gap: 40px 60px; */
+  max-width: 100vw;
+  padding: 20px;
+  overflow: hidden; /* no scroll */
+}
+
+/* ===========================
+   Column Reset (Override)
+   =========================== */
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  padding: 0;
+  border: none;
+}
+
+/* ===========================
+   Home Button Styles
+   =========================== */
+.home-btn {
+  display: inline-block;
+  padding: 10px 28px;
+  background: linear-gradient(90deg, #00c6ff, #0072ff);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 30px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 16px rgba(0, 255, 255, 0.2);
+  margin: 24px 0 0 24px;
+  transition: background 0.3s, box-shadow 0.3s, color 0.2s;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.home-btn:hover,
+.home-btn:focus {
+  background: linear-gradient(90deg, #0072ff, #00c6ff);
+  color: #0ff;
+  box-shadow: 0 6px 24px #0ff88a44;
+}
+
+/* ===========================
+   Refresh Button Styles
+   =========================== */
+.refresh-btn {
+  display: inline-block;
+  padding: 10px 28px;
+  background: linear-gradient(90deg, #fafd6b, #eeff00);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 30px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 16px rgba(0, 255, 255, 0.2);
+  margin: 24px 0 0 24px;
+  transition: background 0.3s, box-shadow 0.3s, color 0.2s;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+.refresh-btn:hover,
+.refresh-btn:focus {
+  background: linear-gradient(90deg, #eeff00, #fafd6b);
+  color: #fdfee3;
+  box-shadow: 0 6px 24px #0ff88a44;
+}
+
+/* ===========================
+   Responsive Adjustments
+   =========================== */
+@media (max-width: 900px) {
+  .word-list-container {
+    gap: 24px 12px;
+    max-width: 100vw;
+    padding: 8px;
+  }
+  .column {
+    min-width: 70px;
+    max-width: 90px;
+    margin: 8px 2px;
+    gap: 8px;
+  }
+  .letter-header {
+    font-size: 1.2rem;
+  }
+  .word {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .word-list-container {
+    flex-wrap: wrap;
+    gap: 12px 4px;
+    padding: 4px;
+  }
+  .column {
+    min-width: 48px;
+    max-width: 60px;
+    margin: 4px 1px;
+    gap: 4px;
+  }
+  .letter-header {
+    font-size: 1rem;
+  }
+  .word {
+    font-size: 0.85rem;
+  }
+  .home-btn {
+    font-size: 1rem;
+    padding: 8px 16px;
+    margin: 12px 0 0 8px;
+  }
+}
+
