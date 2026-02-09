@@ -51,6 +51,9 @@
   --shadow-sm: 0 2px 4px var(--shadow-color);
   --shadow-md: 0 4px 8px var(--shadow-color);
   --shadow-lg: 0 8px 16px var(--shadow-color);
+
+  /* --- Global UI Scale --- */
+  --ui-scale: 1;
 }
 
 /* --- Light Mode Overrides --- */
@@ -69,4 +72,12 @@ body.light-mode {
   
   --border-color: #ddd;
   --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+body.is-small-ui {
+  transform: scale(var(--ui-scale));
+  transform-origin: top center;
+  width: calc(100% / var(--ui-scale));
+  min-height: calc(100vh / var(--ui-scale));
+  overflow-x: hidden;
 }
