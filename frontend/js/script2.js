@@ -83,4 +83,29 @@ document.addEventListener('DOMContentLoaded', () => {
       darkModeBtn.setAttribute('aria-pressed', 'false');
     }
   }
+
+  // 4. SMALL-SCREEN UI SCALE
+  const SMALL_SCREEN_MAX = 412;
+  let resizeRaf = null;
+
+  function applySmallScreenScale() {
+    if (!document.body) return;
+    const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+    const scale = viewportWidth <= SMALL_SCREEN_MAX ? viewportWidth / SMALL_SCREEN_MAX : 1;
+
+    document.documentElement.style.setProperty('--ui-scale', scale.toFixed(4));
+    document.body.classList.toggle('is-small-ui', scale < 1);
+  }
+
+  function scheduleSmallScreenScale() {
+    if (resizeRaf !== null) return;
+    resizeRaf = window.requestAnimationFrame(() => {
+      resizeRaf = null;
+      applySmallScreenScale();
+    });
+  }
+
+  applySmallScreenScale();
+  window.addEventListener('resize', scheduleSmallScreenScale, { passive: true });
+  window.addEventListener('orientationchange', scheduleSmallScreenScale);
 });
