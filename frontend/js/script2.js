@@ -67,13 +67,12 @@ document.addEventListener('DOMContentLoaded', () => {
   function applyTheme(dark) {
     document.body.classList.toggle('light-mode', !dark);
   }
-
   function updateDarkModeUI(dark) {
     if (!darkModeBtn) return;
     const icon = darkModeBtn.querySelector('i');
     const text = darkModeBtn.querySelector('span');
 
-    if (dark) {
+        if (dark) {
       if (icon) icon.className = 'ph ph-moon';
       if (text) text.textContent = 'Dark Mode';
       darkModeBtn.setAttribute('aria-pressed', 'true');

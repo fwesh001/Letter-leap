@@ -80,7 +80,6 @@ Create valid words that either continue or respond to the current word chain bef
 - Settings sidebar added across content pages (Tips, Achievements, Feedback, How to Play, Results, Multiplayer)
 - Theme preference persists globally across pages
 - Multiplayer results page now supports badges and commentary
-
 ## 🚀 Future Implementations / Roadmap
 
 - Mobile offline version (Android) with a packaged WebView or native port (📱)
