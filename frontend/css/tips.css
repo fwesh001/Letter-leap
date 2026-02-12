@@ -13,6 +13,11 @@ body {
   user-select: text;
 }
 
+/* Fix for Phosphor Icons appearing as squares */
+.ph {
+  font-weight: normal !important;
+}
+
 /* ===========================
    Word List Layout
    =========================== */
@@ -68,9 +73,17 @@ body {
 }
 
 @keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 .word:hover {
@@ -91,7 +104,8 @@ body {
   gap: 40px 60px; */
   max-width: 100vw;
   padding: 20px;
-  overflow: hidden; /* no scroll */
+  overflow: hidden;
+  /* no scroll */
 }
 
 /* ===========================
@@ -154,6 +168,7 @@ body {
   outline: none;
   cursor: pointer;
 }
+
 .refresh-btn:hover,
 .refresh-btn:focus {
   background: linear-gradient(90deg, #eeff00, #fafd6b);
@@ -170,15 +185,18 @@ body {
     max-width: 100vw;
     padding: 8px;
   }
+
   .column {
     min-width: 70px;
     max-width: 90px;
     margin: 8px 2px;
     gap: 8px;
   }
+
   .letter-header {
     font-size: 1.2rem;
   }
+
   .word {
     font-size: 1rem;
   }
@@ -190,18 +208,22 @@ body {
     gap: 12px 4px;
     padding: 4px;
   }
+
   .column {
     min-width: 48px;
     max-width: 60px;
     margin: 4px 1px;
     gap: 4px;
   }
+
   .letter-header {
     font-size: 1rem;
   }
+
   .word {
     font-size: 0.85rem;
   }
+
   .home-btn {
     font-size: 1rem;
     padding: 8px 16px;
@@ -209,3 +231,249 @@ body {
   }
 }
 
+/* ===========================
+   Flashcard Modal Styles
+   =========================== */
+.flashcard-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 20, 40, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  /* Higher than main.css modal */
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.flashcard-modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-content {
+  position: relative;
+  width: 90%;
+  max-width: 600px;
+  background: var(--bg-secondary, #1a2a4a);
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translateY(20px);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.flashcard-modal-overlay.active .modal-content {
+  transform: translateY(0);
+}
+
+.close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: #a0e9ff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.close-btn:hover {
+  color: #fff;
+  transform: rotate(90deg);
+}
+
+/* ===========================
+   Flashcard Design
+   =========================== */
+.flashcard-container {
+  perspective: 1000px;
+  width: 100%;
+  margin: 30px 0;
+}
+
+.flashcard {
+  width: 100%;
+  min-height: 200px;
+  background: linear-gradient(135deg, #23395d, #162640);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  position: relative;
+  text-align: center;
+  box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.05);
+  overflow: hidden;
+}
+
+.flashcard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #00c6ff, #0072ff);
+}
+
+.word-display {
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+  margin-bottom: 10px;
+  word-break: break-all;
+}
+
+.card-actions {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.action-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(160, 233, 255, 0.2);
+  color: #a0e9ff;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.action-btn:hover {
+  background: rgba(0, 255, 255, 0.1);
+  border-color: #0ff;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.action-btn.copied {
+  background: #00c853;
+  color: #fff;
+  border-color: #00c853;
+}
+
+.word-stats {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.badge {
+  background: rgba(0, 114, 255, 0.2);
+  color: #a0e9ff;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid rgba(0, 114, 255, 0.3);
+}
+
+/* ===========================
+   Navigation & Progress
+   =========================== */
+.modal-nav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.nav-btn {
+  background: linear-gradient(90deg, #00c6ff, #0072ff);
+  border: none;
+  color: #fff;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(0, 114, 255, 0.3);
+}
+
+.nav-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 255, 255, 0.4);
+}
+
+.nav-btn:active {
+  transform: scale(0.95);
+}
+
+.card-progress {
+  color: #a0e9ff;
+  font-weight: 700;
+  font-size: 1.1rem;
+  min-width: 80px;
+  text-align: center;
+}
+
+/* ===========================
+   Animations
+   =========================== */
+@keyframes slideInRight {
+  from {
+    transform: translateX(50px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-50px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-next {
+  animation: slideInRight 0.4s ease-out;
+}
+
+.animate-prev {
+  animation: slideInLeft 0.4s ease-out;
+}
+
+/* Responsive adjustments for modal */
+@media (max-width: 600px) {
+  .word-display {
+    font-size: 2.2rem;
+  }
+
+  .modal-content {
+    padding: 30px 20px;
+  }
+}
