@@ -761,12 +761,14 @@ header #settingsToggleBtn {
 .page-home footer {
   opacity: 0;
   visibility: hidden;
+  transform: translateY(12px);
   transition: all 0.5s ease;
 }
 
 .page-home footer.footer-visible {
   opacity: 1;
   visibility: visible;
+  transform: translateY(0);
 }
 
 .page-home #footer-sentinel {
