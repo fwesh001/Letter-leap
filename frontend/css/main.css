@@ -757,3 +757,19 @@ header #settingsToggleBtn {
     font-weight: bold;
 }
 
+/* Footer reveal (index page only) */
+.page-home footer {
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.5s ease;
+}
+
+.page-home footer.footer-visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.page-home #footer-sentinel {
+  height: 1px;
+}
+
