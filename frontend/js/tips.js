@@ -97,89 +97,69 @@ function renderGroupedColumns(groupedWords, offsets) {
 }
 
 // ==========================
-// FLASHCARD MODAL LOGIC
+// FLASHCARD MODAL LOGIC (WORD EXPERIMENTS)
 // ==========================
 const modal = document.getElementById('flashcardModal');
-const wordDisplay = document.getElementById('wordDisplay');
-const wordStats = document.getElementById('wordStats');
-const cardProgress = document.getElementById('cardProgress');
-const flashcard = document.getElementById('flashcard');
+const wordList = document.getElementById('wordExperimentList');
+const currentLetterDisplay = document.getElementById('currentLetterDisplay');
+
+const experimentIcons = [
+  { icon: 'ph-star', color: 'icon-rare', tag: 'Rare Letters' },
+  { icon: 'ph-dna', color: 'icon-dna', tag: 'Long Word' },
+  { icon: 'ph-shield', color: 'icon-shield', tag: '5+ Consonants' },
+  { icon: 'ph-drop', color: 'icon-vowel', tag: 'Many Vowels' },
+  { icon: 'ph-fire', color: 'icon-fire', tag: 'Hot Word' }
+];
 
 function openFlashcardModal(letter) {
   currentLetter = letter;
-  currentWordIndex = 0;
+  currentLetterDisplay.textContent = letter;
 
-  const words = allGroupedWords[letter] || [];
-
-  if (words.length === 0) {
-    showEmptyState();
-  } else {
-    renderCurrentCard();
-  }
+  renderWordExperiments();
 
   modal.classList.add('active');
   modal.ariaHidden = "false";
-  document.body.style.overflow = 'hidden'; // Prevent scrolling
+  document.body.style.overflow = 'hidden';
 }
 
-function showEmptyState() {
-  wordDisplay.textContent = "No secrets here... yet!";
-  wordDisplay.style.fontSize = "1.5rem";
-  wordStats.innerHTML = '';
-  cardProgress.textContent = "0 / 0";
-  document.getElementById('copyBtn').style.display = 'none';
-}
-
-function renderCurrentCard(direction = '') {
+function renderWordExperiments() {
   const words = allGroupedWords[currentLetter] || [];
-  const word = words[currentWordIndex];
+  wordList.innerHTML = '';
 
-  document.getElementById('copyBtn').style.display = 'flex';
-  wordDisplay.textContent = word;
-  wordDisplay.style.fontSize = word.length > 10 ? "2.5rem" : "3.5rem";
-
-  // Progress
-  cardProgress.textContent = `${currentWordIndex + 1} / ${words.length}`;
-
-  // Stats Badges
-  wordStats.innerHTML = '';
-
-  // Length Badge
-  const lengthBadge = document.createElement('span');
-  lengthBadge.className = 'badge';
-  lengthBadge.textContent = `${word.length} Letters`;
-  wordStats.appendChild(lengthBadge);
-
-  // Score Badge (Mock logic: Rare letters Z, Q, J, X give "High Score")
-  const rareLetters = /[ZQJX]/i;
-  if (rareLetters.test(word)) {
-    const scoreBadge = document.createElement('span');
-    scoreBadge.className = 'badge';
-    scoreBadge.style.borderColor = '#ffd700';
-    scoreBadge.style.color = '#ffd700';
-    scoreBadge.textContent = 'High Score';
-    wordStats.appendChild(scoreBadge);
+  if (words.length === 0) {
+    wordList.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #8a9bb8; padding: 40px;">No secrets here... yet!</div>';
+    return;
   }
 
-  // Animation
-  flashcard.classList.remove('animate-next', 'animate-prev');
-  void flashcard.offsetWidth; // Trigger reflow
-  if (direction === 'next') flashcard.classList.add('animate-next');
-  if (direction === 'prev') flashcard.classList.add('animate-prev');
-}
+  // Limit to some words for the preview feel in the image, or show all with scroll
+  words.forEach((word, index) => {
+    const item = document.createElement('div');
+    item.className = 'experiment-item';
 
-function nextCard() {
-  const words = allGroupedWords[currentLetter] || [];
-  if (words.length === 0) return;
-  currentWordIndex = (currentWordIndex + 1) % words.length;
-  renderCurrentCard('next');
-}
+    // Randomize icon/tag for variety like in the image
+    const config = experimentIcons[index % experimentIcons.length];
 
-function prevCard() {
-  const words = allGroupedWords[currentLetter] || [];
-  if (words.length === 0) return;
-  currentWordIndex = (currentWordIndex - 1 + words.length) % words.length;
-  renderCurrentCard('prev');
+    item.innerHTML = `
+            <i class="ph ${config.icon} experiment-icon ${config.color}"></i>
+            <span class="experiment-word">${word}</span>
+            <span class="experiment-tag">${config.tag}</span>
+        `;
+
+    item.onclick = () => {
+      navigator.clipboard.writeText(word);
+      // Optional: add a tiny visual feedback here
+      const wordSpan = item.querySelector('.experiment-word');
+      const originalText = wordSpan.textContent;
+      wordSpan.textContent = 'Copied!';
+      wordSpan.style.color = '#4CAF50';
+      setTimeout(() => {
+        wordSpan.textContent = originalText;
+        wordSpan.style.color = '#fff';
+      }, 800);
+    };
+
+    wordList.appendChild(item);
+  });
 }
 
 function closeFlashcardModal() {
@@ -206,9 +186,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Modal navigation
-  document.getElementById('nextBtn').onclick = nextCard;
-  document.getElementById('prevBtn').onclick = prevCard;
   document.getElementById('closeModal').onclick = closeFlashcardModal;
 
   // Close on backdrop click
@@ -216,28 +193,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.target.classList.contains('flashcard-modal-overlay')) closeFlashcardModal();
   };
 
-  // Copy to clipboard
-  const copyBtn = document.getElementById('copyBtn');
-  copyBtn.onclick = () => {
-    const word = wordDisplay.textContent;
-    navigator.clipboard.writeText(word).then(() => {
-      const icon = copyBtn.querySelector('i');
-      icon.className = 'ph ph-check';
-      copyBtn.classList.add('copied');
-
-      setTimeout(() => {
-        icon.className = 'ph ph-copy';
-        copyBtn.classList.remove('copied');
-      }, 1000);
-    });
-  };
-
   // Keyboard support
   document.addEventListener('keydown', (e) => {
     if (!modal.classList.contains('active')) return;
-
-    if (e.key === 'ArrowRight') nextCard();
-    if (e.key === 'ArrowLeft') prevCard();
     if (e.key === 'Escape') closeFlashcardModal();
   });
 });
