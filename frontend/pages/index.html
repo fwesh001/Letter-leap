@@ -23,7 +23,7 @@
     </script>
 </head>
 
-<body>
+<body class="page-home">
     <!-- =========================
          Header Section
     ========================== -->
@@ -107,10 +107,49 @@
          Scripts
     ========================== -->
     <script src="/js/script2.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const footer = document.querySelector('body.page-home footer');
+                const sentinel = document.getElementById('footer-sentinel');
+                if (!footer || !sentinel) return;
+
+                if ('IntersectionObserver' in window) {
+                    const observer = new IntersectionObserver(
+                        (entries) => {
+                            const entry = entries[0];
+                            footer.classList.toggle('footer-visible', entry.isIntersecting);
+                        },
+                        {
+                            root: null,
+                            threshold: 0,
+                            rootMargin: '0px 0px -20% 0px'
+                        }
+                    );
+                    observer.observe(sentinel);
+                } else {
+                    let ticking = false;
+                    const checkFooter = () => {
+                        const nearBottom =
+                            window.innerHeight + window.scrollY >=
+                            document.documentElement.scrollHeight - 80;
+                        footer.classList.toggle('footer-visible', nearBottom);
+                        ticking = false;
+                    };
+                    window.addEventListener('scroll', () => {
+                        if (!ticking) {
+                            window.requestAnimationFrame(checkFooter);
+                            ticking = true;
+                        }
+                    }, { passive: true });
+                    checkFooter();
+                }
+            });
+        </script>
 
     <!-- =========================
          Footer Section
     ========================== -->
+    <div id="footer-sentinel" aria-hidden="true"></div>
     <footer>
         <p>© 2025 Letter-Leap. All rights reserved.</p>
         <p>Made with 💙 by zabdiel.</p>
