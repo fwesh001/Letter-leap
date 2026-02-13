@@ -1,206 +1,314 @@
-// ==========================
-// GLOBAL VARIABLES & CONSTANTS
-// ==========================
-let allGroupedWords = {};   // Stores words grouped by first letter
-let wordOffsets = {};       // Tracks pagination offset for each letter
-const wordsPerPage = 5;     // Number of words to show per letter column
+const LETTERS = Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i));
+const MAX_WORDS_PER_LETTER = 80;
+const COPY_FEEDBACK_MS = 900;
 
-// Flashcard State
-let currentLetter = '';
-let currentWordIndex = 0;
+let groupedWords = {};
+let activeLetterIndex = 0;
+let activeWord = '';
 
-// ==========================
-// LOAD & GROUP WORDS FUNCTION
-// ==========================
-/**
- * Loads words from 'words.txt', groups them by first letter, and initializes offsets.
- */
-async function loadWords() {
-  try {
-    const response = await fetch('../data/words.txt');
-    const text = await response.text();
-    const lines = text.split(/\r?\n/).filter(Boolean);
+const letterGrid = document.getElementById('letterGrid');
+const letterModal = document.getElementById('letterModal');
+const activeLetterLabel = document.getElementById('activeLetter');
+const letterWordGrid = document.getElementById('letterWordGrid');
+const prevLetterBtn = document.getElementById('prevLetterBtn');
+const nextLetterBtn = document.getElementById('nextLetterBtn');
+const letterModalClose = document.getElementById('letterModalClose');
 
-    // Group words by first letter (uppercase)
-    const grouped = {};
-    lines.forEach(word => {
-      const letter = word[0].toUpperCase();
-      if (!grouped[letter]) grouped[letter] = [];
-      grouped[letter].push(word.trim());
-    });
+const wordModal = document.getElementById('wordModal');
+const wordModalTitle = document.getElementById('wordModalTitle');
+const ttsBtn = document.getElementById('ttsBtn');
+const copyWordBtn = document.getElementById('copyWordBtn');
+const wordModalBack = document.getElementById('wordModalBack');
+const wordCopyFeedback = document.getElementById('wordCopyFeedback');
 
-    allGroupedWords = grouped;
+const refreshBtn = document.getElementById('refreshBtn');
 
-    // Initialize offsets for each letter
-    wordOffsets = {};
-    Object.keys(allGroupedWords).forEach(letter => {
-      wordOffsets[letter] = 0;
-    });
-
-    renderGroupedColumns(allGroupedWords, wordOffsets);
-  } catch (err) {
-    console.error('Error loading words:', err);
-    document.getElementById('wordListContainer').textContent = 'Failed to load words.';
-  }
-}
-
-// ==========================
-// RENDERING FUNCTION (LIST)
-// ==========================
-/**
- * Renders columns of words grouped by letter, paginated by offset.
- */
-function renderGroupedColumns(groupedWords, offsets) {
-  const container = document.getElementById('wordListContainer');
-  container.innerHTML = '';
-
-  for (let i = 0; i < 26; i++) {
-    const letter = String.fromCharCode(65 + i);
-    const col = document.createElement('div');
-    col.className = 'column';
-
-    const header = document.createElement('div');
-    header.className = 'letter-header';
-    header.textContent = letter;
-    header.style.cursor = 'pointer'; // Make it look clickable
-    header.title = `Train with "${letter}" words`;
-    header.onclick = () => openFlashcardModal(letter);
-    col.appendChild(header);
-
-    const words = groupedWords[letter] || [];
-    const offset = offsets && offsets[letter] ? offsets[letter] : 0;
-
-    if (words.length === 0) {
-      const emptyMsg = document.createElement('div');
-      emptyMsg.className = 'word';
-      emptyMsg.style.fontSize = '0.8rem';
-      emptyMsg.style.opacity = '0.5';
-      emptyMsg.textContent = 'None';
-      col.appendChild(emptyMsg);
-    } else {
-      for (let j = 0; j < wordsPerPage; j++) {
-        const idx = (offset + j) % words.length;
-        const w = document.createElement('div');
-        w.className = 'word';
-        w.textContent = words[idx];
-        w.onclick = () => {
-          openFlashcardModal(letter);
-          currentWordIndex = idx;
-          renderCurrentCard();
-        };
-        col.appendChild(w);
+function loadWords() {
+  return fetch('/data/words.txt')
+    .then((response) => response.text())
+    .then((text) => {
+      const lines = text.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
+      groupedWords = groupWords(lines);
+      renderLetterGrid();
+    })
+    .catch((err) => {
+      console.error('Error loading words:', err);
+      if (letterGrid) {
+        letterGrid.textContent = 'Failed to load words.';
       }
-    }
+    });
+}
 
-    container.appendChild(col);
+function groupWords(words) {
+  const grouped = {};
+  words.forEach((word) => {
+    const letter = word[0].toUpperCase();
+    if (!grouped[letter]) {
+      grouped[letter] = [];
+    }
+    grouped[letter].push(word);
+  });
+  return grouped;
+}
+
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
   }
 }
 
-// ==========================
-// FLASHCARD MODAL LOGIC (WORD EXPERIMENTS)
-// ==========================
-const modal = document.getElementById('flashcardModal');
-const wordList = document.getElementById('wordExperimentList');
-const currentLetterDisplay = document.getElementById('currentLetterDisplay');
-
-const experimentIcons = [
-  { icon: 'ph-star', color: 'icon-rare', tag: 'Rare Letters' },
-  { icon: 'ph-dna', color: 'icon-dna', tag: 'Long Word' },
-  { icon: 'ph-shield', color: 'icon-shield', tag: '5+ Consonants' },
-  { icon: 'ph-drop', color: 'icon-vowel', tag: 'Many Vowels' },
-  { icon: 'ph-fire', color: 'icon-fire', tag: 'Hot Word' }
-];
-
-function openFlashcardModal(letter) {
-  currentLetter = letter;
-  currentLetterDisplay.textContent = letter;
-
-  renderWordExperiments();
-
-  modal.classList.add('active');
-  modal.ariaHidden = "false";
-  document.body.style.overflow = 'hidden';
+function refreshWords() {
+  Object.values(groupedWords).forEach((list) => shuffleArray(list));
+  renderLetterGrid();
+  if (isModalOpen(letterModal)) {
+    renderLetterWords();
+  }
 }
 
-function renderWordExperiments() {
-  const words = allGroupedWords[currentLetter] || [];
-  wordList.innerHTML = '';
+function renderLetterGrid() {
+  if (!letterGrid) return;
+  letterGrid.innerHTML = '';
 
-  if (words.length === 0) {
-    wordList.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #8a9bb8; padding: 40px;">No secrets here... yet!</div>';
+  LETTERS.forEach((letter, index) => {
+    const count = (groupedWords[letter] || []).length;
+    const tile = document.createElement('button');
+    tile.type = 'button';
+    tile.className = 'letter-tile';
+    tile.dataset.index = String(index);
+    tile.dataset.letter = letter;
+    tile.setAttribute('aria-label', `Letter ${letter}, ${count} words`);
+    tile.innerHTML = `${letter}<span class="letter-tile__count">${count}</span>`;
+    tile.addEventListener('click', () => openLetterModal(index));
+    letterGrid.appendChild(tile);
+  });
+}
+
+function openLetterModal(index) {
+  activeLetterIndex = index;
+  updateActiveLetter();
+  renderLetterWords();
+  openModal(letterModal);
+}
+
+function closeLetterModal() {
+  closeModal(letterModal);
+}
+
+function updateActiveLetter() {
+  const letter = LETTERS[activeLetterIndex] || 'A';
+  if (activeLetterLabel) {
+    activeLetterLabel.textContent = letter;
+  }
+}
+
+function renderLetterWords() {
+  if (!letterWordGrid) return;
+  const letter = LETTERS[activeLetterIndex] || 'A';
+  const words = groupedWords[letter] || [];
+  const visibleWords = words.slice(0, MAX_WORDS_PER_LETTER);
+
+  letterWordGrid.innerHTML = '';
+
+  if (visibleWords.length === 0) {
+    letterWordGrid.innerHTML = '<div class="word-row">No words yet.</div>';
     return;
   }
 
-  // Limit to some words for the preview feel in the image, or show all with scroll
-  words.forEach((word, index) => {
-    const item = document.createElement('div');
-    item.className = 'experiment-item';
+  visibleWords.forEach((word) => {
+    const row = document.createElement('div');
+    row.className = 'word-row';
 
-    // Randomize icon/tag for variety like in the image
-    const config = experimentIcons[index % experimentIcons.length];
+    const wordBtn = document.createElement('button');
+    wordBtn.type = 'button';
+    wordBtn.className = 'word-btn';
+    wordBtn.textContent = word;
+    wordBtn.addEventListener('click', () => openWordModal(word));
 
-    item.innerHTML = `
-            <i class="ph ${config.icon} experiment-icon ${config.color}"></i>
-            <span class="experiment-word">${word}</span>
-            <span class="experiment-tag">${config.tag}</span>
-        `;
+    const achCount = document.createElement('span');
+    achCount.className = 'ach-count';
+    achCount.textContent = `x${getAchievementCount(word)}`;
 
-    item.onclick = () => {
-      navigator.clipboard.writeText(word);
-      // Optional: add a tiny visual feedback here
-      const wordSpan = item.querySelector('.experiment-word');
-      const originalText = wordSpan.textContent;
-      wordSpan.textContent = 'Copied!';
-      wordSpan.style.color = '#4CAF50';
-      setTimeout(() => {
-        wordSpan.textContent = originalText;
-        wordSpan.style.color = '#fff';
-      }, 800);
-    };
+    const badge = document.createElement('span');
+    badge.className = 'ach-badge';
+    badge.innerHTML = '<i class="ph ph-medal"></i>';
 
-    wordList.appendChild(item);
+    const copyBtn = document.createElement('button');
+    copyBtn.type = 'button';
+    copyBtn.className = 'copy-btn';
+    copyBtn.setAttribute('aria-label', `Copy ${word}`);
+    copyBtn.innerHTML = '<i class="ph ph-copy"></i>';
+
+    const feedback = document.createElement('span');
+    feedback.className = 'copy-feedback';
+    feedback.textContent = 'Copied';
+
+    copyBtn.addEventListener('click', () => copyWord(word, feedback));
+
+    row.appendChild(wordBtn);
+    row.appendChild(achCount);
+    row.appendChild(badge);
+    row.appendChild(copyBtn);
+    row.appendChild(feedback);
+
+    letterWordGrid.appendChild(row);
   });
 }
 
-function closeFlashcardModal() {
-  modal.classList.remove('active');
-  modal.ariaHidden = "true";
+function openWordModal(word) {
+  activeWord = word;
+  if (wordModalTitle) {
+    wordModalTitle.textContent = word;
+  }
+  closeModal(letterModal);
+  openModal(wordModal);
+}
+
+function closeWordModal() {
+  closeModal(wordModal);
+  openModal(letterModal);
+}
+
+function openModal(modal) {
+  if (!modal) return;
+  modal.classList.add('is-open');
+  modal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(modal) {
+  if (!modal) return;
+  modal.classList.remove('is-open');
+  modal.setAttribute('aria-hidden', 'true');
   document.body.style.overflow = '';
 }
 
-// ==========================
-// EVENT LISTENERS
-// ==========================
+function isModalOpen(modal) {
+  return modal && modal.classList.contains('is-open');
+}
+
+function copyWord(word, feedbackEl) {
+  if (!word) return;
+  navigator.clipboard.writeText(word).then(() => {
+    if (!feedbackEl) return;
+    feedbackEl.classList.add('show');
+    clearTimeout(feedbackEl._hideTimer);
+    feedbackEl._hideTimer = setTimeout(() => {
+      feedbackEl.classList.remove('show');
+    }, COPY_FEEDBACK_MS);
+  });
+}
+
+function speakWord(word) {
+  if (!word || !('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(word);
+  window.speechSynthesis.speak(utterance);
+}
+
+function getAchievementCount(word) {
+  const checks = [
+    (w) => /(.)\1/.test(w),
+    (w) => (w.match(/[aeiou]/gi) || []).length >= 4,
+    (w) => (w.match(/[^aeiou]/gi) || []).length >= 5,
+    (w) => !/[aeiou]/i.test(w),
+    (w) => ['a', 'e', 'i', 'o', 'u'].every((v) => w.toLowerCase().includes(v)),
+  ];
+  return checks.reduce((count, fn) => count + (fn(word) ? 1 : 0), 0);
+}
+
+function shiftLetter(step) {
+  activeLetterIndex = (activeLetterIndex + step + LETTERS.length) % LETTERS.length;
+  updateActiveLetter();
+  renderLetterWords();
+}
+
+function handleGridKeydown(event) {
+  const target = event.target;
+  if (!target || !target.classList.contains('letter-tile')) return;
+  const index = Number(target.dataset.index || 0);
+  const columns = getGridColumns();
+
+  let nextIndex = index;
+  if (event.key === 'ArrowRight') nextIndex = index + 1;
+  if (event.key === 'ArrowLeft') nextIndex = index - 1;
+  if (event.key === 'ArrowDown') nextIndex = index + columns;
+  if (event.key === 'ArrowUp') nextIndex = index - columns;
+
+  if (event.key === 'Enter' || event.key === ' ') {
+    event.preventDefault();
+    openLetterModal(index);
+    return;
+  }
+
+  if (nextIndex !== index) {
+    event.preventDefault();
+    const next = letterGrid.querySelector(`[data-index="${nextIndex}"]`);
+    if (next) next.focus();
+  }
+}
+
+function getGridColumns() {
+  const tile = letterGrid ? letterGrid.querySelector('.letter-tile') : null;
+  if (!tile || !letterGrid) return 6;
+  const tileWidth = tile.getBoundingClientRect().width || 1;
+  return Math.max(1, Math.floor(letterGrid.clientWidth / tileWidth));
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-  // Original refresh logic
-  const refreshBtn = document.getElementById('refreshBtn');
+  loadWords();
+
   if (refreshBtn) {
-    refreshBtn.addEventListener('click', () => {
-      Object.keys(allGroupedWords).forEach(letter => {
-        const len = allGroupedWords[letter].length;
-        if (len > 0) {
-          wordOffsets[letter] = (wordOffsets[letter] + wordsPerPage) % len;
-        }
-      });
-      renderGroupedColumns(allGroupedWords, wordOffsets);
+    refreshBtn.addEventListener('click', refreshWords);
+  }
+
+  if (letterGrid) {
+    letterGrid.addEventListener('keydown', handleGridKeydown);
+  }
+
+  if (prevLetterBtn) prevLetterBtn.addEventListener('click', () => shiftLetter(-1));
+  if (nextLetterBtn) nextLetterBtn.addEventListener('click', () => shiftLetter(1));
+  if (letterModalClose) letterModalClose.addEventListener('click', closeLetterModal);
+
+  if (letterModal) {
+    letterModal.addEventListener('click', (event) => {
+      if (event.target === letterModal) closeLetterModal();
     });
   }
 
-  document.getElementById('closeModal').onclick = closeFlashcardModal;
+  if (wordModalBack) wordModalBack.addEventListener('click', closeWordModal);
+  if (copyWordBtn) copyWordBtn.addEventListener('click', () => copyWord(activeWord, wordCopyFeedback));
+  if (ttsBtn) ttsBtn.addEventListener('click', () => speakWord(activeWord));
 
-  // Close on backdrop click
-  modal.onclick = (e) => {
-    if (e.target.classList.contains('flashcard-modal-overlay')) closeFlashcardModal();
-  };
+  if (wordModal) {
+    wordModal.addEventListener('click', (event) => {
+      if (event.target === wordModal) closeWordModal();
+    });
+  }
 
-  // Keyboard support
-  document.addEventListener('keydown', (e) => {
-    if (!modal.classList.contains('active')) return;
-    if (e.key === 'Escape') closeFlashcardModal();
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      if (isModalOpen(wordModal)) {
+        event.preventDefault();
+        closeWordModal();
+        return;
+      }
+      if (isModalOpen(letterModal)) {
+        event.preventDefault();
+        closeLetterModal();
+      }
+      return;
+    }
+
+    if (isModalOpen(letterModal) && !isModalOpen(wordModal)) {
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        shiftLetter(-1);
+      }
+      if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        shiftLetter(1);
+      }
+    }
   });
 });
-
-// ==========================
-// INITIAL LOAD
-// ==========================
-loadWords();
