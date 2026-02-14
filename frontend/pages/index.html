@@ -53,10 +53,10 @@
         <h1 style="text-align: center; color: var(--text-primary); margin-bottom: 2rem;">Choose a Mode</h1>
         <div class="game-container">
             <!-- Single-player Mode -->
-            <a href="difficulty.html" class="mode-card">
+            <button class="mode-card" id="singlePlayerBtn">
                 <i class="ph ph-user mode-icon"></i>
                 <span class="mode-title">Single Player</span>
-            </a>
+            </button>
             <!-- Multi-player Mode -->
             <a href="mm.html" class="mode-card">
                 <i class="ph ph-users mode-icon"></i>
@@ -64,6 +64,40 @@
             </a>
         </div>
     </main>
+
+    <!-- =========================
+         Difficulty Selection Modal
+    ========================== -->
+    <div id="difficultyModal" class="popup-overlay" role="dialog" aria-modal="true" aria-labelledby="difficultyTitle">
+        <div class="popup-box difficulty-popup">
+            <button id="closeDifficultyBtn" class="close-btn" aria-label="Close Difficulty Selection">
+                <i class="ph ph-x"></i>
+            </button>
+            <header class="popup-header">
+                <h2 id="difficultyTitle" style="color: var(--primary-color);">Choose Difficulty</h2>
+            </header>
+            <div class="difficulty-cards-container">
+                <!-- Easy Level -->
+                <button class="difficulty-card" data-difficulty="easy" style="border-color: var(--success-color);">
+                    <i class="ph ph-smiley difficulty-icon" style="color: var(--success-color);"></i>
+                    <span class="difficulty-title" style="color: var(--success-color);">Easy</span>
+                    <span class="difficulty-stats">60s | 2 words | +15s</span>
+                </button>
+                <!-- Medium Level -->
+                <button class="difficulty-card" data-difficulty="medium" style="border-color: var(--accent-color);">
+                    <i class="ph ph-meh difficulty-icon" style="color: var(--accent-color);"></i>
+                    <span class="difficulty-title" style="color: var(--accent-color);">Medium</span>
+                    <span class="difficulty-stats">40s | 3 words | +10s</span>
+                </button>
+                <!-- Hard Level -->
+                <button class="difficulty-card" data-difficulty="hard" style="border-color: var(--danger-color);">
+                    <i class="ph ph-skull difficulty-icon" style="color: var(--danger-color);"></i>
+                    <span class="difficulty-title" style="color: var(--danger-color);">Hard</span>
+                    <span class="difficulty-stats">30s | 5 words | +5s</span>
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- =========================
          Sidebar Settings Menu
@@ -107,7 +141,50 @@
          Scripts
     ========================== -->
     <script src="/js/script2.js"></script>
-        <script>
+    <script>
+        // Difficulty Selection Modal Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('difficultyModal');
+            const singlePlayerBtn = document.getElementById('singlePlayerBtn');
+            const closeBtn = document.getElementById('closeDifficultyBtn');
+            const difficultyCards = document.querySelectorAll('.difficulty-card');
+
+            // Show modal when Single Player is clicked
+            singlePlayerBtn.addEventListener('click', () => {
+                modal.classList.add('show');
+            });
+
+            // Hide modal when close button is clicked
+            closeBtn.addEventListener('click', () => {
+                modal.classList.remove('show');
+            });
+
+            // Hide modal when clicking backdrop
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('show');
+                }
+            });
+
+            // Hide modal on Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.classList.contains('show')) {
+                    modal.classList.remove('show');
+                }
+            });
+
+            // Handle difficulty selection
+            difficultyCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const difficulty = card.dataset.difficulty;
+                    localStorage.setItem('gameDifficulty', difficulty);
+                    localStorage.setItem('lastDifficulty', difficulty);
+                    window.location.href = 'sm.html';
+                });
+            });
+        });
+    </script>
+    <script>
             document.addEventListener('DOMContentLoaded', () => {
                 const footer = document.querySelector('body.page-home footer');
                 const sentinel = document.getElementById('footer-sentinel');
