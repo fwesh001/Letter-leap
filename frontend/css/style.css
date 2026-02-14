@@ -258,12 +258,14 @@ body.light-mode .settings-btn:hover {
     justify-content: center;
     align-items: center;
     opacity: 0;
+    visibility: hidden;
     pointer-events: none;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
     z-index: 10000;
 }
 .popup-overlay.show {
     opacity: 1;
+    visibility: visible;
     pointer-events: auto;
 }
 
