@@ -72,12 +72,14 @@ Create valid words that either continue or respond to the current word chain bef
 - Sound effects and images (assets in `frontend/assets/`) (🔊, 🖼️)
 - Configurable settings via `frontend/data/settings.json` (⚙️)
 - Gamified elements: streaks, badges, and milestone achievements (🥇)
+- Tips hub with letter browsing, word search, achievement previews, copy, and text-to-speech (💡)
 
 ## 🧩 Recent UI Updates
 
 - Settings sidebar added across content pages (Tips, Achievements, Feedback, How to Play, Results, Multiplayer)
 - Theme preference persists globally across pages
 - Multiplayer results page now supports badges and commentary
+- New Tips page with letter grid, word modals, and search
 ## 🚀 Future Implementations / Roadmap
 
 - Mobile offline version (Android) with a packaged WebView or native port (📱)
