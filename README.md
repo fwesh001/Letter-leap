@@ -1,5 +1,3 @@
-
-
 # 🎮 Letter-Leap
 
 ## ✨ Project Title & Description
