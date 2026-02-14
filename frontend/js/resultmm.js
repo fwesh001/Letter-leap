@@ -287,7 +287,9 @@
 
   } catch (err) {
     console.error('[results] render error:', err);
-    try { alert('Error rendering results. Returning to lobby.'); } catch (_) { }
+    if (window.showToast) {
+      window.showToast('Error rendering results. Returning to lobby.', 'penalty');
+    }
     window.location.href = 'mm.html';
   }
 
