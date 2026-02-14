@@ -735,6 +735,13 @@ header #settingsToggleBtn {
     flex-direction: column;
     align-items: center;
     gap: 1rem;
+    cursor: pointer;
+}
+
+/* Ensure button.mode-card has no default button styles */
+button.mode-card {
+    font-family: inherit;
+    font-size: inherit;
 }
 
 .mode-card:hover {
