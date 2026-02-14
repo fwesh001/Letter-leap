@@ -275,7 +275,11 @@ select {
 .toast-penalty {
   background: rgba(255, 77, 77, 0.92);
   color: #fff;
-  animation: toast-shake 0.3s ease 1;
+}
+
+/* Ensure penalty toasts are visible and then shake */
+.toast-penalty.toast-show {
+  animation: toast-slide-in 0.2s ease forwards, toast-shake 0.3s ease 0.2s 1;
 }
 
 .toast-info {
