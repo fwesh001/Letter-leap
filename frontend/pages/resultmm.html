@@ -3,101 +3,113 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Letter-Leap Multiplayer Results</title>
+  <title>Multiplayer Results - Letter-Leap</title>
   <link rel="stylesheet" href="/css/design-system.css">
   <link rel="stylesheet" href="/css/main.css">
   <link rel="stylesheet" href="/css/resultmm.css">
+  <link rel="stylesheet" href="/css/loader.css">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 <body>
-  <div class="container"> 
-    <header style="position: relative;">
-      <h1 class="logo">LETTER-<span>LEAP</span></h1>
-      <p class="subtitle">Your multiplayer game results are in!</p>
-      <button id="settingsToggleBtn" aria-label="Open Settings" style="position: absolute; right: 0; top: 0;">
-        <i class="ph ph-gear"></i>
-      </button>
-    </header>
-
-    <section id="game-summary" class="card">
-      <h2>Results</h2>
-      <p class="highlight" id="winner-announcement"><i class="ph ph-crown"></i> <strong>Winner</strong> wins! Reason: Match finished</p>
-    </section>
-
-    <section id="player-stats" class="card">
-      <h2><i class="ph ph-chart-pie"></i> Player Breakdown</h2>
-      <!-- Dynamic players grid (up to 6) injected by resultmm.js -->
-      <div id="players-container" class="player-columns"></div>
-      <!-- Legacy two-player layout (hidden until JS is updated) -->
-      <div class="player-columns legacy-two-player" style="display:none;">
-        <div class="player-card" id="player1">
-          <h3 id="player1-name">Player 1</h3>
-          <ul>
-            <li>Score: <span id="p1-score">0</span></li>
-            <li>Total Words: <span id="p1-total">0</span></li>
-            <li>Accuracy: <span id="p1-accuracy">0%</span></li>
-            <li>Longest Word: <span id="p1-longest">""</span></li>
-          </ul>
-        </div>
-
-        <div class="player-card" id="player2">
-          <h3 id="player2-name">Player 2</h3>
-          <ul>
-            <li>Score: <span id="p2-score">0</span></li>
-            <li>Total Words: <span id="p2-total">0</span></li>
-            <li>Accuracy: <span id="p2-accuracy">0%</span></li>
-            <li>Longest Word: <span id="p2-longest">""</span></li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <section id="match-stats" class="card">
-      <h2><i class="ph ph-link-simple"></i> Game Chain Recap</h2>
-      <ul id="word-chain-list"></ul>
-    </section>
-
-    <section id="funny-quotes" class="card">
-      <h2><i class="ph ph-chat-centered-text"></i> Game Commentary</h2>
-      <p class="quote" id="funny-quote">Results are coming in...</p>
-      <p class="coach-roast" id="coach-quote">Coach says: Loading feedback...</p>
-    </section>
-
-    <section id="multiplayer-badges" class="card">
-      <h2><i class="ph ph-medal"></i> Battle Achievements</h2>
-      <div id="badge-list" class="badge-grid">
-        <!-- JS will inject achievement cards here -->
-      </div>
-    </section>
-
-    <div class="action-buttons">
-      <button onclick="window.location.href='mm.html'" class="btn">Replay</button>
-      <button onclick="window.location.href='index.html'" class="btn">Home</button>
-      <button onclick="window.location.href='#'" class="btn">Share</button>
+  <header>
+    <div style="display: flex; align-items: center; justify-content: center; position: relative; max-width: 800px; margin: 0 auto;">
+        <a href="index.html" style="position: absolute; left: 1rem; color: var(--text-primary); text-decoration: none;"><i class="ph ph-house"></i></a>
+        <span>Battle Results</span>
+        <button id="settingsToggleBtn" aria-label="Open Settings" style="position: absolute; right: 1rem;">
+            <i class="ph ph-gear"></i>
+        </button>
     </div>
-  </div>
+  </header>
 
-    <aside id="settingsSidebar" aria-label="Settings Menu">
-      <h2
-        style="color: var(--text-primary); margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
-        Settings</h2>
+  <main class="container results-container">
+    <!-- SECTION 1: Battle Winner Card -->
+    <section class="result-section battle-winner">
+        <div id="winner-pod" style="text-align: center; padding: 2rem 0;">
+            <i class="ph ph-crown" style="font-size: 4rem; color: var(--accent-color); margin-bottom: 1rem;"></i>
+            <h2 id="winner-announcement" style="font-size: 2rem; color: var(--text-primary); margin: 0;">Winner Declared!</h2>
+            <p id="winner-reason" style="color: var(--text-secondary); margin-top: 0.5rem;">Match finished</p>
+        </div>
+    </section>
+
+    <!-- SECTION 2: Head-to-Head Comparison (Top 2 Players) -->
+    <section class="result-section head-to-head">
+        <h3><i class="ph ph-swords"></i> Head-to-Head</h3>
+        <div class="comparison-grid" id="comparison-grid">
+            <!-- Populated by resultmm.js -->
+        </div>
+    </section>
+
+    <!-- SECTION 3: Full Leaderboard -->
+    <section class="result-section leaderboard">
+        <h3><i class="ph ph-ranking"></i> Final Rankings</h3>
+        <div id="leaderboard-list" class="ranking-list">
+            <!-- Populated by resultmm.js -->
+        </div>
+    </section>
+
+    <!-- SECTION 4: Word Chain Replay -->
+    <section class="result-section word-replay">
+        <h3><i class="ph ph-list-checks"></i> Game Replay</h3>
+        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">
+            <i class="ph ph-info"></i> All words played during the match, in order:
+        </p>
+        <div id="word-chain-container" class="word-replay-grid">
+            <!-- Populated by resultmm.js -->
+        </div>
+    </section>
+
+    <!-- SECTION 5: Battle Achievements/Badges -->
+    <section class="result-section battle-achievements">
+        <h3><i class="ph ph-medal"></i> Battle Achievements</h3>
+        <div id="badge-list" class="badge-grid">
+            <!-- Populated by resultmm.js -->
+        </div>
+    </section>
+
+    <!-- SECTION 6: Competitive Stats -->
+    <section class="result-section competitive-stats">
+        <h3><i class="ph ph-chart-line"></i> Competitive Breakdown</h3>
+        <div id="stats-breakdown" class="stats-breakdown">
+            <!-- Populated by resultmm.js -->
+        </div>
+    </section>
+
+    <!-- Navigation Buttons -->
+    <section class="result-actions">
+        <button class="button" onclick="showGameLoader('mm.html')"><i class="ph ph-arrows-clockwise"></i> Play Again</button>
+        <button class="button secondary" onclick="showGameLoader('index.html')"><i class="ph ph-house"></i> Back to Home</button>
+    </section>
+  </main>
+
+  <!-- Settings Sidebar -->
+  <aside id="settingsSidebar" aria-label="Settings Menu">
+      <h2>Settings</h2>
 
       <button id="muteBtn" class="settings-btn" aria-pressed="false">
-        <i class="ph ph-speaker-simple-high"></i> <span>Mute</span>
+          <i class="ph ph-speaker-simple-high"></i> <span>Mute</span>
       </button>
       <button id="darkModeBtn" class="settings-btn" aria-pressed="false">
-        <i class="ph ph-moon"></i> <span>Dark Mode</span>
+          <i class="ph ph-moon"></i> <span>Dark Mode</span>
       </button>
 
-      <div style="margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 1rem;"></div>
+      <div class="settings-divider"></div>
 
       <button id="Howtoplay" class="settings-btn" onclick="window.location.href='HTP.html'">
-        <i class="ph ph-book-open"></i> <span>How to Play</span>
+          <i class="ph ph-book-open"></i> <span>How to Play</span>
       </button>
       <button id="feedbackBtn" class="settings-btn" onclick="window.location.href='feedback.html'">
-        <i class="ph ph-pencil-simple"></i> <span>Feedback</span>
+          <i class="ph ph-pencil-simple"></i> <span>Feedback</span>
       </button>
       <button id="Tips" class="settings-btn" onclick="window.location.href='tips.html'">
+          <i class="ph ph-gift"></i> <span>Tips</span>
+      </button>
+  </aside>
+
+  <script src="/js/utils.js"></script>
+  <script src="/js/script2.js"></script>
+  <script src="/js/resultmm.js"></script>
+</body>
+</html>>
         <i class="ph ph-gift"></i> <span>Tips</span>
       </button>
     </aside>
