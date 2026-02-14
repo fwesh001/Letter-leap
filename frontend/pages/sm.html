@@ -8,6 +8,7 @@
   <!-- Design System & Styles -->
   <link rel="stylesheet" href="/css/design-system.css">
   <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/loader.css">
 
   <!-- Phosphor Icons -->
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -104,11 +105,11 @@
           <p><i class="ph ph-target"></i> <strong>Accuracy:</strong> <span id="accuracy" style="color: var(--primary-color); float: right; font-weight: bold;"></span></p>
       </div>
 
-      <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-          <a href="lr.html" id="see-results-btn" style="text-decoration: none;"><button class="button" style="width: 100%;"><i class="ph ph-eye"></i> See Detailed Results</button></a>
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+          <button id="see-results-btn" class="button" style="width: 100%;" onclick="showGameLoader('result.html')"><i class="ph ph-eye"></i> See Detailed Results</button>
           <button onclick="startGame()" class="button" style="background: var(--success-color); color: white;"><i class="ph ph-arrows-clockwise"></i> Play Again</button>
           <a href="index.html" style="text-decoration: none;"><button class="button" style="width: 100%; background: var(--bg-tertiary); color: var(--text-primary);"><i class="ph ph-house"></i> Back to Home</button></a>
-      </div>
+        </div>
     </div>
   </div>
 
