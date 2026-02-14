@@ -1,4 +1,29 @@
 // =======================
+// DIFFICULTY CONFIGURATION
+// =======================
+const DIFFICULTY_CONFIG = {
+  easy: {
+    timeLimit: 60,
+    minWordLength: 2,
+    bonusTime: 10
+  },
+  medium: {
+    timeLimit: 40,
+    minWordLength: 3,
+    bonusTime: 5
+  },
+  hard: {
+    timeLimit: 30,
+    minWordLength: 4,
+    bonusTime: 5
+  }
+};
+
+// Get difficulty from localStorage (default to 'easy')
+const gameDifficulty = localStorage.getItem('gameDifficulty') || 'easy';
+const difficultySettings = DIFFICULTY_CONFIG[gameDifficulty] || DIFFICULTY_CONFIG.easy;
+
+// =======================
 // DOM ELEMENTS
 // =======================
 const letterElement = document.getElementById('letter');
@@ -25,11 +50,11 @@ let currentLetter = '';
 let wordChain = [];
 let usedWords = new Set();
 let score = 0;
-let timeLeft = 60;
-let totalTimeSpent = 60;
+let timeLeft = difficultySettings.timeLimit;
+let totalTimeSpent = difficultySettings.timeLimit;
 let timerInterval = null;
 let gameOver = false;
-let minWordLength = 2;
+let minWordLength = difficultySettings.minWordLength;
 let totalWordsExchanged = 0;
 let playerAttempts = 0;
 let incorrectWordsCount = 0;
@@ -73,9 +98,9 @@ function startGame() {
   wordInput.disabled = false;
   submitBtn.disabled = false;
   wordInput.value = '';
-  timeLeft = 60;
-  totalTimeSpent = 60;
-  minWordLength = 2;
+  timeLeft = difficultySettings.timeLimit;
+  totalTimeSpent = difficultySettings.timeLimit;
+  minWordLength = difficultySettings.minWordLength;
   totalWordsExchanged = 0;
   playerAttempts = 0;
   incorrectWordsCount = 0;
@@ -222,7 +247,8 @@ function handleSubmission() {
   wordChain.push(playerWord); usedWords.add(playerWord);
   score++; totalWordsExchanged++;
   currentLetter = playerWord.slice(-1);
-  timeLeft += 10; totalTimeSpent += 10;
+  timeLeft += difficultySettings.bonusTime; 
+  totalTimeSpent += difficultySettings.bonusTime;
   const gameState = {
     wordChain,
     timeTaken: 3, // 🔧 Replace this later with real time tracking if needed
