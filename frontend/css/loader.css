@@ -1,0 +1,75 @@
+#loader-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #0e0e1a;
+  overflow: hidden;
+  font-family: var(--font-primary, 'Poppins', sans-serif);
+}
+
+#loader-overlay #letter-leap-loader {
+  font-size: clamp(2rem, 8vw, 5rem);
+  font-weight: 700;
+  display: flex;
+  gap: 0.2em;
+  color: #fff;
+  pointer-events: none;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+#loader-overlay .letter {
+  position: relative;
+  display: inline-block;
+  transform-origin: bottom center;
+  transition: text-shadow 0.3s ease;
+  min-width: 0.6em;
+}
+
+#loader-overlay .letter.jump {
+  animation: jump 0.6s ease-out forwards;
+  text-shadow:
+    0 0 8px #00ffff,
+    0 0 12px #00ffff,
+    0 0 18px #00e0ff,
+    0 0 30px #00c0ff;
+}
+
+@keyframes jump {
+  0% { transform: translateY(0) scale(1); filter: brightness(1); }
+  30% { transform: translateY(-8%) scale(1.1, 0.9); filter: brightness(1.3); }
+  50% { transform: translateY(0) scale(0.95, 1.05); filter: brightness(1); }
+  70% { transform: translateY(-3%); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+#loader-overlay .letter::after {
+  content: '';
+  position: absolute;
+  top: -1em;
+  left: 50%;
+  width: 0.4em;
+  height: 0.4em;
+  background: #fff;
+  border-radius: 50%;
+  opacity: 0;
+  transform: translateX(-50%) scale(0);
+  box-shadow: 0 0 12px 3px #fff;
+  pointer-events: none;
+  transition: all 0.3s ease-out;
+  z-index: 10;
+}
+
+#loader-overlay .letter.jump::after {
+  opacity: 1;
+  transform: translateX(-50%) scale(1.5);
+  animation: sparkle 0.3s ease forwards;
+}
+
+@keyframes sparkle {
+  0% { opacity: 1; transform: translateX(-50%) scale(1.5); }
+  100% { opacity: 0; transform: translateX(-50%) scale(0); }
+}
