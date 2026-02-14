@@ -277,6 +277,36 @@
   font-size: clamp(1.4rem, 3vw, 2rem);
 }
 
+.word-achievements {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 6px;
+  color: var(--tips-muted);
+  font-size: 0.9rem;
+}
+
+.word-achievements.is-empty {
+  font-style: italic;
+}
+
+.ach-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--tips-border);
+  color: var(--tips-ink);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.ach-chip i {
+  color: var(--tips-accent);
+}
+
 .icon-btn {
   border: 1px solid var(--tips-border);
   background: rgba(255, 255, 255, 0.06);
