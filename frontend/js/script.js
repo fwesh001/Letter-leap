@@ -59,6 +59,7 @@ let totalWordsExchanged = 0;
 let playerAttempts = 0;
 let incorrectWordsCount = 0;
 let achievements = [];
+let lastTimeWarning = null;
 
 // =======================
 // WORD LIST FETCH
@@ -71,7 +72,7 @@ fetch('../data/words.txt')
   })
   .catch(err => {
     console.error('Failed to load word list:', err);
-    showPopup('Failed to load words list. Game cannot start.', 5000);
+    showPopup('Failed to load words list. Game cannot start.', 5000, 'penalty');
   });
 
 // =======================
@@ -104,6 +105,7 @@ function startGame() {
   totalWordsExchanged = 0;
   playerAttempts = 0;
   incorrectWordsCount = 0;
+  lastTimeWarning = null;
 
   currentLetter = getRandomLetter();
   letterElement.textContent = currentLetter;
@@ -111,12 +113,15 @@ function startGame() {
   updateGame();
   updateLastWords();
 
+  showPopup('Game starting! Good luck.', 2000, 'info');
+
   clearInterval(timerInterval);
   timerInterval = setInterval(() => {
     timeLeft--;
     updateTimerDisplay();
     if (timeLeft <= 0) {
       clearInterval(timerInterval);
+      showPopup('Time is up!', 2000, 'penalty');
       endGame();
     }
   }, 1000);
@@ -128,6 +133,11 @@ function startGame() {
 function updateTimerDisplay() {
   timerElement.innerHTML = `<i class="ph ph-timer"></i> Time left: ${timeLeft}s`;
   timerElement.style.color = timeLeft > 40 ? 'green' : timeLeft > 10 ? 'yellow' : 'red';
+
+  if ((timeLeft === 10 || timeLeft === 5) && lastTimeWarning !== timeLeft) {
+    lastTimeWarning = timeLeft;
+    showPopup(`Hurry! ${timeLeft}s left.`, 1500, 'info');
+  }
 }
 
 function formatTime(seconds) {
@@ -179,10 +189,15 @@ function updateLastWords() {
   lastWordsElement.innerHTML = `<i class="ph ph-link"></i> <b>${playerWord}</b> <i class="ph ph-arrow-right"></i> <b>${aiWord}</b>`;
 }
 
-function showPopup(msg, duration = 2000) {
+function showPopup(msg, duration = 2000, type = 'info') {
   popup.textContent = msg;
   popup.style.display = 'block';
   popup.style.backgroundColor = '';
+
+  if (window.showToast) {
+    window.showToast(msg, type);
+  }
+
   setTimeout(() => popup.style.display = 'none', duration);
 }
 
@@ -190,6 +205,10 @@ function popAchievementBadge(badgeName, duration = 2000) {
   popup.textContent = `Achievement Unlocked: ${badgeName}`;
   popup.style.display = 'block';
   popup.style.backgroundColor = '#FFD700';
+
+  if (window.showToast) {
+    window.showToast(`Achievement Unlocked: ${badgeName}`, 'achievement');
+  }
 
   setTimeout(() => {
     popup.style.display = 'none';
@@ -204,7 +223,7 @@ function popAchievementBadge(badgeName, duration = 2000) {
 // =======================
 function handleSubmission() {
   if (gameOver) {
-    showPopup("Game is over! Hit restart to play again.");
+    showPopup("Game is over! Hit restart to play again.", 2000, 'info');
     return;
   }
 
@@ -212,32 +231,32 @@ function handleSubmission() {
   playerAttempts++;
 
   if (!playerWord) {
-    showPopup("Blank Input - You typed nothing.");
+    showPopup("Blank Input - You typed nothing.", 2000, 'penalty');
     wrongSound.currentTime = 0; wrongSound.play();
     incorrectWordsCount++; wordInput.value = ''; return;
   }
 
   if (usedWords.has(playerWord)) {
-    showPopup("Already Used - Try a different word.");
+    showPopup("Already Used - Try a different word.", 2000, 'penalty');
     wrongSound.currentTime = 0; wrongSound.play();
     incorrectWordsCount++; wordInput.value = ''; return;
   }
 
   if (playerWord.length < minWordLength) {
-    showPopup(`Too Short - Use at least ${minWordLength} letters!`);
+    showPopup(`Too Short - Use at least ${minWordLength} letters!`, 2000, 'penalty');
     wrongSound.currentTime = 0; wrongSound.play();
     incorrectWordsCount++; wordInput.value = ''; return;
   }
 
   if (!playerWord.startsWith(currentLetter)) {
-    showPopup(`Wrong Start Letter - Must start with "${currentLetter}"`);
+    showPopup(`Wrong Start Letter - Must start with "${currentLetter}"`, 2000, 'penalty');
     wrongSound.currentTime = 0; wrongSound.play();
     incorrectWordsCount++; wordInput.value = ''; return;
   }
 
 
   if (!isValidWord(playerWord)) {
-    showPopup(`Invalid Word - "${playerWord}" is not in the dictionary.`);
+    showPopup(`Invalid Word - "${playerWord}" is not in the dictionary.`, 2000, 'penalty');
     wrongSound.currentTime = 0; wrongSound.play();
     incorrectWordsCount++; wordInput.value = ''; return;
   }
@@ -262,11 +281,11 @@ function handleSubmission() {
 
   if (totalWordsExchanged % 10 === 0) {
     minWordLength++;
-    showPopup(`Minimum word length increased to ${minWordLength}!`);
+    showPopup(`Minimum word length increased to ${minWordLength}!`, 2000, 'info');
   }
 
 
-  if (score === 3) popAchievementBadge("Trifecta 🎯");
+  if (score === 3) showPopup("Trifecta 🎯");
   if (score === 5) popAchievementBadge("Halfway Hero 🏅");
   if (score === 10) popAchievementBadge("Dictionary expert 🧙");
   if (playerWord.length >= 12) popAchievementBadge("Keyboard Warrior");
@@ -287,7 +306,7 @@ function handleSubmission() {
     letterElement.style.display = 'block';
 
     if (!aiWord) {
-      showPopup("You Win! AI could not find a word.");
+      showPopup("You Win! AI could not find a word.", 2000, 'achievement');
       endGame(); return;
     }
 
@@ -296,7 +315,7 @@ function handleSubmission() {
 
     if (totalWordsExchanged % 10 === 0) {
       minWordLength++;
-      showPopup(`🎉 Minimum word length now set to ${minWordLength}!`);
+      showPopup(`🎉 Minimum word length now set to ${minWordLength}!`, 2000, 'info');
     }
 
     updateGame(); updateTimerDisplay();
@@ -471,7 +490,7 @@ function endGame() {
 // =======================
 hintBtn.addEventListener('click', () => {
   playClickSound();
-  showPopup("🧠 Hint system coming soon!");
+  showPopup("🧠 Hint system coming soon!", 2000, 'info');
 });
 
 wordInput.addEventListener('keydown', (e) => {
