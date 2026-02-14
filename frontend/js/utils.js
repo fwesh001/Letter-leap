@@ -2,6 +2,9 @@
   const MAX_VISIBLE = 3;
   const DISMISS_MS = 3000;
   let cachedAudio = null;
+  let loaderInterval = null;
+  let loaderTimeout = null;
+  let loaderListenerAdded = false;
 
   function getToastContainer() {
     let container = document.getElementById('toast-container');
@@ -66,6 +69,81 @@
       }
     }
   }
+
+  function getLoaderOverlay() {
+    let overlay = document.getElementById('loader-overlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'loader-overlay';
+      overlay.setAttribute('role', 'status');
+      overlay.setAttribute('aria-live', 'polite');
+      overlay.setAttribute('aria-hidden', 'false');
+
+      const loader = document.createElement('div');
+      loader.id = 'letter-leap-loader';
+      loader.setAttribute('aria-label', 'Loading LETTER-LEAP');
+
+      const letters = 'LETTER-LEAP'.split('');
+      letters.forEach((ch) => {
+        const span = document.createElement('span');
+        span.className = 'letter';
+        span.textContent = ch;
+        loader.appendChild(span);
+      });
+
+      overlay.appendChild(loader);
+      document.documentElement.appendChild(overlay);
+    }
+
+    return overlay;
+  }
+
+  function clearLoaderTimers() {
+    if (loaderInterval) {
+      clearInterval(loaderInterval);
+      loaderInterval = null;
+    }
+    if (loaderTimeout) {
+      clearTimeout(loaderTimeout);
+      loaderTimeout = null;
+    }
+  }
+
+  function startLoaderAnimation(overlay) {
+    const letters = overlay.querySelectorAll('.letter');
+    if (!letters.length) return;
+    let index = 0;
+
+    const tick = () => {
+      const current = letters[index];
+      if (current) {
+        current.classList.add('jump');
+        setTimeout(() => current.classList.remove('jump'), 600);
+      }
+      index = (index + 1) % letters.length;
+    };
+
+    tick();
+    loaderInterval = setInterval(tick, 300);
+  }
+
+  window.showGameLoader = function showGameLoader(destinationUrl, delay = 3000) {
+    if (!destinationUrl) return;
+    const overlay = getLoaderOverlay();
+    overlay.style.display = 'flex';
+    overlay.setAttribute('aria-hidden', 'false');
+
+    clearLoaderTimers();
+    startLoaderAnimation(overlay);
+    loaderTimeout = setTimeout(() => {
+      window.location.href = destinationUrl;
+    }, delay);
+
+    if (!loaderListenerAdded) {
+      window.addEventListener('beforeunload', clearLoaderTimers);
+      loaderListenerAdded = true;
+    }
+  };
 
   window.showToast = function showToast(message, type = 'info') {
     const container = getToastContainer();
