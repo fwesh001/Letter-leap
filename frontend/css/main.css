@@ -190,6 +190,11 @@ select {
 }
 
 
+/* Utility: Hidden */
+.hidden {
+  display: none !important;
+}
+
 .modal-overlay {
   position: fixed;
   top: 0;
