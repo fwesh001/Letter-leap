@@ -25,6 +25,7 @@ const ttsBtn = document.getElementById('ttsBtn');
 const copyWordBtn = document.getElementById('copyWordBtn');
 const wordModalBack = document.getElementById('wordModalBack');
 const wordCopyFeedback = document.getElementById('wordCopyFeedback');
+const wordAchievements = document.getElementById('wordAchievements');
 
 const searchInput = document.getElementById('searchInput');
 const searchResultsEl = document.getElementById('searchResults');
@@ -156,6 +157,7 @@ function openWordModal(word) {
   if (wordModalTitle) {
     wordModalTitle.textContent = word;
   }
+  renderWordAchievements(word);
   closeModal(letterModal);
   openModal(wordModal);
 }
@@ -211,6 +213,63 @@ function getAchievementCount(word) {
     (w) => ['a', 'e', 'i', 'o', 'u'].every((v) => w.toLowerCase().includes(v)),
   ];
   return checks.reduce((count, fn) => count + (fn(word) ? 1 : 0), 0);
+}
+
+function getAchievementMatches(word) {
+  const rules = [
+    {
+      id: 'double_trouble',
+      name: 'Double Trouble',
+      icon: 'ph-asterisk',
+      test: (w) => /(.)(\1)/.test(w),
+    },
+    {
+      id: 'vowel_master',
+      name: 'Vowel Master',
+      icon: 'ph-drop',
+      test: (w) => (w.match(/[aeiou]/gi) || []).length >= 4,
+    },
+    {
+      id: 'consonant_crusher',
+      name: 'Consonant Crusher',
+      icon: 'ph-shield',
+      test: (w) => (w.match(/[^aeiou]/gi) || []).length >= 5,
+    },
+    {
+      id: 'silent_but_deadly',
+      name: 'Silent but Deadly',
+      icon: 'ph-eye-slash',
+      test: (w) => !/[aeiou]/i.test(w),
+    },
+    {
+      id: 'wildcard',
+      name: 'Wildcard',
+      icon: 'ph-asterisk-simple',
+      test: (w) => ['a', 'e', 'i', 'o', 'u'].every((v) => w.toLowerCase().includes(v)),
+    },
+  ];
+
+  return rules.filter((rule) => rule.test(word));
+}
+
+function renderWordAchievements(word) {
+  if (!wordAchievements) return;
+  const matches = getAchievementMatches(word);
+  wordAchievements.innerHTML = '';
+  wordAchievements.classList.remove('is-empty');
+
+  if (!matches.length) {
+    wordAchievements.textContent = 'No achievements triggered.';
+    wordAchievements.classList.add('is-empty');
+    return;
+  }
+
+  matches.forEach((match) => {
+    const chip = document.createElement('span');
+    chip.className = 'ach-chip';
+    chip.innerHTML = `<i class="ph ${match.icon}"></i>${match.name}`;
+    wordAchievements.appendChild(chip);
+  });
 }
 
 function updateSearchResults(query) {
