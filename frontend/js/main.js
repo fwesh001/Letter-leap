@@ -165,11 +165,43 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   socket.on('gameOver', ({ winner, reason, scores, wordChain, usernames, incorrect = {}, extraStats = {} }) => {
+    // 1. Save raw MP results (legacy support)
     localStorage.setItem('gameResults', JSON.stringify({ winner, reason, scores, wordChain, usernames, incorrect, extraStats }));
+
+    // 2. Standardize for unified Result Page (gameHistory)
+    const myId = socket.id;
+    const myScore = scores[myId] || 0;
+    const myIncorrect = incorrect[myId] || 0;
+    // Note: 'wordChain' implies ALL words. In MP, we may not track individual words per player yet.
+    // For now, we'll attribute the whole chain to the game session.
+    // Ideally, server should send `playerWords` map.
+    
+    // Estimate attempts: simplified accuracy calculation
+    // If we can't distinguish my words, accuracy is just based on `myIncorrect`. 
+    // Let's assume a default high accuracy if we can't calculate it precisely, or just 100 - (errors * 5).
+    const estimatedAccuracy = Math.max(0, 100 - (myIncorrect * 5)); 
+
+    const resultData = {
+      score: myScore,
+      accuracy: estimatedAccuracy, // Approximate for MP
+      wordsPlayed: wordChain, // Using shared chain for now
+      longestWord: wordChain.reduce((longest, word) => word.length > longest.length ? word : longest, ''),
+      timeSpent: 0, // MP doesn't track personal time easily
+      incorrectWords: myIncorrect,
+      timestamp: new Date().toISOString(),
+      mode: 'multiplayer',
+      winner: winner,
+      isWinner: winner === (usernames[myId] || 'You')
+    };
+
+    const history = JSON.parse(localStorage.getItem('gameHistory')) || [];
+    history.push(resultData);
+    localStorage.setItem('gameHistory', JSON.stringify(history));
+
     if (window.showGameLoader) {
-      window.showGameLoader('resultmm.html', 3000);
+      window.showGameLoader('result.html', 3000);
     } else {
-      window.location.href = 'resultmm.html';
+      window.location.href = 'result.html';
     }
   });
 
