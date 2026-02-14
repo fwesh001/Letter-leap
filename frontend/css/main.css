@@ -782,3 +782,173 @@ button.mode-card {
   height: 1px;
 }
 
+/* ===========================
+   Popup Overlay (shared)
+   =========================== */
+.popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 10000;
+}
+.popup-overlay.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.popup-box {
+    background: #1e1e2f;
+    color: #e0e0e0;
+    width: 90vw;
+    max-width: 400px;
+    max-height: 90vh;
+    padding: 1.5rem;
+    border-radius: 15px;
+    box-shadow: 0 0 15px #0ff;
+    position: relative;
+    overflow-y: auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: left;
+    box-sizing: border-box;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: #aaa;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    z-index: 1;
+}
+.close-btn:hover {
+    color: #0ff;
+}
+
+.popup-header h2 {
+    margin: 0 0 1rem 0;
+    font-size: 1.8rem;
+    text-align: center;
+}
+
+/* ===========================
+   Difficulty Selection Modal
+   =========================== */
+.difficulty-popup {
+    max-width: 600px;
+    padding: 2rem;
+    text-align: center;
+}
+
+.difficulty-cards-container {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: stretch;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+}
+
+.difficulty-card {
+    background: var(--bg-secondary, #2a2a3d);
+    border: 2px solid var(--border-color, #3a3a4d);
+    border-radius: var(--radius-lg, 12px);
+    padding: 1.5rem 1rem;
+    min-width: 140px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    box-shadow: var(--shadow-sm, 0 2px 4px rgba(0,0,0,0.2));
+    position: relative;
+    color: inherit;
+    font-family: inherit;
+}
+
+.difficulty-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg, 0 8px 24px rgba(0,0,0,0.3));
+}
+
+.difficulty-icon {
+    font-size: 2.5rem;
+    transition: transform 0.2s ease;
+}
+
+.difficulty-card:hover .difficulty-icon {
+    transform: scale(1.15);
+}
+
+.difficulty-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.difficulty-stats {
+    font-size: 0.85rem;
+    color: var(--text-secondary, #aaa);
+    text-align: center;
+    line-height: 1.4;
+    opacity: 0.9;
+}
+
+/* Desktop: show stats as tooltip on hover */
+@media (min-width: 769px) {
+    .difficulty-stats {
+        position: absolute;
+        bottom: -2.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.92);
+        padding: 0.4rem 0.75rem;
+        border-radius: 6px;
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease, bottom 0.2s ease;
+        z-index: 100;
+        font-size: 0.8rem;
+        color: #fff;
+    }
+
+    .difficulty-card:hover .difficulty-stats {
+        opacity: 1;
+        bottom: -3rem;
+    }
+}
+
+/* Mobile: always show stats inside cards */
+@media (max-width: 768px) {
+    .difficulty-cards-container {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .difficulty-card {
+        min-width: unset;
+        width: 100%;
+        padding: 1.25rem 1rem;
+    }
+
+    .difficulty-stats {
+        display: block;
+        margin-top: 0.25rem;
+        font-size: 0.8rem;
+        opacity: 0.8;
+    }
+}
