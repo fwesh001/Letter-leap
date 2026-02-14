@@ -491,10 +491,12 @@ restartBtn.addEventListener('click', () => {
   startGame();
 });
 
-startBtn.addEventListener('click', () => {
-  playClickSound();
-  startGame();
-});
+if (startBtn) {
+  startBtn.addEventListener('click', () => {
+    playClickSound();
+    startGame();
+  });
+}
 
 // =======================
 // ✍️ TYPEWRITER EFFECT
