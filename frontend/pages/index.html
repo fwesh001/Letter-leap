@@ -149,19 +149,37 @@
             const closeBtn = document.getElementById('closeDifficultyBtn');
             const difficultyCards = document.querySelectorAll('.difficulty-card');
 
+            console.log('[DifficultyModal] Init:', {
+                modal: !!modal,
+                singlePlayerBtn: !!singlePlayerBtn,
+                closeBtn: !!closeBtn,
+                cardsCount: difficultyCards.length
+            });
+
+            if (!modal || !singlePlayerBtn) {
+                console.error('[DifficultyModal] Missing elements!');
+                return;
+            }
+
             // Show modal when Single Player is clicked
-            singlePlayerBtn.addEventListener('click', () => {
+            singlePlayerBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('[DifficultyModal] Single Player clicked, showing modal');
                 modal.classList.add('show');
+                console.log('[DifficultyModal] Modal classes:', modal.className);
             });
 
             // Hide modal when close button is clicked
             closeBtn.addEventListener('click', () => {
+                console.log('[DifficultyModal] Close clicked');
                 modal.classList.remove('show');
             });
 
             // Hide modal when clicking backdrop
             modal.addEventListener('click', (e) => {
                 if (e.target === modal) {
+                    console.log('[DifficultyModal] Backdrop clicked');
                     modal.classList.remove('show');
                 }
             });
@@ -169,6 +187,7 @@
             // Hide modal on Escape key
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape' && modal.classList.contains('show')) {
+                    console.log('[DifficultyModal] Escape pressed');
                     modal.classList.remove('show');
                 }
             });
@@ -177,6 +196,7 @@
             difficultyCards.forEach(card => {
                 card.addEventListener('click', () => {
                     const difficulty = card.dataset.difficulty;
+                    console.log('[DifficultyModal] Difficulty selected:', difficulty);
                     localStorage.setItem('gameDifficulty', difficulty);
                     localStorage.setItem('lastDifficulty', difficulty);
                     window.location.href = 'sm.html';
