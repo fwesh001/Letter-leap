@@ -421,22 +421,26 @@ function showGameOverScreen() {
   document.getElementById('accuracy').textContent = Math.round((score / (playerAttempts || 1)) * 100) + '%';
 
   const list = document.getElementById('word-list');
-  list.innerHTML = '';
-  wordChain.forEach(w => {
-    const li = document.createElement('li');
-    li.textContent = w;
-    list.appendChild(li);
-  });
+  if (list) {
+    list.innerHTML = '';
+    wordChain.forEach(w => {
+      const li = document.createElement('li');
+      li.textContent = w;
+      list.appendChild(li);
+    });
+  }
 
   if (typeof challenges !== 'undefined' && challenges.length) {
     const challengeText = challenges[Math.floor(Math.random() * challenges.length)];
-    document.getElementById('game-over-challenge').textContent = `🎮 Challenge for next round: ${challengeText}`;
+    const challengeEl = document.getElementById('game-over-challenge');
+    if (challengeEl) challengeEl.textContent = `🎮 Challenge for next round: ${challengeText}`;
   }
 
   const longestWord = wordChain.reduce((longest, word) =>
     word.length > longest.length ? word : longest, ''
   );
-  document.getElementById('longest-word').textContent = longestWord || "None";
+  const longestWordEl = document.getElementById('longest-word');
+  if (longestWordEl) longestWordEl.textContent = longestWord || "None";
 }
 
 // =======================
