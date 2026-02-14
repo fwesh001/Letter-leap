@@ -28,9 +28,18 @@
         <i class="ph ph-lightbulb"></i> Expand Your Vocabulary
       </h1>
       <p class="tips-hero__subtitle">Pick a letter to explore word tips and achievements.</p>
-      <button class="button tips-refresh-btn" id="refreshBtn">
-        <i class="ph ph-arrows-clockwise"></i> Get New Tips
-      </button>
+      <div class="tips-search" role="search">
+        <i class="ph ph-magnifying-glass tips-search__icon" aria-hidden="true"></i>
+        <input
+          id="searchInput"
+          class="tips-search__input"
+          type="search"
+          placeholder="Search words..."
+          autocomplete="off"
+          aria-label="Search words"
+        />
+        <div id="searchResults" class="search-results" role="listbox" aria-live="polite"></div>
+      </div>
     </section>
 
     <section class="letter-grid-section">
