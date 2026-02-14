@@ -151,78 +151,18 @@ document.addEventListener('DOMContentLoaded', () => {
     timerElem.style.color = timeLeft <= 10 ? '#ff4d4f' : '#fff';
   });
 
-  // 💡 IMPROVED TOAST (stacking, robust duration)
-  function showToast(message, duration = 3000) {
-    // If a non-number sneaks in (e.g., a string like roomName), default safely
-    if (typeof duration !== 'number' || !isFinite(duration) || duration < 0) {
-      duration = 3000;
+  // 💡 Global toast wrapper
+  function showToast(message, type = 'info') {
+    const allowed = ['achievement', 'penalty', 'info'];
+    const safeType = allowed.includes(type) ? type : 'info';
+
+    if (window.showToast) {
+      window.showToast(message, safeType);
+      return;
     }
 
-    // Create or reuse a top-right toast container
-    let container = document.getElementById('toast-container');
-    if (!container) {
-      container = document.createElement('div');
-      container.id = 'toast-container';
-      container.style.position = 'fixed';
-      container.style.top = '12px';
-      container.style.right = '12px';
-      container.style.display = 'flex';
-      container.style.flexDirection = 'column';
-      container.style.alignItems = 'flex-end';
-      container.style.gap = '8px';
-      container.style.zIndex = '2147483647'; // stay above everything
-      container.style.pointerEvents = 'none'; // avoid blocking UI
-      document.body.appendChild(container);
-    }
-
-    const toast = document.createElement('div');
-    toast.innerHTML = message;
-    toast.style.background = 'linear-gradient(135deg, #ff007f, #ff4d4f)';
-    toast.style.color = '#fff';
-    toast.style.padding = '12px 22px';
-    toast.style.borderRadius = '10px';
-    toast.style.boxShadow = '0 0 15px rgba(255,0,100,0.9), 0 0 30px rgba(255,50,150,0.6)';
-    toast.style.fontSize = '15px';
-    toast.style.fontWeight = 'bold';
-    toast.style.maxWidth = '75vw';
-    toast.style.textAlign = 'center';
-    toast.style.pointerEvents = 'auto';
-    toast.style.opacity = '0';
-    toast.style.transform = 'translateY(-10px)';
-    toast.style.transition = 'opacity 160ms ease, transform 160ms ease';
-
-    // Add and animate in
-    container.appendChild(toast);
-    requestAnimationFrame(() => {
-      toast.style.opacity = '1';
-      toast.style.transform = 'translateY(0)';
-    });
-
-    // Auto remove with fade-out, then cleanup
-    setTimeout(() => {
-      toast.style.opacity = '0';
-      toast.style.transform = 'translateY(-8px)';
-      setTimeout(() => {
-        if (toast.parentNode) toast.parentNode.removeChild(toast);
-        // Optional: remove container if empty
-        if (container && container.children.length === 0 && container.parentNode) {
-          container.parentNode.removeChild(container);
-        }
-      }, 200);
-    }, duration);
+    console.log('[toast]', message);
   }
-
-  // 🔥 Pop animation (make sure to add in your CSS)
-  const style = document.createElement('style');
-  style.innerHTML = `
-    @keyframes popInOut {
-      0% { transform: scale(0.5); opacity: 0; }
-      10% { transform: scale(1.1); opacity: 1; }
-      80% { transform: scale(1); opacity: 1; }
-      100% { transform: scale(0.8); opacity: 0; }
-    }
-  `;
-  document.head.appendChild(style);
 
   socket.on('gameOver', ({ winner, reason, scores, wordChain, usernames, incorrect = {}, extraStats = {} }) => {
     localStorage.setItem('gameResults', JSON.stringify({ winner, reason, scores, wordChain, usernames, incorrect, extraStats }));
@@ -230,13 +170,13 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   socket.on('penalty', (message) => {
-    showToast(message);
+    showToast(message, 'penalty');
   });
 
   socket.on('wordRejected', (msg) => {
     try {
       console.log('[client] wordRejected:', msg);
-      showToast(msg);
+      showToast(msg, 'penalty');
       blinkEffect('red');
       playSound('wrong');
     } catch (err) {
@@ -250,15 +190,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   socket.on('roomFull', (msg) => {
     console.warn('[client] roomFull:', msg);
-    showToast(msg);
+    showToast(msg, 'penalty');
   });
   socket.on('roomNotFound', (msg) => {
     console.warn('[client] roomNotFound:', msg);
-    showToast(msg);
+    showToast(msg, 'penalty');
   });
 
   socket.on('achievementUnlocked', ({ id, name, emoji }) => {
-    showToast(`${name || 'Achievement unlocked'}`);
+    showToast(`${name || 'Achievement unlocked'}`, 'achievement');
   });
 
   socket.on('playerAchievement', ({ playerId, username, id, name, emoji }) => {
