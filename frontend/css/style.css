@@ -341,3 +341,111 @@ body.light-mode .settings-btn:hover {
 .start-btn:hover {
     background-color: #0cc;
 }
+
+/* ===========================
+   Difficulty Selection Modal
+   =========================== */
+.difficulty-popup {
+    max-width: 600px;
+    padding: 2rem;
+}
+
+.difficulty-cards-container {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: stretch;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+}
+
+.difficulty-card {
+    background: var(--bg-primary);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem 1rem;
+    min-width: 150px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+}
+
+.difficulty-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.difficulty-icon {
+    font-size: 2.5rem;
+    transition: transform 0.2s ease;
+}
+
+.difficulty-card:hover .difficulty-icon {
+    transform: scale(1.1);
+}
+
+.difficulty-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.difficulty-stats {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    text-align: center;
+    line-height: 1.4;
+    opacity: 0.9;
+}
+
+/* Desktop: Show stats on hover as tooltip */
+@media (min-width: 769px) {
+    .difficulty-stats {
+        position: absolute;
+        bottom: -2.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.9);
+        padding: 0.5rem 0.75rem;
+        border-radius: var(--radius-sm);
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease, bottom 0.2s ease;
+        z-index: 100;
+        font-size: 0.8rem;
+        color: #fff;
+    }
+    
+    .difficulty-card:hover .difficulty-stats {
+        opacity: 1;
+        bottom: -3rem;
+    }
+}
+
+/* Mobile: Always show stats inside card */
+@media (max-width: 768px) {
+    .difficulty-cards-container {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .difficulty-card {
+        min-width: unset;
+        width: 100%;
+        padding: 1.25rem 1rem;
+    }
+    
+    .difficulty-stats {
+        display: block;
+        margin-top: 0.25rem;
+        font-size: 0.8rem;
+        opacity: 0.8;
+    }
+}
