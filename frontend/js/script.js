@@ -190,30 +190,15 @@ function updateLastWords() {
 }
 
 function showPopup(msg, duration = 2000, type = 'info') {
-  popup.textContent = msg;
-  popup.style.display = 'block';
-  popup.style.backgroundColor = '';
-
   if (window.showToast) {
     window.showToast(msg, type);
   }
-
-  setTimeout(() => popup.style.display = 'none', duration);
 }
 
 function popAchievementBadge(badgeName, duration = 2000) {
-  popup.textContent = `Achievement Unlocked: ${badgeName}`;
-  popup.style.display = 'block';
-  popup.style.backgroundColor = '#FFD700';
-
   if (window.showToast) {
     window.showToast(`Achievement Unlocked: ${badgeName}`, 'achievement');
   }
-
-  setTimeout(() => {
-    popup.style.display = 'none';
-    popup.style.backgroundColor = ''; // Reset color after
-  }, duration);
 }
 
 
