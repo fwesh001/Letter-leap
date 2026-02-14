@@ -166,7 +166,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   socket.on('gameOver', ({ winner, reason, scores, wordChain, usernames, incorrect = {}, extraStats = {} }) => {
     localStorage.setItem('gameResults', JSON.stringify({ winner, reason, scores, wordChain, usernames, incorrect, extraStats }));
-    window.location.href = 'resultmm.html';
+    if (window.showGameLoader) {
+      window.showGameLoader('resultmm.html', 3000);
+    } else {
+      window.location.href = 'resultmm.html';
+    }
   });
 
   socket.on('penalty', (message) => {
