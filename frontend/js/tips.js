@@ -1,10 +1,15 @@
 const LETTERS = Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i));
 const MAX_WORDS_PER_LETTER = 80;
 const COPY_FEEDBACK_MS = 900;
+const SEARCH_MIN_CHARS = 2;
+const SEARCH_MAX_RESULTS = 8;
 
 let groupedWords = {};
+let allWords = [];
 let activeLetterIndex = 0;
 let activeWord = '';
+let searchResults = [];
+let activeSearchIndex = -1;
 
 const letterGrid = document.getElementById('letterGrid');
 const letterModal = document.getElementById('letterModal');
@@ -21,13 +26,15 @@ const copyWordBtn = document.getElementById('copyWordBtn');
 const wordModalBack = document.getElementById('wordModalBack');
 const wordCopyFeedback = document.getElementById('wordCopyFeedback');
 
-const refreshBtn = document.getElementById('refreshBtn');
+const searchInput = document.getElementById('searchInput');
+const searchResultsEl = document.getElementById('searchResults');
 
 function loadWords() {
   return fetch('/data/words.txt')
     .then((response) => response.text())
     .then((text) => {
       const lines = text.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
+      allWords = lines;
       groupedWords = groupWords(lines);
       renderLetterGrid();
     })
@@ -51,19 +58,8 @@ function groupWords(words) {
   return grouped;
 }
 
-function shuffleArray(arr) {
-  for (let i = arr.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-}
-
-function refreshWords() {
-  Object.values(groupedWords).forEach((list) => shuffleArray(list));
-  renderLetterGrid();
-  if (isModalOpen(letterModal)) {
-    renderLetterWords();
-  }
+function normalizeWord(word) {
+  return word.trim().toLowerCase();
 }
 
 function renderLetterGrid() {
@@ -217,6 +213,81 @@ function getAchievementCount(word) {
   return checks.reduce((count, fn) => count + (fn(word) ? 1 : 0), 0);
 }
 
+function updateSearchResults(query) {
+  if (!searchResultsEl) return;
+  const normalized = normalizeWord(query);
+  if (normalized.length < SEARCH_MIN_CHARS) {
+    clearSearchResults();
+    return;
+  }
+
+  const startsWithMatches = allWords.filter((word) => normalizeWord(word).startsWith(normalized));
+  const fuzzyMatches = startsWithMatches.length
+    ? startsWithMatches
+    : allWords.filter((word) => normalizeWord(word).includes(normalized));
+
+  searchResults = fuzzyMatches.slice(0, SEARCH_MAX_RESULTS);
+  activeSearchIndex = searchResults.length ? 0 : -1;
+  renderSearchResults();
+}
+
+function renderSearchResults() {
+  if (!searchResultsEl) return;
+  searchResultsEl.innerHTML = '';
+
+  if (!searchResults.length) {
+    searchResultsEl.classList.remove('is-open');
+    return;
+  }
+
+  searchResults.forEach((word, index) => {
+    const item = document.createElement('div');
+    item.className = 'search-result';
+    if (index === activeSearchIndex) {
+      item.classList.add('is-active');
+    }
+    item.setAttribute('role', 'option');
+    item.setAttribute('aria-selected', index === activeSearchIndex ? 'true' : 'false');
+
+    const wordSpan = document.createElement('span');
+    wordSpan.className = 'search-result__word';
+    wordSpan.textContent = word;
+
+    const achSpan = document.createElement('span');
+    achSpan.className = 'search-result__ach';
+    achSpan.textContent = `x${getAchievementCount(word)}`;
+
+    item.appendChild(wordSpan);
+    item.appendChild(achSpan);
+
+    item.addEventListener('click', () => {
+      openWordModal(word);
+      clearSearchResults(true);
+    });
+
+    searchResultsEl.appendChild(item);
+  });
+
+  searchResultsEl.classList.add('is-open');
+}
+
+function clearSearchResults(clearInput = false) {
+  if (!searchResultsEl) return;
+  searchResults = [];
+  activeSearchIndex = -1;
+  searchResultsEl.innerHTML = '';
+  searchResultsEl.classList.remove('is-open');
+  if (clearInput && searchInput) {
+    searchInput.value = '';
+  }
+}
+
+function moveSearchSelection(step) {
+  if (!searchResults.length) return;
+  activeSearchIndex = (activeSearchIndex + step + searchResults.length) % searchResults.length;
+  renderSearchResults();
+}
+
 function shiftLetter(step) {
   activeLetterIndex = (activeLetterIndex + step + LETTERS.length) % LETTERS.length;
   updateActiveLetter();
@@ -258,8 +329,33 @@ function getGridColumns() {
 document.addEventListener('DOMContentLoaded', () => {
   loadWords();
 
-  if (refreshBtn) {
-    refreshBtn.addEventListener('click', refreshWords);
+  if (searchInput) {
+    searchInput.addEventListener('input', (event) => {
+      updateSearchResults(event.target.value);
+    });
+
+    searchInput.addEventListener('keydown', (event) => {
+      if (!searchResults.length) return;
+      if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        moveSearchSelection(1);
+      }
+      if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        moveSearchSelection(-1);
+      }
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        const selected = searchResults[activeSearchIndex];
+        if (selected) {
+          openWordModal(selected);
+          clearSearchResults(true);
+        }
+      }
+      if (event.key === 'Escape') {
+        clearSearchResults(true);
+      }
+    });
   }
 
   if (letterGrid) {
@@ -288,6 +384,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') {
+      if (searchResults.length) {
+        clearSearchResults(true);
+        return;
+      }
       if (isModalOpen(wordModal)) {
         event.preventDefault();
         closeWordModal();
