@@ -84,8 +84,9 @@ app.get('/resultmm.html', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'frontend', 'pages', 'resultmm.html'));
 });
 
+// Redirect difficulty.html to index - difficulty selection is now inline
 app.get('/difficulty.html', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'frontend', 'pages', 'difficulty.html'));
+  res.redirect('/');
 });
 
 app.get('/tips.html', (req, res) => {
