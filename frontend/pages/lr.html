@@ -6,25 +6,12 @@
   <title>Analyzing Results - Letter-Leap</title>
   <link rel="stylesheet" href="/css/design-system.css">
   <link rel="stylesheet" href="/css/main.css">
-  <style>
-    body { background: var(--bg-primary); }
-    .loader-content { text-align: center; }
-    .spinner { width: 60px; height: 60px; border: 5px solid var(--bg-secondary); border-top-color: var(--primary-color); border-radius: 50%; animation: spin 1s infinite linear; margin: 0 auto 1.5rem; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-  </style>
+  <link rel="stylesheet" href="/css/loader.css">
 </head>
-<body style="display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0;">
-  <div class="loader-content">
-    <div class="spinner"></div>
-    <h2 style="color: var(--text-primary); font-family: sans-serif;">Analyzing your performance...</h2>
-    <p style="color: var(--text-secondary);">Calculating points and achievements</p>
-  </div>
-
+<body>
+  <script src="/js/utils.js"></script>
   <script>
-    setTimeout(() => {
-      window.location.href = "result.html";
-    }, 2500);
+    window.showGameLoader('result.html', 2500);
   </script>
-  <script src="/js/script2.js"></script>
 </body>
 </html>
