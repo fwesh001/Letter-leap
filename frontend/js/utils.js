@@ -10,7 +10,9 @@
       container.id = 'toast-container';
       container.setAttribute('aria-live', 'polite');
       container.setAttribute('aria-atomic', 'true');
-      document.body.appendChild(container);
+      // Append to <html> instead of <body> so that body.is-small-ui
+      // transform: scale(...) doesn't break position: fixed
+      document.documentElement.appendChild(container);
     }
     return container;
   }
