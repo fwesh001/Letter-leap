@@ -732,6 +732,7 @@ checkAndEmitAchievements(word, gameState, socket, roomName);
     if (roomScores[roomName][AI_ID]) {
       delete roomScores[roomName][AI_ID];
       delete roomUsernames[roomName][AI_ID];
+      delete roomAIDifficulty[roomName]; // Clear AI difficulty
       roomPlayerOrder[roomName] = roomPlayerOrder[roomName].filter(id => id !== AI_ID);
       io.to(roomName).emit('updateScores', roomScores[roomName]);
       io.to(roomName).emit('updateUsernames', roomUsernames[roomName]);
