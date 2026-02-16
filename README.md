@@ -93,7 +93,7 @@ Create valid words that either continue or respond to the current word chain bef
 1. Clone the repository:
 
 ```bash
-git clone <repo-url>
+git clone <https://github.com/fwesh001/Letter-leap.git>
 cd "letter leap"
 ```
 
@@ -137,4 +137,12 @@ If you need to change the port, edit `server/server.js` (default `PORT = 3000`).
 	- For feature requests, describe the user value and provide mockups where helpful.
 
 ## 📜 License / Credits
+- **License:** MIT License (see [LICENSE](LICENSE) file)
+- **Credits:**
+	- Developed by [fwesh001](https://github.com/fwesh001)
+	- Word list sourced from [SCOWL](http://wordlist.aspell.net/)
+	- Sound effects from [Freesound](https://freesound.org/)
+	- Icons from [Font Awesome](https://fontawesome.com/)
+	- Inspiration from classic word games like Scrabble, Boggle, and Wordle.
+	- Special thanks to the open-source community for libraries and resources used in development.
 
