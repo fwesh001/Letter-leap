@@ -77,6 +77,17 @@ let lengthPoints = 0;
 let rareLetterPoints = 0;
 let streakBonusPoints = 0;
 let longWordPoints = 0;
+
+// Survival Mode State
+let hearts = 3;
+const maxHearts = 3;
+let tokens = 2;
+let tokensUsed = 0;
+let maxFloor = 0;
+let floorLevel = difficultySettings.minWordLength;
+let corruptedLetter = '';
+let corruptedTurnsRemaining = 0;
+let survivalPerfectStreak = 0;
 let hearts = 3;
 let maxHearts = 3;
 let maxFloor = 0;
@@ -142,25 +153,39 @@ function startGame() {
   rareLetterPoints = 0;
   streakBonusPoints = 0;
   longWordPoints = 0;
+  hearts = maxHearts;
+  tokens = 2;
+  tokensUsed = 0;
+  maxFloor = minWordLength;
+  floorLevel = minWordLength;
+  corruptedLetter = '';
+  corruptedTurnsRemaining = 0;
+  survivalPerfectStreak = 0;
 
   currentLetter = getRandomLetter();
   letterElement.textContent = currentLetter;
-  updateTimerDisplay();
+  if (!isSurvivalMode) {
+    updateTimerDisplay();
+  }
+  updateSurvivalHud();
+  updateCorruptedLetters();
   updateGame();
   updateLastWords();
 
   showPopup('Game starting! Good luck.', 2000, 'info');
 
   clearInterval(timerInterval);
-  timerInterval = setInterval(() => {
-    timeLeft--;
-    updateTimerDisplay();
-    if (timeLeft <= 0) {
-      clearInterval(timerInterval);
-      showPopup('Time is up!', 2000, 'penalty');
-      endGame();
-    }
-  }, 1000);
+  if (!isSurvivalMode) {
+    timerInterval = setInterval(() => {
+      timeLeft--;
+      updateTimerDisplay();
+      if (timeLeft <= 0) {
+        clearInterval(timerInterval);
+        showPopup('Time is up!', 2000, 'penalty');
+        endGame();
+      }
+    }, 1000);
+  }
 }
 
 // =======================
@@ -258,6 +283,50 @@ function getStreakMultiplierFromBonus(bonus) {
 function hasRareToken(word) {
   const lower = word.toLowerCase();
   return RARE_TOKENS.some((token) => lower.includes(token));
+}
+
+function updateSurvivalHud() {
+  if (!survivalHud || !heartsContainer || !floorValue || !tokensValue) return;
+
+  if (isSurvivalMode) {
+    if (timerElement) timerElement.style.display = 'none';
+    survivalHud.style.display = 'flex';
+  } else {
+    if (timerElement) timerElement.style.display = 'flex';
+    survivalHud.style.display = 'none';
+  }
+
+  heartsContainer.innerHTML = '';
+  for (let i = 0; i < maxHearts; i++) {
+    const heart = document.createElement('span');
+    heart.textContent = i < hearts ? '❤️' : '🖤';
+    heart.style.fontSize = '1.1rem';
+    heartsContainer.appendChild(heart);
+  }
+
+  floorValue.textContent = floorLevel;
+  tokensValue.textContent = tokens;
+}
+
+function updateCorruptedLetters() {
+  if (!corruptedContainer || !corruptedLettersEl) return;
+  if (!isSurvivalMode) {
+    corruptedContainer.style.display = 'none';
+    return;
+  }
+
+  if (!corruptedLetter) {
+    corruptedContainer.style.display = 'none';
+    corruptedLettersEl.innerHTML = '';
+    return;
+  }
+
+  corruptedContainer.style.display = 'flex';
+  corruptedLettersEl.innerHTML = '';
+  const letterEl = document.createElement('span');
+  letterEl.className = 'corrupted-letter';
+  letterEl.textContent = corruptedLetter;
+  corruptedLettersEl.appendChild(letterEl);
 }
 
 
