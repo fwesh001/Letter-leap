@@ -171,6 +171,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   socket.on('gameOver', ({ winner, reason, scores, wordChain, usernames, incorrect = {}, extraStats = {} }) => {
     localStorage.setItem('gameResults', JSON.stringify({ winner, reason, scores, wordChain, usernames, incorrect, extraStats }));
+    selectedAIDifficulty = null; // Clear AI difficulty on game over
+    document.getElementById('ai-indicator').style.display = 'none'; // Hide AI indicator
     if (window.showGameLoader) {
       window.showGameLoader('resultmm.html', 3000);
     } else {
