@@ -103,6 +103,12 @@ startBtn.addEventListener('click', () => {
     localStorage.setItem('gameDifficulty', 'medium');
   } else {
     localStorage.setItem('gameMode', 'classic');
+    if (selectedLevelKey === 'easy') {
+      localStorage.setItem('gameDifficulty', 'easy');
+    }
+    if (selectedLevelKey === 'hard') {
+      localStorage.setItem('gameDifficulty', 'hard');
+    }
   }
   window.location.href = selectedLevelUrl;
 });
