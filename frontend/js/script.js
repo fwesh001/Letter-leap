@@ -506,6 +506,16 @@ function handleSubmission() {
   wordChain.push(playerWord); usedWords.add(playerWord);
   score++;
   totalWordsExchanged++;
+  if (isSurvivalMode) {
+    advanceCorruptionCounter();
+    maybeCorruptLetter();
+    survivalPerfectStreak++;
+    if (survivalPerfectStreak % 15 === 0) {
+      hearts = Math.min(maxHearts, hearts + 1);
+      showPopup('❤️ Perfect chain! +1 Heart', 1600, 'achievement');
+      updateSurvivalHud();
+    }
+  }
   currentStreak++;
 
   const basePoints = playerWord.length;
