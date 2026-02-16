@@ -141,6 +141,39 @@ select {
   transition: box-shadow 0.2s;
 }
 
+.corrupted-letters-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 77, 77, 0.08);
+  border: 1px solid rgba(255, 77, 77, 0.3);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+}
+
+.corrupted-letters {
+  display: inline-flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.corrupted-letter {
+  font-weight: 700;
+  color: #ff4d4f;
+  text-decoration: line-through;
+  text-shadow: 0 0 6px rgba(255, 77, 77, 0.6);
+  animation: glitch-pulse 1.1s infinite;
+}
+
+@keyframes glitch-pulse {
+  0% { transform: translateY(0); opacity: 0.9; }
+  50% { transform: translateY(-1px); opacity: 1; }
+  100% { transform: translateY(0); opacity: 0.85; }
+}
+
 .word-input-area.my-turn input,
 .word-input-area.my-turn button {
   border: 2px solid var(--primary-color);
