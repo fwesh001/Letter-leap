@@ -293,20 +293,34 @@ document.addEventListener('DOMContentLoaded', () => {
     showToast('At least 2 players are required to start the game!');
   });
 
-  const aiToggle = document.getElementById('ai-toggle');
-  let aiEnabled = false;
+  // AI Difficulty Modal
+  let selectedAIDifficulty = null;
+  const aiDifficultyBtn = document.getElementById('ai-difficulty-btn');
+  const aiDifficultyModal = document.getElementById('ai-difficulty-modal');
+  const aiModalCancelBtn = document.getElementById('ai-modal-cancel-btn');
+  const aiDifficultyOptions = document.querySelectorAll('.ai-difficulty-option');
 
-  aiToggle.addEventListener('change', function () {
-    aiEnabled = this.checked;
-    if (window.currentRoomName) {
-      if (aiEnabled) {
-        socket.emit('addAI', { roomName: window.currentRoomName });
+  aiDifficultyBtn.addEventListener('click', () => {
+    aiDifficultyModal.style.display = 'flex';
+  });
+
+  aiModalCancelBtn.addEventListener('click', () => {
+    aiDifficultyModal.style.display = 'none';
+  });
+
+  aiDifficultyOptions.forEach(option => {
+    option.addEventListener('click', () => {
+      const difficulty = option.dataset.difficulty;
+      selectedAIDifficulty = difficulty;
+      
+      // Add AI with selected difficulty
+      if (window.currentRoomName) {
+        socket.emit('addAI', { roomName: window.currentRoomName, difficulty });
         document.getElementById('ai-indicator').style.display = 'block';
-      } else {
-        socket.emit('removeAI', { roomName: window.currentRoomName });
-        document.getElementById('ai-indicator').style.display = 'none';
+        aiDifficultyModal.style.display = 'none';
+        showToast(`AI Opponent (${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}) added!`);
       }
-    }
+    });
   });
 
   document.getElementById('add-ai-btn').onclick = () => {
