@@ -166,7 +166,7 @@ function populateMultiplayerResults() {
                 card.innerHTML = `
                     <div class="word-number">${idx + 1}</div>
                     <div class="word-text">${escapeHtml(entry.word)}</div>
-                    <div class="word-player">${escapeHtml(playerName)}</div>
+                    <div class="word-player" style="color: var(--primary-color); font-size: 0.8rem;">${escapeHtml(playerName)}</div>
                 `;
                 replayContainer.appendChild(card);
             });
@@ -180,53 +180,105 @@ function populateMultiplayerResults() {
     if (badgeContainer) {
         badgeContainer.innerHTML = '';
         
-        // Generate achievements based on game stats
-        const achievementList = [];
+        const addBadge = (icon, title, desc, color) => {
+            const badge = document.createElement('div');
+            badge.className = 'badge';
+            // Inline styles for glassmorphism look
+            badge.style.display = 'inline-flex';
+            badge.style.alignItems = 'center';
+            badge.style.gap = '0.5rem';
+            badge.style.padding = '0.75rem 1.25rem';
+            badge.style.background = 'rgba(255,255,255,0.05)';
+            badge.style.border = `2px solid ${color}`;
+            badge.style.borderRadius = '20px';
+            badge.style.color = color;
+            badge.style.fontWeight = 'bold';
+            badge.style.marginRight = '0.75rem';
+            badge.style.marginBottom = '0.75rem';
+            
+            // Tooltip or subtitle approach (since badge is small)
+            // We'll put the desc in a title attribute for hover, 
+            // or render a more complex card if space allows.
+            // For now, let's stick to the "Pill" style with a tooltip.
+            badge.title = desc;
 
-        // Most accurate
-        if (players.length > 0 && players[0].accuracyPct === 100) {
-            achievementList.push({ icon: 'ph-target', label: 'Perfect Game', color: '#2ecc71' });
+            badge.innerHTML = `<i class="ph-fill ${icon}"></i> ${title}`;
+            badgeContainer.appendChild(badge);
+        };
+
+        let hasBadges = false;
+
+        // 1. Top Scorer 🏆
+        if (players.length > 0) {
+            addBadge('ph-trophy', 'Top Scorer', `${players[0].name} scored ${players[0].score} pts`, '#ffd700');
+            hasBadges = true;
         }
 
-        // Most words
-        if (players.length > 0 && players[0].totalWords >= 20) {
-            achievementList.push({ icon: 'ph-crown', label: 'Word Master', color: '#f1c40f' });
+        // 2. Dictionary Expert 📖 (Longest word in chain)
+        if (wordChain.length > 0) {
+            const longestEntry = wordChain.reduce((best, current) =>
+                current.word.length > (best.word?.length || 0) ? current : best, { word: '' }
+            );
+            if (longestEntry.word.length >= 8) { // Only if it's somewhat long
+                const playerName = usernames[longestEntry.playerId] || 'Player';
+                addBadge('ph-book-open', 'Dictionary Expert', `${playerName} played "${longestEntry.word}"`, '#9b59b6');
+                hasBadges = true;
+            }
         }
 
-        // Longest word
-        if (players.length > 0 && players[0].longest.length >= 8) {
-            achievementList.push({ icon: 'ph-book', label: 'Scholar', color: '#9b59b6' });
+        // 3. Accuracy Master 👑
+        const accuracyWinner = players.reduce((best, current) => {
+            return (current.accuracyPct > (best?.accuracyPct || 0)) ? current : best;
+        }, null);
+        if (accuracyWinner && accuracyWinner.accuracyPct >= 90) {
+            addBadge('ph-crosshair', 'Accuracy Master', `${accuracyWinner.name} achieved ${accuracyWinner.accuracyPct}% accuracy`, '#2ecc71');
+            hasBadges = true;
         }
 
-        // High score
-        if (players.length > 0 && players[0].score >= 100) {
-            achievementList.push({ icon: 'ph-lightning', label: 'Dominator', color: '#e74c3c' });
+        // 4. Iron Fingers ⌨️ (Max Streak)
+        const streakWinner = players.reduce((best, current) => 
+            (current.maxStreak > (best?.maxStreak || 0)) ? current : best
+        , null);
+        if (streakWinner && streakWinner.maxStreak >= 5) {
+            addBadge('ph-keyboard', 'Iron Fingers', `${streakWinner.name} had a ${streakWinner.maxStreak}-word streak`, '#3498db');
+            hasBadges = true;
         }
 
-        // Comeback (if 2nd place has decent score relative to 1st)
-        if (players.length >= 2 && players[1].score > players[0].score * 0.7) {
-            achievementList.push({ icon: 'ph-arrow-up', label: 'Close Match', color: '#3498db' });
+        // 5. Fastest Fingers ⚡ (Total Words)
+        const fastestPlayer = players.reduce((best, current) => 
+          (current.totalWords > (best?.totalWords || 0)) ? current : best
+        , null);
+        if (fastestPlayer && fastestPlayer.totalWords >= 15) {
+            addBadge('ph-lightning', 'Fastest Fingers', `${fastestPlayer.name} played ${fastestPlayer.totalWords} words`, '#e74c3c');
+            hasBadges = true;
         }
 
-        if (achievementList.length > 0) {
-            achievementList.forEach(a => {
-                const badge = document.createElement('div');
-                badge.className = 'badge';
-                badge.style.display = 'inline-flex';
-                badge.style.alignItems = 'center';
-                badge.style.gap = '0.5rem';
-                badge.style.padding = '0.75rem 1.25rem';
-                badge.style.background = 'rgba(255,255,255,0.05)';
-                badge.style.border = `2px solid ${a.color}`;
-                badge.style.borderRadius = '20px';
-                badge.style.color = a.color;
-                badge.style.fontWeight = 'bold';
-                badge.style.marginRight = '0.75rem';
-                badge.style.marginBottom = '0.75rem';
-                badge.innerHTML = `<i class="ph-fill ${a.icon}"></i> ${a.label}`;
-                badgeContainer.appendChild(badge);
-            });
-        } else {
+        // 6. Trap Master 🐉 (Rare Letters)
+        const rareRegex = /[qxzwvy]/i;
+        const rareCounts = {};
+        wordChain.forEach((entry) => {
+            if (rareRegex.test(entry.word)) {
+                const pid = entry.playerId;
+                rareCounts[pid] = (rareCounts[pid] || 0) + 1;
+            }
+        });
+        // Find max rare
+        let maxRare = 0;
+        let rarePlayerId = null;
+        Object.entries(rareCounts).forEach(([pid, count]) => {
+            if (count > maxRare) {
+                maxRare = count;
+                rarePlayerId = pid;
+            }
+        });
+        
+        if (maxRare >= 3) {
+            const name = usernames[rarePlayerId] || 'Player';
+            addBadge('ph-skull', 'Trap Master', `${name} used ${maxRare} rare-letter words`, '#ff7675');
+            hasBadges = true;
+        }
+
+        if (!hasBadges) {
             badgeContainer.innerHTML = '<p style="color: var(--text-secondary);">No special achievements this match.</p>';
         }
     }
