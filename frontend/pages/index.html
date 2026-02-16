@@ -95,6 +95,13 @@
                     <span class="difficulty-title" style="color: var(--danger-color);">Hard</span>
                     <span class="difficulty-stats">30s | 4 words | +5s</span>
                 </button>
+                <!-- Survival Mode -->
+                <button class="difficulty-card" data-difficulty="survival" style="border-color: var(--accent-color);">
+                    <i class="ph ph-heart-break difficulty-icon" style="color: var(--accent-color);"></i>
+                    <span class="difficulty-title" style="color: var(--accent-color);">Survival</span>
+                    <span class="difficulty-stats">No timer | Hearts | Corruption</span>
+                    <span style="margin-top: 0.35rem; font-size: 0.7rem; padding: 0.15rem 0.5rem; border-radius: 999px; background: rgba(255, 215, 0, 0.2); color: var(--accent-color); font-weight: 700;">Recommended</span>
+                </button>
             </div>
         </div>
     </div>
@@ -198,8 +205,15 @@
                 card.addEventListener('click', () => {
                     const difficulty = card.dataset.difficulty;
                     console.log('[DifficultyModal] Difficulty selected:', difficulty);
-                    localStorage.setItem('gameDifficulty', difficulty);
-                    localStorage.setItem('lastDifficulty', difficulty);
+                    if (difficulty === 'survival') {
+                        localStorage.setItem('gameMode', 'survival');
+                        localStorage.setItem('gameDifficulty', 'medium');
+                        localStorage.setItem('lastDifficulty', 'survival');
+                    } else {
+                        localStorage.setItem('gameMode', 'classic');
+                        localStorage.setItem('gameDifficulty', difficulty);
+                        localStorage.setItem('lastDifficulty', difficulty);
+                    }
                     window.location.href = 'sm.html';
                 });
             });
