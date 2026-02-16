@@ -357,6 +357,15 @@ io.on('connection', (socket) => {
   console.log('🟢 A user connected:', socket.id);
 
   socket.on('createRoom', ({ roomName, username }) => {
+    // Check if room already exists and username is taken
+    if (roomUsernames[roomName]) {
+      const existingUsernames = Object.values(roomUsernames[roomName]);
+      if (existingUsernames.includes(username || 'Player')) {
+        socket.emit('usernameTaken', '⚠️ Username already taken in this room');
+        return;
+      }
+    }
+
     socket.join(roomName);
     roomWordChains[roomName] = [];
     roomScores[roomName] = { [socket.id]: 0 };
@@ -408,6 +417,16 @@ io.on('connection', (socket) => {
       socket.emit('roomFull', '🚫 Room is full (max 6 players)');
       return;
     }
+
+    // Check if username is already taken by another player
+    const existingUsernames = Object.entries(roomUsernames[roomName] || {});
+    for (const [playerId, playerName] of existingUsernames) {
+      if (playerId !== socket.id && playerName === (username || 'Player')) {
+        socket.emit('usernameTaken', '⚠️ Username already taken in this room');
+        return;
+      }
+    }
+
     socket.join(roomName);
     roomScores[roomName] = roomScores[roomName] || {};
     roomScores[roomName][socket.id] = 0;
