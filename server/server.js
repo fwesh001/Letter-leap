@@ -49,6 +49,7 @@ const roomPlayerOrder = {};       // Tracks order/turn of player
 const roomMinLength = {};        // Tracks current enforced minLength per room
 const roomLastAIWord = {};      // Tracks last AI word by room for achievements
 const playerQuickStreak = {};  // Tracks consecutive plays with >=30s left per player per room
+const roomPlayerStatus = {};   // Tracks player status per room (active, eliminated, left)
 const TURN_TIME = 60;         // Tracks seconds per player
 const AI_ID = 'AI_PLAYER';   // Tracks AI in room
 const AI_NAME = 'Max (BOT)';// Tracks name of Bot
@@ -218,17 +219,20 @@ function eliminatePlayer(roomName, playerId, reasonMsg) {
   // Remove from rotation
   roomPlayerOrder[roomName] = (roomPlayerOrder[roomName] || []).filter(id => id !== playerId);
 
+  roomPlayerStatus[roomName] = roomPlayerStatus[roomName] || {};
+  roomPlayerStatus[roomName][playerId] = 'eliminated';
+  emitPlayerStatus(roomName);
+
   // Notify
   io.to(roomName).emit('toast', reasonMsg || `${roomUsernames[roomName][playerId] || 'Player'} eliminated`);
 
   // Win condition: last player standing
   const remaining = roomPlayerOrder[roomName] || [];
   if (remaining.length <= 1) {
-    const winnerId = remaining[0];
-    const winnerName = winnerId ? (roomUsernames[roomName][winnerId] || 'Winner') : 'No winner';
+    const winnerResult = computeWinnerResult(roomName, { type: 'timeout' });
     io.to(roomName).emit('gameOver', {
-      winner: winnerName,
-      reason: 'Last player standing',
+      winner: winnerResult.winner,
+      reason: winnerResult.reason,
       scores: roomScores[roomName],
       wordChain: roomWordChains[roomName],
       usernames: roomUsernames[roomName],
@@ -766,6 +770,40 @@ function emitPlayerCount(roomName) {
   const players = roomPlayerOrder[roomName] || [];
   const realPlayers = players.filter(id => id !== AI_ID); // exclude AI
   io.to(roomName).emit('playerCountUpdate', realPlayers.length);
+}
+
+function emitPlayerStatus(roomName) {
+  io.to(roomName).emit('updatePlayerStatus', roomPlayerStatus[roomName] || {});
+}
+
+function getRealPlayerIds(roomName) {
+  return Object.keys(roomScores[roomName] || {}).filter(id => id !== AI_ID);
+}
+
+function computeWinnerResult(roomName, context = {}) {
+  const realIds = getRealPlayerIds(roomName);
+  if (realIds.length === 2) {
+    const [a, b] = realIds;
+    const scoreA = roomScores[roomName]?.[a] || 0;
+    const scoreB = roomScores[roomName]?.[b] || 0;
+    if (scoreA === scoreB) {
+      return { winner: 'Tie', reason: 'Scores are tied' };
+    }
+    const winnerId = scoreA > scoreB ? a : b;
+    const winnerName = roomUsernames[roomName]?.[winnerId] || 'Winner';
+    let reason = 'Won by higher score';
+    if (context.type === 'timeout') {
+      reason = 'Won by higher score after timeout';
+    } else if (context.type === 'left') {
+      reason = 'Won by higher score after opponent left';
+    }
+    return { winner: winnerName, reason };
+  }
+
+  const remaining = roomPlayerOrder[roomName] || [];
+  const winnerId = remaining[0];
+  const winnerName = winnerId ? (roomUsernames[roomName]?.[winnerId] || 'Winner') : 'No winner';
+  return { winner: winnerName, reason: context.reason || 'Last player standing' };
 }
 
 
