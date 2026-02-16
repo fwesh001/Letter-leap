@@ -55,12 +55,41 @@
                 <i class="ph ph-trophy" style="color: var(--accent-color);"></i> Score: <span id="score">0</span>
             </div>
         </div>
+
+        <!-- Survival HUD -->
+        <div id="survival-hud" style="display: none; gap: 1rem; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; background: var(--bg-primary); padding: 1rem; border-radius: var(--radius-md);">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <i class="ph ph-heart" style="color: var(--danger-color);"></i>
+            <span style="font-weight: 700;">Hearts:</span>
+            <span id="hearts-container" style="display: inline-flex; gap: 0.25rem;"></span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <i class="ph ph-text-aa" style="color: var(--accent-color);"></i>
+            <span style="font-weight: 700;">Floor:</span>
+            <span id="floor-value">2</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <i class="ph ph-coin" style="color: var(--primary-color);"></i>
+            <span style="font-weight: 700;">Tokens:</span>
+            <span id="tokens-value">2</span>
+          </div>
+          <div style="display: flex; gap: 0.5rem;">
+            <button id="token-reset-btn" class="button" style="padding: 0.4rem 0.6rem; font-size: 0.85rem;">Reset Letter</button>
+            <button id="token-skip-btn" class="button" style="padding: 0.4rem 0.6rem; font-size: 0.85rem;">Safe Skip</button>
+          </div>
+        </div>
         
         <!-- Last Words List (Simplified view) -->
         <div id="last-words" style="margin-bottom: 1.5rem; text-align: center; min-height: 1.5rem;"></div>
 
         <!-- Popup Message (Notifications) -->
         <div id="popup-message" class="popup" style="margin-bottom: 1rem;"></div>
+
+        <!-- Corrupted Letters -->
+        <div class="corrupted-letters-container" style="display: none;">
+          <span style="font-weight: 700;">Corrupted:</span>
+          <div id="corrupted-letters" class="corrupted-letters"></div>
+        </div>
 
         <!-- Input Box for Words -->
         <div class="word-input-area" style="margin-bottom: 1.5rem;">
