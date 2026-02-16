@@ -226,7 +226,7 @@ function eliminatePlayer(roomName, playerId, reasonMsg) {
   // Notify
   io.to(roomName).emit('toast', reasonMsg || `${roomUsernames[roomName][playerId] || 'Player'} eliminated`);
 
-  // Win condition: last player standing
+  // Win condition: check if game should end (1 or 0 players left)
   const remaining = roomPlayerOrder[roomName] || [];
   if (remaining.length <= 1) {
     const winnerResult = computeWinnerResult(roomName, { type: 'timeout' });
@@ -443,7 +443,6 @@ io.on('connection', (socket) => {
     io.to(roomName).emit('playerJoined', roomUsernames[roomName][socket.id]);
     io.to(roomName).emit('turnChanged', roomTurns[roomName]);
     socket.emit('toast', `Welcome to ${roomName}, ${roomUsernames[roomName][socket.id]}!`);
-    startTurnTimer(roomName);
     console.log(`➡️ User joined room: ${roomName}`);
     // Emit the count
   emitPlayerCount(roomName);
@@ -775,28 +774,32 @@ function getRealPlayerIds(roomName) {
 
 function computeWinnerResult(roomName, context = {}) {
   const realIds = getRealPlayerIds(roomName);
-  if (realIds.length === 2) {
-    const [a, b] = realIds;
-    const scoreA = roomScores[roomName]?.[a] || 0;
-    const scoreB = roomScores[roomName]?.[b] || 0;
-    if (scoreA === scoreB) {
-      return { winner: 'Tie', reason: 'Scores are tied' };
-    }
-    const winnerId = scoreA > scoreB ? a : b;
-    const winnerName = roomUsernames[roomName]?.[winnerId] || 'Winner';
-    let reason = 'Won by higher score';
-    if (context.type === 'timeout') {
-      reason = 'Won by higher score after timeout';
-    } else if (context.type === 'left') {
-      reason = 'Won by higher score after opponent left';
-    }
-    return { winner: winnerName, reason };
+  const scores = realIds.map(id => ({
+    id,
+    name: roomUsernames[roomName]?.[id] || 'Player',
+    score: roomScores[roomName]?.[id] || 0
+  })).sort((a, b) => b.score - a.score);
+
+  if (scores.length === 0) {
+    return { winner: 'No winner', reason: 'No players in room' };
   }
 
-  const remaining = roomPlayerOrder[roomName] || [];
-  const winnerId = remaining[0];
-  const winnerName = winnerId ? (roomUsernames[roomName]?.[winnerId] || 'Winner') : 'No winner';
-  return { winner: winnerName, reason: context.reason || 'Last player standing' };
+  const topScore = scores[0].score;
+  const tied = scores.filter(p => p.score === topScore);
+
+  if (tied.length > 1) {
+    const names = tied.map(p => p.name).join(', ');
+    return { winner: `Tie: ${names}`, reason: 'Scores are tied' };
+  }
+
+  let reason = 'Won by highest score';
+  if (context.type === 'timeout') {
+    reason = 'Won by highest score after timeout';
+  } else if (context.type === 'left') {
+    reason = 'Won by highest score after opponent left';
+  }
+
+  return { winner: scores[0].name, reason };
 }
 
 function handlePlayerExit(roomName, playerId, exitType) {
