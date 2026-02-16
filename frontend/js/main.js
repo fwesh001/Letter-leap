@@ -93,11 +93,13 @@ document.addEventListener('DOMContentLoaded', () => {
   socket.on('roomCreated', () => {
     waitingForOpponent = true;
     showWaitingMessage();
+    showRoomActions();
   });
 
   socket.on('roomJoined', () => {
     waitingForOpponent = true;
     showWaitingMessage();
+    showRoomActions();
   });
 
   socket.on('startGame', (startLetter) => {
@@ -397,23 +399,42 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
 
-  function requestLeave(targetUrl) {
+  function requestLeave() {
     showConfirm('Leave the room? Your match will end for you.', () => {
       if (currentRoom) {
         socket.emit('leaveRoom', { roomName: currentRoom });
       }
-      window.location.href = targetUrl;
+      window.location.href = 'index.html';
     });
   }
 
-  document.querySelectorAll('[data-leave-target]')
-    .forEach((el) => {
-      el.addEventListener('click', (event) => {
-        event.preventDefault();
-        const target = el.getAttribute('data-leave-target') || 'index.html';
-        requestLeave(target);
-      });
+  const leaveBtn = document.getElementById('leave-room-btn');
+  if (leaveBtn) {
+    leaveBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      requestLeave();
     });
+  }
+
+  const headerBackBtn = document.querySelector('header a[href="index.html"]');
+  if (headerBackBtn) {
+    headerBackBtn.addEventListener('click', (e) => {
+      if (currentRoom) {
+        e.preventDefault();
+        requestLeave();
+      }
+    });
+  }
+
+  function showRoomActions() {
+    const actions = document.getElementById('room-actions');
+    if (actions) actions.style.display = 'flex';
+  }
+
+  function hideRoomActions() {
+    const actions = document.getElementById('room-actions');
+    if (actions) actions.style.display = 'none';
+  }
 
   function renderScoreboard() {
     try {
