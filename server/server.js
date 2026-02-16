@@ -51,7 +51,6 @@ const roomLastAIWord = {};      // Tracks last AI word by room for achievements
 const roomAIDifficulty = {};   // Tracks AI difficulty per room
 const roomPlayerStatus = {};  // Tracks player status (active, eliminated, left)
 const playerQuickStreak = {};  // Tracks consecutive plays with >=30s left per player per room
-const roomPlayerStatus = {};   // Tracks player status per room (active, eliminated, left)
 const TURN_TIME = 60;         // Tracks seconds per player
 const AI_ID = 'AI_PLAYER';   // Tracks AI in room
 const AI_NAME = 'Max (BOT)';// Tracks name of Bot
