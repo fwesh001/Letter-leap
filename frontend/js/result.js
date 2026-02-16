@@ -27,7 +27,10 @@ function populateResultPage() {
         longestWord: lastGame.longestWord || "—",
         score: lastGame.score || 0,
         totalScore: lastGame.totalScore ?? lastGame.score ?? 0,
-        breakdown: lastGame.breakdown || {}
+        breakdown: lastGame.breakdown || {},
+        mode: lastGame.mode,
+        maxFloor: lastGame.maxFloor,
+        livesRemaining: lastGame.livesRemaining
     };
 
     const playerWords = stats.words.filter((_, index) => index % 2 === 0);
@@ -57,8 +60,15 @@ function populateResultPage() {
     if (quoteEl) quoteEl.textContent = quoteText;
 
     // --- SECTION 2: Stats Summary ---
+    const timeLabel = document.querySelector('section.result-stats .stat-label:nth-of-type(2)');
     setText('word-count', stats.words.length);
-    setText('time-spent', formatTime(stats.time));
+    if (lastGame.maxFloor !== undefined && lastGame.maxFloor !== null) {
+        if (timeLabel) timeLabel.textContent = 'Highest Floor';
+        setText('time-spent', lastGame.maxFloor);
+    } else {
+        if (timeLabel) timeLabel.textContent = 'Time Spent';
+        setText('time-spent', formatTime(stats.time));
+    }
     setText('accuracy', stats.accuracy + '%');
     setText('longest-word', playerLongestWord || "—");
     setText('total-score', stats.totalScore);
@@ -192,6 +202,16 @@ function formatTime(seconds) {
 function determinePlayStyle(stats) {
     const streakMult = stats.breakdown?.streakMultiplierUsed || 1;
     const rarePoints = stats.breakdown?.rareLetterPoints || 0;
+
+    if (stats.mode === 'survival') {
+        if ((stats.maxFloor || 0) >= 8) {
+            return { title: "Endurance Master", desc: "You pushed the floor high and kept control." };
+        }
+        if ((stats.livesRemaining || 0) >= 2) {
+            return { title: "The Immortal Poet", desc: "Steady hands and fewer mistakes kept you alive." };
+        }
+        return { title: "The Scrappy Survivor", desc: "You fought through the hazards to the end." };
+    }
 
     if (stats.accuracy === 100) {
         return { title: "The Surgeon", desc: "Precise, calculated, and flawless." };
