@@ -217,6 +217,29 @@ function popAchievementBadge(badgeName, duration = 2000) {
   }
 }
 
+function resetStreak() {
+  currentStreak = 0;
+}
+
+function getStreakBonus(streak) {
+  if (streak === 3) return 1;
+  if (streak === 5) return 3;
+  if (streak === 7) return 5;
+  if (streak >= 10) return 7;
+  if (streak >= 15) return 10;
+  return 0;
+}
+
+function getStreakMultiplierFromBonus(bonus) {
+  if (!bonus) return 1;
+  return 1 + bonus / 10;
+}
+
+function hasRareToken(word) {
+  const lower = word.toLowerCase();
+  return RARE_TOKENS.some((token) => lower.includes(token));
+}
+
 
 
 // =======================
