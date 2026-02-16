@@ -48,6 +48,7 @@ Create valid words that either continue or respond to the current word chain bef
 
 ### 🎮 Modes
 - **Single-player:** Play against the system and aim for a high score and achievements.
+- **Survival Mode:** A pressure-focused single-player variant with hearts, floor progression, and corrupted letters that increase the challenge.
 - **Multiplayer:** Real-time, turn-based rooms where players take turns making words. Players have a fixed turn timer; running out of time or submitting invalid words can eliminate a player.
 
 ### ⌨️ Controls & Rules (basic)
@@ -63,7 +64,7 @@ Create valid words that either continue or respond to the current word chain bef
 
 ## ⭐ Features
 
-- Single-player and real-time multiplayer modes
+- Single-player, Survival Mode, and real-time multiplayer modes
 - Real-time multiplayer powered by Socket.io with rooms and turn timers (🔁)
 - Score tracking, achievements, and end-of-match result screens (🏆)
 - Global dark/light theme with a settings sidebar for quick access to core options (🌙/☀️)
@@ -76,7 +77,8 @@ Create valid words that either continue or respond to the current word chain bef
 
 ## 🧩 Recent UI Updates
 
-- Settings sidebar added across content pages (Tips, Achievements, Feedback, How to Play, Results, Multiplayer)
+- Survival Mode added with a dedicated HUD, hearts, and corrupted-letter pressure
+- Settings sidebar added across content pages (Tips, Achievements, Feedback, How to Play, Multiplayer)
 - Theme preference persists globally across pages
 - Multiplayer results page now supports badges and commentary
 - New Tips page with letter grid, word modals, and search
