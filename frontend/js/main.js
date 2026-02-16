@@ -325,10 +325,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const overlay = document.getElementById('modal-overlay');
     const msg = document.getElementById('modal-message');
     const btn = document.getElementById('modal-close-btn');
+    const cancelBtn = document.getElementById('modal-cancel-btn');
     const input = document.getElementById('modal-input');
     msg.textContent = message;
     overlay.style.display = 'flex';
     btn.textContent = showRematch ? 'Rematch' : 'OK';
+    if (cancelBtn) cancelBtn.style.display = 'none';
 
     if (showInput) {
       input.style.display = 'block';
@@ -358,6 +360,60 @@ document.addEventListener('DOMContentLoaded', () => {
       if (e.key === 'Enter') btn.click();
     };
   }
+
+  function showConfirm(message, onConfirm, onCancel) {
+    const overlay = document.getElementById('modal-overlay');
+    const msg = document.getElementById('modal-message');
+    const btn = document.getElementById('modal-close-btn');
+    const cancelBtn = document.getElementById('modal-cancel-btn');
+    const input = document.getElementById('modal-input');
+
+    msg.textContent = message;
+    overlay.style.display = 'flex';
+    btn.textContent = 'Leave';
+    if (input) input.style.display = 'none';
+    if (cancelBtn) {
+      cancelBtn.textContent = 'Stay';
+      cancelBtn.style.display = 'inline-flex';
+    }
+
+    btn.onclick = () => {
+      overlay.style.display = 'none';
+      document.onkeydown = null;
+      if (onConfirm) onConfirm();
+    };
+
+    if (cancelBtn) {
+      cancelBtn.onclick = () => {
+        overlay.style.display = 'none';
+        document.onkeydown = null;
+        if (onCancel) onCancel();
+      };
+    }
+
+    document.onkeydown = (e) => {
+      if (e.key === 'Escape' && cancelBtn) cancelBtn.click();
+      if (e.key === 'Enter') btn.click();
+    };
+  }
+
+  function requestLeave(targetUrl) {
+    showConfirm('Leave the room? Your match will end for you.', () => {
+      if (currentRoom) {
+        socket.emit('leaveRoom', { roomName: currentRoom });
+      }
+      window.location.href = targetUrl;
+    });
+  }
+
+  document.querySelectorAll('[data-leave-target]')
+    .forEach((el) => {
+      el.addEventListener('click', (event) => {
+        event.preventDefault();
+        const target = el.getAttribute('data-leave-target') || 'index.html';
+        requestLeave(target);
+      });
+    });
 
   function renderScoreboard() {
     try {
