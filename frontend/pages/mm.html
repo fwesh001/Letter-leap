@@ -27,7 +27,7 @@
 <body>
   <header>
     <div style="display: flex; align-items: center; justify-content: center; position: relative;">
-      <a href="index.html" style="position: absolute; left: 1rem; color: var(--text-primary); text-decoration: none;"><i
+        <a href="index.html" data-leave-target="index.html" style="position: absolute; left: 1rem; color: var(--text-primary); text-decoration: none;"><i
           class="ph ph-arrow-left"></i></a>
       Multiplayer - Letter-leap
       <button id="settingsToggleBtn" aria-label="Open Settings" style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);">
@@ -106,7 +106,10 @@
       <div class="modal">
         <span id="modal-message"></span>
         <input id="modal-input" style="display:none; margin-top:1rem;" class="modal-input" type="text" />
-        <button id="modal-close-btn" class="button">OK</button>
+        <div class="modal-actions">
+          <button id="modal-close-btn" class="button">OK</button>
+          <button id="modal-cancel-btn" class="button secondary" style="display:none;">Cancel</button>
+        </div>
       </div>
     </div>
     <div id="ai-indicator" class="ai-indicator" style="display:none;">
@@ -114,7 +117,8 @@
     </div>
 
     <div style="text-align: center; margin-top: 1rem; display: flex; gap: 1rem; justify-content: center;">
-      <button class="button" onclick="window.location.href='index.html'"><i class="ph ph-house"></i> Home</button>
+      <button class="button secondary" data-leave-target="index.html"><i class="ph ph-door"></i> Leave Room</button>
+      <button class="button" data-leave-target="index.html"><i class="ph ph-house"></i> Home</button>
     </div>
 
     <!--Audio-->
