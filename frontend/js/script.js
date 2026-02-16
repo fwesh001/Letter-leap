@@ -256,6 +256,81 @@ function showPopup(msg, duration = 2000, type = 'info') {
   }
 }
 
+function loseHeart(reason) {
+  if (!isSurvivalMode) return;
+  hearts = Math.max(0, hearts - 1);
+  showPopup(reason || 'Heart lost!', 1500, 'penalty');
+  updateSurvivalHud();
+  if (hearts <= 0) {
+    endGame();
+  }
+}
+
+function maybeCorruptLetter() {
+  if (!isSurvivalMode) return;
+  if (totalWordsExchanged % 15 !== 0) return;
+
+  const corruptible = ['A', 'E', 'I', 'O', 'N', 'R', 'S', 'T'];
+  const next = corruptible[Math.floor(Math.random() * corruptible.length)];
+  corruptedLetter = next;
+  corruptedTurnsRemaining = 5;
+  updateCorruptedLetters();
+  showPopup(`Letter Corrupted: ${corruptedLetter}`, 1800, 'penalty');
+}
+
+function advanceCorruptionCounter() {
+  if (!isSurvivalMode) return;
+  if (!corruptedLetter) return;
+  corruptedTurnsRemaining = Math.max(0, corruptedTurnsRemaining - 1);
+  if (corruptedTurnsRemaining === 0) {
+    corruptedLetter = '';
+    updateCorruptedLetters();
+  }
+}
+
+function wordHasCorruptedLetter(word) {
+  if (!corruptedLetter) return false;
+  return word.toUpperCase().includes(corruptedLetter);
+}
+
+function earnTokenIfRare(word) {
+  if (!isSurvivalMode) return;
+  const rareLetters = (word.toLowerCase().match(/[qxuzvwy]/g) || []).length;
+  if (rareLetters >= 2) {
+    tokens += 1;
+    showPopup('🔮 Rare combo! +1 Token', 1500, 'achievement');
+    updateSurvivalHud();
+  }
+}
+
+function spendToken(action) {
+  if (!isSurvivalMode) return false;
+  if (tokens <= 0) {
+    showPopup('No tokens left!', 1200, 'penalty');
+    return false;
+  }
+  tokens -= 1;
+  tokensUsed += 1;
+  updateSurvivalHud();
+
+  if (action === 'reset') {
+    currentLetter = getRandomLetter();
+    letterElement.textContent = currentLetter;
+    showPopup('🔄 Letter reset!', 1200, 'info');
+    return true;
+  }
+
+  if (action === 'skip') {
+    totalWordsExchanged++;
+    advanceCorruptionCounter();
+    maybeCorruptLetter();
+    showPopup('⏭️ Safe skip used!', 1200, 'info');
+    return true;
+  }
+
+  return false;
+}
+
 function popAchievementBadge(badgeName, duration = 2000) {
   if (window.showToast) {
     window.showToast(`Achievement Unlocked: ${badgeName}`, 'achievement');
@@ -348,6 +423,10 @@ function handleSubmission() {
     wrongSound.currentTime = 0; wrongSound.play();
     incorrectWordsCount++; wordInput.value = '';
     resetStreak();
+    if (isSurvivalMode) {
+      loseHeart('Heart lost: empty input');
+      updateSurvivalHud();
+    }
     return;
   }
 
@@ -356,6 +435,10 @@ function handleSubmission() {
     wrongSound.currentTime = 0; wrongSound.play();
     incorrectWordsCount++; wordInput.value = '';
     resetStreak();
+    if (isSurvivalMode) {
+      loseHeart('Heart lost: repeated word');
+      updateSurvivalHud();
+    }
     return;
   }
 
@@ -364,6 +447,10 @@ function handleSubmission() {
     wrongSound.currentTime = 0; wrongSound.play();
     incorrectWordsCount++; wordInput.value = '';
     resetStreak();
+    if (isSurvivalMode) {
+      loseHeart('Heart lost: below floor');
+      updateSurvivalHud();
+    }
     return;
   }
 
@@ -372,6 +459,10 @@ function handleSubmission() {
     wrongSound.currentTime = 0; wrongSound.play();
     incorrectWordsCount++; wordInput.value = '';
     resetStreak();
+    if (isSurvivalMode) {
+      loseHeart('Heart lost: wrong start');
+      updateSurvivalHud();
+    }
     return;
   }
 
@@ -381,6 +472,20 @@ function handleSubmission() {
     wrongSound.currentTime = 0; wrongSound.play();
     incorrectWordsCount++; wordInput.value = '';
     resetStreak();
+    if (isSurvivalMode) {
+      loseHeart('Heart lost: invalid word');
+      updateSurvivalHud();
+    }
+    return;
+  }
+
+  if (isSurvivalMode && wordHasCorruptedLetter(playerWord)) {
+    showPopup(`Corrupted letter "${corruptedLetter}" used!`, 2000, 'penalty');
+    wrongSound.currentTime = 0; wrongSound.play();
+    incorrectWordsCount++; wordInput.value = '';
+    resetStreak();
+    loseHeart('Heart lost: corrupted letter');
+    updateSurvivalHud();
     return;
   }
 
@@ -426,9 +531,12 @@ function handleSubmission() {
   }
 
   totalScore += basePoints + rareBonus + longWordBonus + streakBonus;
+  earnTokenIfRare(playerWord);
   currentLetter = playerWord.slice(-1);
-  timeLeft += difficultySettings.bonusTime; 
-  totalTimeSpent += difficultySettings.bonusTime;
+  if (!isSurvivalMode) {
+    timeLeft += difficultySettings.bonusTime; 
+    totalTimeSpent += difficultySettings.bonusTime;
+  }
   const gameState = {
     wordChain,
     timeTaken: 3, // 🔧 Replace this later with real time tracking if needed
@@ -442,7 +550,10 @@ function handleSubmission() {
 
   if (totalWordsExchanged % 10 === 0) {
     minWordLength++;
+    floorLevel = minWordLength;
+    maxFloor = Math.max(maxFloor, floorLevel);
     showPopup(`Minimum word length increased to ${minWordLength}!`, 2000, 'info');
+    updateSurvivalHud();
   }
 
 
@@ -454,7 +565,11 @@ function handleSubmission() {
 
 
 
-  updateGame(); updateTimerDisplay();
+  updateGame();
+  if (!isSurvivalMode) {
+    updateTimerDisplay();
+  }
+  updateSurvivalHud();
   wordInput.value = ''; wordInput.focus();
 
   const thinkingIndicator = document.getElementById('thinking-indicator');
@@ -473,13 +588,21 @@ function handleSubmission() {
 
     wordChain.push(aiWord); usedWords.add(aiWord);
     totalWordsExchanged++; currentLetter = aiWord.slice(-1);
+    advanceCorruptionCounter();
+    maybeCorruptLetter();
 
     if (totalWordsExchanged % 10 === 0) {
       minWordLength++;
+      floorLevel = minWordLength;
+      maxFloor = Math.max(maxFloor, floorLevel);
       showPopup(`🎉 Minimum word length now set to ${minWordLength}!`, 2000, 'info');
     }
 
-    updateGame(); updateTimerDisplay();
+    updateGame();
+    if (!isSurvivalMode) {
+      updateTimerDisplay();
+    }
+    updateSurvivalHud();
   }, 3000);
 }
 
