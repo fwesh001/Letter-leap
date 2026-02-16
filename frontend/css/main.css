@@ -37,6 +37,7 @@ main {
 
 .create-room,
 .join-room,
+.spectate-room,
 .choose-letter {
   display: flex;
   gap: 0.5rem;
@@ -655,6 +656,7 @@ input:checked+.slider:before {
 
   .create-room,
   .join-room,
+  .spectate-room,
   .choose-letter,
   .word-input-area {
     flex-direction: column;
