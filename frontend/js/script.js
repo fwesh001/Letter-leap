@@ -50,6 +50,7 @@ let currentLetter = '';
 let wordChain = [];
 let usedWords = new Set();
 let score = 0;
+let totalScore = 0;
 let timeLeft = difficultySettings.timeLimit;
 let totalTimeSpent = difficultySettings.timeLimit;
 let timerInterval = null;
@@ -60,6 +61,14 @@ let playerAttempts = 0;
 let incorrectWordsCount = 0;
 let achievements = [];
 let lastTimeWarning = null;
+let currentStreak = 0;
+let maxStreakMultiplier = 1;
+let lengthPoints = 0;
+let rareLetterPoints = 0;
+let streakBonusPoints = 0;
+let longWordPoints = 0;
+
+const RARE_TOKENS = ['q', 'x', 'u', 'z', 'v', 'w', 'y', 'leap', 'letter'];
 
 // =======================
 // WORD LIST FETCH
