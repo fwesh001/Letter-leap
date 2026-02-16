@@ -708,7 +708,7 @@ checkAndEmitAchievements(word, gameState, socket, roomName);
 //   🤖 AI HANDLER
 // =====================================
 
-  socket.on('addAI', ({ roomName }) => {
+  socket.on('addAI', ({ roomName, difficulty = 'normal' }) => {
     if (roomPlayerOrder[roomName] && roomPlayerOrder[roomName].length >= 6) {
       socket.emit('roomFull', '🚫 Room is full (max 6 players)');
       return;
@@ -717,6 +717,7 @@ checkAndEmitAchievements(word, gameState, socket, roomName);
       roomScores[roomName][AI_ID] = 0;
       roomUsernames[roomName][AI_ID] = AI_NAME;
       roomPlayerOrder[roomName].push(AI_ID);
+      roomAIDifficulty[roomName] = difficulty; // Store AI difficulty
       io.to(roomName).emit('updateScores', roomScores[roomName]);
       io.to(roomName).emit('updateUsernames', roomUsernames[roomName]);
       io.to(roomName).emit('aiAdded');
