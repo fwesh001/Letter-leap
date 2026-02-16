@@ -225,8 +225,8 @@ function getStreakBonus(streak) {
   if (streak === 3) return 1;
   if (streak === 5) return 3;
   if (streak === 7) return 5;
-  if (streak >= 10) return 7;
   if (streak >= 15) return 10;
+  if (streak >= 10) return 7;
   return 0;
 }
 
@@ -257,38 +257,86 @@ function handleSubmission() {
   if (!playerWord) {
     showPopup("Blank Input - You typed nothing.", 2000, 'penalty');
     wrongSound.currentTime = 0; wrongSound.play();
-    incorrectWordsCount++; wordInput.value = ''; return;
+    incorrectWordsCount++; wordInput.value = '';
+    resetStreak();
+    return;
   }
 
   if (usedWords.has(playerWord)) {
     showPopup("Already Used - Try a different word.", 2000, 'penalty');
     wrongSound.currentTime = 0; wrongSound.play();
-    incorrectWordsCount++; wordInput.value = ''; return;
+    incorrectWordsCount++; wordInput.value = '';
+    resetStreak();
+    return;
   }
 
   if (playerWord.length < minWordLength) {
     showPopup(`Too Short - Use at least ${minWordLength} letters!`, 2000, 'penalty');
     wrongSound.currentTime = 0; wrongSound.play();
-    incorrectWordsCount++; wordInput.value = ''; return;
+    incorrectWordsCount++; wordInput.value = '';
+    resetStreak();
+    return;
   }
 
   if (!playerWord.startsWith(currentLetter)) {
     showPopup(`Wrong Start Letter - Must start with "${currentLetter}"`, 2000, 'penalty');
     wrongSound.currentTime = 0; wrongSound.play();
-    incorrectWordsCount++; wordInput.value = ''; return;
+    incorrectWordsCount++; wordInput.value = '';
+    resetStreak();
+    return;
   }
 
 
   if (!isValidWord(playerWord)) {
     showPopup(`Invalid Word - "${playerWord}" is not in the dictionary.`, 2000, 'penalty');
     wrongSound.currentTime = 0; wrongSound.play();
-    incorrectWordsCount++; wordInput.value = ''; return;
+    incorrectWordsCount++; wordInput.value = '';
+    resetStreak();
+    return;
   }
 
   // 🔥 VALID ENTRY
   correctSound.currentTime = 0; correctSound.play();
   wordChain.push(playerWord); usedWords.add(playerWord);
-  score++; totalWordsExchanged++;
+  score++;
+  totalWordsExchanged++;
+  currentStreak++;
+
+  const basePoints = playerWord.length;
+  lengthPoints += basePoints;
+
+  const rareBonus = hasRareToken(playerWord) ? 2 : 0;
+  if (rareBonus) {
+    rareLetterPoints += rareBonus;
+    if (window.showToast) {
+      window.showToast('💎 Rare letters! Bonus +2', 'achievement');
+    }
+  }
+
+  const longWordBonus = playerWord.length >= 12 ? 3 : 0;
+  if (longWordBonus) {
+    longWordPoints += longWordBonus;
+    if (window.showToast) {
+      window.showToast('📏 Long word! Bonus +3', 'achievement');
+    }
+  }
+
+  const streakBonus = getStreakBonus(currentStreak);
+  if (streakBonus) {
+    streakBonusPoints += streakBonus;
+    const multiplier = getStreakMultiplierFromBonus(streakBonus);
+    maxStreakMultiplier = Math.max(maxStreakMultiplier, multiplier);
+    if (window.showToast) {
+      const label = currentStreak >= 15 ? '🌟 15-streak! Bonus +10'
+        : currentStreak >= 10 ? '🚀 10-streak! Bonus +7'
+        : currentStreak === 7 ? '🎉 7-streak! Bonus +5'
+        : currentStreak === 5 ? '⚡ 5-streak! Bonus +3'
+        : '🔥 3-streak! Bonus +1';
+      window.showToast(label, 'achievement');
+    }
+  }
+
+  totalScore += basePoints + rareBonus + longWordBonus + streakBonus;
   currentLetter = playerWord.slice(-1);
   timeLeft += difficultySettings.bonusTime; 
   totalTimeSpent += difficultySettings.bonusTime;
@@ -453,7 +501,7 @@ function showGameOverScreen() {
   const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
   typewriterEffect(randomQuote, 'game-over-quote');
 
-  document.getElementById('final-score').textContent = score;
+  document.getElementById('final-score').textContent = totalScore;
   document.getElementById('word-count').textContent = wordChain.length;
   document.getElementById('incorrect-words-count').textContent = incorrectWordsCount;
   document.getElementById('time-spent').textContent = formatTime(totalTimeSpent);
@@ -488,11 +536,19 @@ function showGameOverScreen() {
 function saveGameResult() {
   const data = {
     score,
+    totalScore,
     accuracy: Math.round((score / (playerAttempts || 1)) * 100),
     wordsPlayed: [...wordChain],
     longestWord: wordChain.reduce((longest, word) => word.length > longest.length ? word : longest, ''),
     timeSpent: totalTimeSpent,
     incorrectWords: incorrectWordsCount,
+    breakdown: {
+      lengthPoints,
+      rareLetterPoints,
+      streakMultiplierUsed: maxStreakMultiplier,
+      longWordPoints,
+      streakBonusPoints
+    },
     timestamp: new Date().toISOString(),
   };
   const history = JSON.parse(localStorage.getItem('gameHistory')) || [];
