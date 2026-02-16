@@ -761,6 +761,10 @@ function saveGameResult() {
       longWordPoints,
       streakBonusPoints
     },
+    maxFloor: isSurvivalMode ? maxFloor : undefined,
+    livesRemaining: isSurvivalMode ? hearts : undefined,
+    tokensUsed: isSurvivalMode ? tokensUsed : undefined,
+    mode: isSurvivalMode ? 'survival' : 'classic',
     timestamp: new Date().toISOString(),
   };
   const history = JSON.parse(localStorage.getItem('gameHistory')) || [];
@@ -810,6 +814,18 @@ if (startBtn) {
   startBtn.addEventListener('click', () => {
     playClickSound();
     startGame();
+  });
+}
+
+if (tokenResetBtn) {
+  tokenResetBtn.addEventListener('click', () => {
+    spendToken('reset');
+  });
+}
+
+if (tokenSkipBtn) {
+  tokenSkipBtn.addEventListener('click', () => {
+    spendToken('skip');
   });
 }
 
