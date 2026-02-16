@@ -230,6 +230,12 @@ function aiPickWord(startLetter) {
   );
 
   if (isSurvivalMode && candidates.length) {
+    if (corruptedLetter) {
+      const safe = candidates.filter(w => !w.includes(corruptedLetter));
+      if (safe.length) {
+        candidates = safe;
+      }
+    }
     const extra = Math.min(2, Math.floor((floorLevel - difficultySettings.minWordLength) / 2));
     const minLen = minWordLength + extra;
     const tougher = candidates.filter(w => w.length >= minLen);
