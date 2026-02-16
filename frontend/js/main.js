@@ -208,6 +208,10 @@ document.addEventListener('DOMContentLoaded', () => {
     console.warn('[client] roomNotFound:', msg);
     showToast(msg, 'penalty');
   });
+  socket.on('usernameTaken', (msg) => {
+    console.warn('[client] usernameTaken:', msg);
+    showToast(msg, 'penalty');
+  });
 
   socket.on('achievementUnlocked', ({ id, name, emoji }) => {
     showToast(`${name || 'Achievement unlocked'}`, 'achievement');
