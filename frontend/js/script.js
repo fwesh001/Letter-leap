@@ -69,8 +69,18 @@ let lengthPoints = 0;
 let rareLetterPoints = 0;
 let streakBonusPoints = 0;
 let longWordPoints = 0;
+let hearts = 3;
+let maxHearts = 3;
+let maxFloor = 0;
+let tokens = 2;
+let tokensUsed = 0;
+let perfectChainCount = 0;
+let corruptedLetters = [];
+let corruptedTurnsLeft = 0;
+let isCorruptionActive = false;
 
 const RARE_TOKENS = ['q', 'x', 'u', 'z', 'v', 'w', 'y', 'leap', 'letter'];
+const CORRUPTION_POOL = ['A', 'E', 'I', 'O', 'N', 'R', 'S', 'T'];
 
 // =======================
 // WORD LIST FETCH
