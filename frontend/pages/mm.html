@@ -201,16 +201,19 @@
       var menu = document.getElementById('room-menu');
       var createForm = document.querySelector('.create-room');
       var joinForm = document.querySelector('.join-room');
+      var spectateForm = document.querySelector('.spectate-room');
       var playerCounter = document.getElementById('player-counter');
       var chooseLetter = document.getElementById('choose-letter-section');
       var waiting = document.getElementById('waiting-message');
       var menuCreate = document.getElementById('menu-create-btn');
       var menuJoin = document.getElementById('menu-join-btn');
+      var menuSpectate = document.getElementById('menu-spectate-btn');
       if (menuCreate) {
         menuCreate.addEventListener('click', function () {
           if (menu) menu.style.display = 'none';
           if (createForm) createForm.style.display = 'flex';
           if (joinForm) joinForm.style.display = 'none';
+          if (spectateForm) spectateForm.style.display = 'none';
           if (chooseLetter) chooseLetter.style.display = 'none';
           if (waiting) waiting.style.display = 'none';
         });
@@ -220,20 +223,40 @@
           if (menu) menu.style.display = 'none';
           if (joinForm) joinForm.style.display = 'flex';
           if (createForm) createForm.style.display = 'none';
+          if (spectateForm) spectateForm.style.display = 'none';
+          if (chooseLetter) chooseLetter.style.display = 'none';
+          if (waiting) waiting.style.display = 'none';
+        });
+      }
+      if (menuSpectate) {
+        menuSpectate.addEventListener('click', function () {
+          if (menu) menu.style.display = 'none';
+          if (spectateForm) spectateForm.style.display = 'flex';
+          if (createForm) createForm.style.display = 'none';
+          if (joinForm) joinForm.style.display = 'none';
           if (chooseLetter) chooseLetter.style.display = 'none';
           if (waiting) waiting.style.display = 'none';
         });
       }
       var createBtn = document.getElementById('create-room-btn');
       var joinBtn = document.getElementById('join-room-btn');
+      var spectateBtn = document.getElementById('spectate-room-btn');
       if (createBtn) createBtn.addEventListener('click', function () {
         if (createForm) createForm.style.display = 'none';
         if (joinForm) joinForm.style.display = 'none';
+        if (spectateForm) spectateForm.style.display = 'none';
         if (playerCounter) playerCounter.style.display = 'block';
       });
       if (joinBtn) joinBtn.addEventListener('click', function () {
         if (createForm) createForm.style.display = 'none';
         if (joinForm) joinForm.style.display = 'none';
+        if (spectateForm) spectateForm.style.display = 'none';
+        if (playerCounter) playerCounter.style.display = 'block';
+      });
+      if (spectateBtn) spectateBtn.addEventListener('click', function () {
+        if (createForm) createForm.style.display = 'none';
+        if (joinForm) joinForm.style.display = 'none';
+        if (spectateForm) spectateForm.style.display = 'none';
         if (playerCounter) playerCounter.style.display = 'block';
       });
     });
