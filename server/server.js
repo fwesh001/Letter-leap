@@ -629,6 +629,12 @@ checkAndEmitAchievements(word, gameState, socket, roomName);
     playerRareLetters[roomName] = {};
     roomAchievementCounts[roomName] = {};
 
+    roomPlayerStatus[roomName] = roomPlayerStatus[roomName] || {};
+    (roomPlayerOrder[roomName] || []).forEach((id) => {
+      roomPlayerStatus[roomName][id] = 'active';
+    });
+    emitPlayerStatus(roomName);
+
     io.to(roomName).emit('updateWordChain', []);
     io.to(roomName).emit('updateScores', roomScores[roomName]);
 
@@ -791,6 +797,37 @@ function computeWinnerResult(roomName, context = {}) {
   const winnerId = remaining[0];
   const winnerName = winnerId ? (roomUsernames[roomName]?.[winnerId] || 'Winner') : 'No winner';
   return { winner: winnerName, reason: context.reason || 'Last player standing' };
+}
+
+function handlePlayerExit(roomName, playerId, exitType) {
+  const name = roomUsernames[roomName]?.[playerId] || 'Player';
+  roomPlayerStatus[roomName] = roomPlayerStatus[roomName] || {};
+  roomPlayerStatus[roomName][playerId] = 'left';
+  emitPlayerStatus(roomName);
+
+  roomPlayerOrder[roomName] = (roomPlayerOrder[roomName] || []).filter(id => id !== playerId);
+  io.to(roomName).emit('opponentLeft', name);
+
+  if (roomTurns[roomName] === playerId) {
+    roomTurns[roomName] = undefined;
+    startTurnTimer(roomName);
+  }
+
+  const remaining = roomPlayerOrder[roomName] || [];
+  if (remaining.length <= 1) {
+    const winnerResult = computeWinnerResult(roomName, { type: exitType, reason: 'All other players left' });
+    io.to(roomName).emit('gameOver', {
+      winner: winnerResult.winner,
+      reason: winnerResult.reason,
+      scores: roomScores[roomName],
+      wordChain: roomWordChains[roomName],
+      usernames: roomUsernames[roomName],
+      incorrect: playerTotalErrors[roomName] || {},
+      extraStats: buildExtraStats(roomName),
+    });
+  }
+
+  emitPlayerCount(roomName);
 }
 
 
