@@ -481,9 +481,34 @@ ul {
   margin-top: 1rem;
 }
 
+.stat-comparison-header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 8px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  font-size: 0.8rem;
+}
+
+.stat-comparison-header .p1-name,
+.stat-comparison-header .p2-name {
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.stat-comparison-header .vs-text {
+  color: var(--accent-color, #ffb700);
+  opacity: 0.8;
+}
+
 .stat-comparison-row {
   display: grid;
-  grid-template-columns: 1fr 1fr auto 1fr;
+  grid-template-columns: minmax(160px, 1fr) 1.2fr;
   gap: 1rem;
   align-items: center;
   padding: 0.75rem 1rem;
@@ -510,6 +535,21 @@ ul {
 .stat-comparison-row .divider {
   color: var(--text-secondary, #a0a0a0);
   font-weight: bold;
+}
+
+.stat-comparison-row .stat-values {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.duel-only-note {
+  color: var(--text-secondary, #a0a0a0);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
 }
 
 /* Result Actions */
@@ -543,15 +583,19 @@ ul {
   .stat-comparison-row {
     grid-template-columns: 1fr;
     gap: 0.5rem;
+    padding: 0.6rem 0.75rem;
   }
 
   .stat-comparison-row .stat-label {
     display: block;
   }
 
-  .stat-comparison-row .p1-value,
-  .stat-comparison-row .p2-value,
-  .stat-comparison-row .divider {
-    display: inline;
+  .stat-comparison-header {
+    font-size: 0.75rem;
+    padding: 0.6rem 0.75rem;
+  }
+
+  .stat-comparison-row .stat-values {
+    grid-template-columns: 1fr auto 1fr;
   }
 }
