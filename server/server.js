@@ -745,6 +745,7 @@ checkAndEmitAchievements(word, gameState, socket, roomName);
     const nextLetter = chain.length ? chain.at(-1).word.slice(-1) : '';
     const chainLength = roomWordChains[roomName]?.length || 0;
     const minLength = Math.min(2 + Math.floor(chainLength / 10),7);
+    const difficulty = roomAIDifficulty[roomName] || 'normal';
 
     let candidates = WORD_LIST.filter(word => 
       word.length >= minLength &&
@@ -752,12 +753,39 @@ checkAndEmitAchievements(word, gameState, socket, roomName);
       (nextLetter === '' || word[0] === nextLetter)
     );
 
-    let maxLen = Math.max(...candidates.map(w => w.length), 0);
-    let longWords = candidates.filter(w => w.length === maxLen);
-    const rareLetters = ['q','u','x', 'z', 'v', 'w', 'y'];
-    let trapWords = longWords.filter(word => rareLetters.includes(word.at(-1)));
+    let aiWord;
 
-    let aiWord = trapWords[0] || longWords[0] || candidates[0] || 'ai';
+    // Strategy based on difficulty
+    if (difficulty === 'easy') {
+      // Easy: Pick random word, prefer shorter words
+      const shortWords = candidates.filter(w => w.length <= minLength + 1);
+      const pool = shortWords.length > 0 ? shortWords : candidates;
+      aiWord = pool[Math.floor(Math.random() * pool.length)] || 'ai';
+    } else if (difficulty === 'normal') {
+      // Normal: Pick medium-length words (not too short, not too long)
+      const mediumWords = candidates.filter(w => w.length >= minLength && w.length <= minLength + 3);
+      aiWord = mediumWords[Math.floor(Math.random() * mediumWords.length)] || candidates[0] || 'ai';
+    } else if (difficulty === 'hard') {
+      // Hard: Current logic - longest words with some trap letters
+      let maxLen = Math.max(...candidates.map(w => w.length), 0);
+      let longWords = candidates.filter(w => w.length === maxLen);
+      const rareLetters = ['q', 'u', 'x', 'z', 'v', 'w', 'y'];
+      let trapWords = longWords.filter(word => rareLetters.includes(word.at(-1)));
+      aiWord = trapWords[0] || longWords[0] || candidates[0] || 'ai';
+    } else if (difficulty === 'expert') {
+      // Expert: Always longest words with priority on hardest trap letters
+      let maxLen = Math.max(...candidates.map(w => w.length), 0);
+      let longWords = candidates.filter(w => w.length === maxLen);
+      const hardestLetters = ['q', 'x', 'z'];
+      const hardTrapWords = longWords.filter(word => hardestLetters.includes(word.at(-1)));
+      const rareLetters = ['q', 'u', 'x', 'z', 'v', 'w', 'y'];
+      let trapWords = longWords.filter(word => rareLetters.includes(word.at(-1)));
+      aiWord = hardTrapWords[0] || trapWords[0] || longWords[0] || candidates[0] || 'ai';
+    } else {
+      // Fallback to normal
+      const mediumWords = candidates.filter(w => w.length >= minLength && w.length <= minLength + 3);
+      aiWord = mediumWords[Math.floor(Math.random() * mediumWords.length)] || candidates[0] || 'ai';
+    }
 
     setTimeout(() => {
       roomWordChains[roomName].push({ word: aiWord, playerId: AI_ID });
