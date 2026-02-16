@@ -30,6 +30,11 @@ function populateResultPage() {
         breakdown: lastGame.breakdown || {}
     };
 
+    const playerWords = stats.words.filter((_, index) => index % 2 === 0);
+    const playerLongestWord = playerWords.reduce((longest, word) =>
+        word.length > longest.length ? word : longest, ''
+    );
+
     // --- SECTION 1: Game Over Quote ---
     const quotes = [
         "Game Over! But the alphabet isn't done with you yet.",
@@ -55,7 +60,7 @@ function populateResultPage() {
     setText('word-count', stats.words.length);
     setText('time-spent', formatTime(stats.time));
     setText('accuracy', stats.accuracy + '%');
-    setText('longest-word', stats.longestWord || "—");
+    setText('longest-word', playerLongestWord || "—");
     setText('total-score', stats.totalScore);
 
     // --- SECTION 3: Play Style ---
@@ -71,14 +76,14 @@ function populateResultPage() {
     const wordListEl = document.getElementById('word-list');
     if (wordListEl) {
         wordListEl.innerHTML = '';
-        stats.words.slice(0, 20).forEach(word => {
+        playerWords.slice(0, 20).forEach(word => {
             const li = document.createElement('li');
             li.textContent = word;
             wordListEl.appendChild(li);
         });
-        if (stats.words.length > 20) {
+        if (playerWords.length > 20) {
             const moreLi = document.createElement('li');
-            moreLi.textContent = `...and ${stats.words.length - 20} more`;
+            moreLi.textContent = `...and ${playerWords.length - 20} more`;
             moreLi.style.fontStyle = 'italic';
             moreLi.style.opacity = '0.7';
             wordListEl.appendChild(moreLi);
@@ -87,7 +92,7 @@ function populateResultPage() {
 
     // --- SECTION 6: Rare Words ---
     const rareTokens = ['q', 'x', 'u', 'z', 'v', 'w', 'y', 'leap', 'letter'];
-    const rareWords = stats.words.filter((w) => {
+    const rareWords = playerWords.filter((w) => {
         const lower = w.toLowerCase();
         return rareTokens.some((token) => lower.includes(token));
     });
