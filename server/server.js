@@ -468,12 +468,41 @@ io.on('connection', (socket) => {
   emitPlayerCount(roomName);
     });
 
+  socket.on('spectateRoom', ({ roomName }) => {
+    if (!roomPlayerOrder[roomName]) {
+      socket.emit('roomNotFound', 'Room not found');
+      return;
+    }
+
+    socket.join(roomName);
+    socket.emit('roomSpectated', roomName);
+    socket.emit('updateWordChain', roomWordChains[roomName] || []);
+    socket.emit('updateScores', roomScores[roomName] || {});
+    socket.emit('updateUsernames', roomUsernames[roomName] || {});
+    socket.emit('updatePlayerStatus', roomPlayerStatus[roomName] || {});
+    socket.emit('turnChanged', roomTurns[roomName]);
+
+    const currentTurn = roomTurns[roomName];
+    const timeLeft = (playerTimeLeft[roomName] && typeof playerTimeLeft[roomName][currentTurn] === 'number')
+      ? playerTimeLeft[roomName][currentTurn]
+      : TURN_TIME;
+    socket.emit('timerUpdate', timeLeft);
+
+    socket.emit('toast', `👀 Spectating ${roomName}`);
+  });
+
   socket.on('submitWord', (word) => {
     const rooms = Array.from(socket.rooms).filter(r => r !== socket.id);
     if (!rooms.length) return;
 
     const roomName = rooms[0];
     word = word.trim().toLowerCase();
+
+    // Prevent spectators from submitting words
+    if (!roomScores[roomName] || typeof roomScores[roomName][socket.id] !== 'number') {
+      socket.emit('toast', 'Spectators cannot submit words');
+      return;
+    }
 
     if (!playerStreaks[roomName]) playerStreaks[roomName] = {};
     if (!playerErrors[roomName]) playerErrors[roomName] = {};
