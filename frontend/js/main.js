@@ -85,6 +85,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('game-area').style.display = 'block';
     document.getElementById('room-name-display').textContent = `Room: ${roomName}`;
     hideWaitingMessage();
+    // Hide waiting room player list when game starts
+    const waitingRoomDiv = document.getElementById('waiting-room-players');
+    if (waitingRoomDiv) waitingRoomDiv.style.display = 'none';
   }
 
   socket.on('roomCreated', () => {
@@ -122,6 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('ai-indicator').style.display = 'block';
     }
     renderScoreboard();
+    renderWaitingRoomPlayers();
   });
 
   socket.on('updatePlayerStatus', (statusObj) => {
@@ -223,6 +227,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   socket.on('opponentLeft', (name) => {
     showToast(`${name} has left the game.`);
+  });
+
+  socket.on('kicked', () => {
+    // Redirect to lobby after being kicked
+    window.location.href = 'mm.html';
   });
 
   function updateNextLetter(letter) {
@@ -498,6 +507,72 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     const index = Math.abs(hash) % palette.length;
     return palette[index];
+  }
+
+  function renderWaitingRoomPlayers() {
+    const waitingRoomDiv = document.getElementById('waiting-room-players');
+    const playersList = document.getElementById('waiting-players-list');
+    
+    // Only show if in waiting mode (not in game)
+    const gameArea = document.getElementById('game-area');
+    if (!gameArea || gameArea.style.display !== 'none') {
+      if (waitingRoomDiv) waitingRoomDiv.style.display = 'none';
+      return;
+    }
+
+    if (!playersList || !waitingRoomDiv) return;
+    
+    playersList.innerHTML = '';
+    
+    const ids = Object.keys(usernames || {});
+    
+    if (ids.length === 0) {
+      waitingRoomDiv.style.display = 'none';
+      return;
+    }
+    
+    waitingRoomDiv.style.display = 'block';
+    
+    ids.forEach((playerId) => {
+      const playerName = usernames[playerId] || 'Player';
+      const isAI = playerName.includes('BOT') || playerId === 'AI_PLAYER';
+      
+      const listItem = document.createElement('li');
+      listItem.className = 'waiting-player-item';
+      
+      const nameDiv = document.createElement('div');
+      nameDiv.className = 'waiting-player-name';
+      
+      const nameSpan = document.createElement('span');
+      nameSpan.textContent = playerName;
+      nameDiv.appendChild(nameSpan);
+      
+      // Add creator badge if this player is the creator (first player)
+      if (playerId === ids[0] && !isAI) {
+        const badge = document.createElement('span');
+        badge.className = 'creator-badge';
+        badge.textContent = 'HOST';
+        nameDiv.appendChild(badge);
+      }
+      
+      listItem.appendChild(nameDiv);
+      
+      // Add kick button only if current user isCreator and target is not self and not AI
+      if (isCreator && playerId !== socket.id && !isAI) {
+        const kickBtn = document.createElement('button');
+        kickBtn.className = 'kick-player-btn';
+        kickBtn.innerHTML = '<i class="ph ph-x"></i>';
+        kickBtn.title = 'Kick player';
+        kickBtn.onclick = () => {
+          showConfirm(`Kick ${playerName} from the room?`, () => {
+            socket.emit('kickPlayer', { roomName: currentRoom, playerId });
+          });
+        };
+        listItem.appendChild(kickBtn);
+      }
+      
+      playersList.appendChild(listItem);
+    });
   }
 
   function showWaitingMessage() {
