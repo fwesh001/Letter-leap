@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let waitingForOpponent = false;
   let lastMinLength = 2;
   let playerStatuses = {};
+  let isSpectator = false;
 
   // Fill A-Z in the select
   const startLetterSelect = document.getElementById('start-letter');
@@ -35,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const roomName = document.getElementById('create-room-name').value.trim();
     if (roomName) {
       isCreator = true;
+      isSpectator = false;
       currentRoom = roomName;
       getUsername((uname) => {
         socket.emit('createRoom', { roomName, username: uname });
@@ -52,11 +54,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const roomName = document.getElementById('join-room-name').value.trim();
     if (roomName) {
       isCreator = false;
+      isSpectator = false;
       currentRoom = roomName;
       getUsername((uname) => {
         socket.emit('joinRoom', { roomName, username: uname });
         showWaitingMessage();
       });
+    }
+  };
+
+  // Spectate room
+  document.getElementById('spectate-room-btn').onclick = () => {
+    const roomName = document.getElementById('spectate-room-name').value.trim();
+    if (roomName) {
+      isCreator = false;
+      isSpectator = true;
+      currentRoom = roomName;
+      socket.emit('spectateRoom', { roomName });
+      showWaitingMessage();
+    } else {
+      showToast('Please enter a room name!');
     }
   };
 
@@ -102,6 +119,13 @@ document.addEventListener('DOMContentLoaded', () => {
     showRoomActions();
   });
 
+  socket.on('roomSpectated', (roomName) => {
+    isSpectator = true;
+    enterGameRoom(roomName);
+    showRoomActions();
+    showToast(`Now spectating ${roomName}`);
+  });
+
   socket.on('startGame', (startLetter) => {
     enterGameRoom(currentRoom);
     updateNextLetter(startLetter);
@@ -121,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   socket.on('updateUsernames', (userObj) => {
     usernames = userObj;
-    if (Object.values(userObj).includes('AI Bot')) {
+    if (Object.values(userObj).some(name => name && name.includes('BOT'))) {
       document.getElementById('ai-indicator').style.display = 'block';
     }
     renderScoreboard();
@@ -146,6 +170,10 @@ document.addEventListener('DOMContentLoaded', () => {
   socket.on('turnChanged', (currentTurnId) => {
     console.log('[client] turnChanged:', currentTurnId, 'you:', socket.id);
     const input = document.getElementById('word-input');
+    if (isSpectator) {
+      input.disabled = true;
+      return;
+    }
     if (socket.id === currentTurnId) {
       input.disabled = false;
       input.focus();
