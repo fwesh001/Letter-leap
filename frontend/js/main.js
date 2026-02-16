@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentTurnIdState = null;
   let waitingForOpponent = false;
   let lastMinLength = 2;
+  let playerStatuses = {};
 
   // Fill A-Z in the select
   const startLetterSelect = document.getElementById('start-letter');
@@ -124,6 +125,11 @@ document.addEventListener('DOMContentLoaded', () => {
     renderScoreboard();
   });
 
+  socket.on('updatePlayerStatus', (statusObj) => {
+    playerStatuses = statusObj || {};
+    renderScoreboard();
+  });
+
   socket.on('turnChanged', (currentTurnId) => {
     currentTurnIdState = currentTurnId;
     renderScoreboard();
@@ -212,7 +218,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   socket.on('opponentLeft', (name) => {
     showToast(`${name} has left the game.`);
-    setTimeout(() => window.location.reload(), 3000);
   });
 
   function updateNextLetter(letter) {
@@ -369,11 +374,17 @@ document.addEventListener('DOMContentLoaded', () => {
         row.className = 'player-score';
         row.id = `player-${id}`;
         if (id === currentTurnIdState) row.classList.add('active');
+        const status = playerStatuses?.[id] || 'active';
+        if (status === 'left') row.classList.add('left');
+        if (status === 'eliminated') row.classList.add('eliminated');
         const name = usernames[id] || (id === socket.id ? 'You' : 'Player');
         const score = (scoresState && typeof scoresState[id] === 'number') ? scoresState[id] : 0;
         const crownDisplay = id === currentTurnIdState ? 'inline' : 'none';
+        const statusLabel = status === 'left' ? 'LEFT' : status === 'eliminated' ? 'OUT' : '';
+        row.style.setProperty('--player-accent', getPlayerColor(id));
         row.innerHTML = `
           <span class="player-name">${name}</span>
+          ${statusLabel ? `<span class="player-status">${statusLabel}</span>` : ''}
           <span class="player-crown" style="display: ${crownDisplay};"><i class="ph ph-crown"></i></span>
           : <span class="player-score-value">${score}</span>
         `;
@@ -382,6 +393,17 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (e) {
       console.error('[client] renderScoreboard error:', e);
     }
+  }
+
+  function getPlayerColor(id) {
+    const palette = ['#00d1ff', '#ffb347', '#7cff7c', '#c084fc', '#ff6b6b', '#facc15'];
+    let hash = 0;
+    for (let i = 0; i < id.length; i++) {
+      hash = ((hash << 5) - hash) + id.charCodeAt(i);
+      hash |= 0;
+    }
+    const index = Math.abs(hash) % palette.length;
+    return palette[index];
   }
 
   function showWaitingMessage() {
