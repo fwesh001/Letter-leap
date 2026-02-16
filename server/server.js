@@ -365,6 +365,9 @@ io.on('connection', (socket) => {
     roomUsernames[roomName] = roomUsernames[roomName] || {};
     roomUsernames[roomName][socket.id] = username || 'Player';
 
+    roomPlayerStatus[roomName] = roomPlayerStatus[roomName] || {};
+    roomPlayerStatus[roomName][socket.id] = 'active';
+
     roomCreators[roomName] = socket.id;
 
     
@@ -389,6 +392,7 @@ io.on('connection', (socket) => {
     socket.emit('roomCreated', roomName);
     io.to(roomName).emit('turnChanged', roomTurns[roomName]);
     io.to(roomName).emit('updateUsernames', roomUsernames[roomName]);
+    emitPlayerStatus(roomName);
     console.log(`🏗️ Room created: ${roomName}`);
     // Emit the count
   emitPlayerCount(roomName);
@@ -411,6 +415,9 @@ io.on('connection', (socket) => {
     roomUsernames[roomName][socket.id] = username || 'Player';
     roomPlayerOrder[roomName].push(socket.id);
 
+    roomPlayerStatus[roomName] = roomPlayerStatus[roomName] || {};
+    roomPlayerStatus[roomName][socket.id] = 'active';
+
     // Initialize per-player tracking for this room
     playerStreaks[roomName] = playerStreaks[roomName] || {};
     playerErrors[roomName] = playerErrors[roomName] || {};
@@ -432,6 +439,7 @@ io.on('connection', (socket) => {
     socket.emit('roomJoined', roomName);
     io.to(roomName).emit('updateScores', roomScores[roomName]);
     io.to(roomName).emit('updateUsernames', roomUsernames[roomName]);
+    emitPlayerStatus(roomName);
     io.to(roomName).emit('playerJoined', roomUsernames[roomName][socket.id]);
     io.to(roomName).emit('turnChanged', roomTurns[roomName]);
     socket.emit('toast', `Welcome to ${roomName}, ${roomUsernames[roomName][socket.id]}!`);
