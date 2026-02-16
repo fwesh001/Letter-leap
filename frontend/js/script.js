@@ -223,11 +223,21 @@ function isValidWord(word) {
 }
 
 function aiPickWord(startLetter) {
-  const candidates = words.filter(w =>
+  let candidates = words.filter(w =>
     w.startsWith(startLetter) &&
     !usedWords.has(w) &&
     w.length >= minWordLength
   );
+
+  if (isSurvivalMode && candidates.length) {
+    const extra = Math.min(2, Math.floor((floorLevel - difficultySettings.minWordLength) / 2));
+    const minLen = minWordLength + extra;
+    const tougher = candidates.filter(w => w.length >= minLen);
+    if (tougher.length) {
+      candidates = tougher;
+    }
+  }
+
   return candidates.length ? candidates[Math.floor(Math.random() * candidates.length)] : null;
 }
 
@@ -321,6 +331,7 @@ function spendToken(action) {
   }
 
   if (action === 'skip') {
+    survivalPerfectStreak = 0;
     totalWordsExchanged++;
     advanceCorruptionCounter();
     maybeCorruptLetter();
@@ -339,6 +350,7 @@ function popAchievementBadge(badgeName, duration = 2000) {
 
 function resetStreak() {
   currentStreak = 0;
+  survivalPerfectStreak = 0;
 }
 
 function getStreakBonus(streak) {
