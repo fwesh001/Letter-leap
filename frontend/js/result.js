@@ -25,7 +25,9 @@ function populateResultPage() {
         accuracy: lastGame.accuracy || 0,
         time: lastGame.timeSpent || 0,
         longestWord: lastGame.longestWord || "—",
-        score: lastGame.score || 0
+        score: lastGame.score || 0,
+        totalScore: lastGame.totalScore ?? lastGame.score ?? 0,
+        breakdown: lastGame.breakdown || {}
     };
 
     // --- SECTION 1: Game Over Quote ---
@@ -54,6 +56,7 @@ function populateResultPage() {
     setText('time-spent', formatTime(stats.time));
     setText('accuracy', stats.accuracy + '%');
     setText('longest-word', stats.longestWord || "—");
+    setText('total-score', stats.totalScore);
 
     // --- SECTION 3: Play Style ---
     const playStyle = determinePlayStyle(stats);
@@ -83,7 +86,11 @@ function populateResultPage() {
     }
 
     // --- SECTION 6: Rare Words ---
-    const rareWords = stats.words.filter(w => w.length >= 7 || /[jqxz]/i.test(w));
+    const rareTokens = ['q', 'x', 'u', 'z', 'v', 'w', 'y', 'leap', 'letter'];
+    const rareWords = stats.words.filter((w) => {
+        const lower = w.toLowerCase();
+        return rareTokens.some((token) => lower.includes(token));
+    });
     const rareListEl = document.getElementById('rare-words-list');
     if (rareListEl) {
         rareListEl.innerHTML = '';
@@ -178,11 +185,31 @@ function formatTime(seconds) {
 
 // Logic: Play Style
 function determinePlayStyle(stats) {
-    if (stats.accuracy === 100) return { title: "The Surgeon", desc: "Precise, calculated, and flawless." };
-    if (stats.words.length > 20 && stats.accuracy < 80) return { title: "The Machine Gun", desc: "Spray and pray! You got lots of words, but made a mess." };
-    if (stats.words.length < 5) return { title: "The Tourist", desc: "Just passing through, enjoying the view." };
-    if (stats.longestWord.length > 8) return { title: "The Professor", desc: "You prefer quality complex words over simple ones." };
-    return { title: "The Balanced Leaper", desc: "A solid mix of speed and caution." };
+    const streakMult = stats.breakdown?.streakMultiplierUsed || 1;
+    const rarePoints = stats.breakdown?.rareLetterPoints || 0;
+
+    if (stats.accuracy === 100) {
+        return { title: "The Surgeon", desc: "Precise, calculated, and flawless." };
+    }
+    if (stats.words.length > 20 && stats.accuracy < 80) {
+        return { title: "The Machine Gun", desc: "Spray and pray! You got lots of words, but made a mess." };
+    }
+    if (stats.words.length < 5) {
+        return { title: "The Tourist", desc: "Just passing through, enjoying the view." };
+    }
+    if (stats.longestWord.length > 8) {
+        return { title: "The Professor", desc: "You prefer quality complex words over simple ones." };
+    }
+
+    let desc = "A solid mix of speed and caution.";
+    if (streakMult >= 1.5) {
+        desc += " Your streak bonuses show strong chaining skills.";
+    }
+    if (rarePoints > 0) {
+        desc += " You hunted rare letters for extra points.";
+    }
+
+    return { title: "The Balanced Leaper", desc };
 }
 
 // Logic: Roast
