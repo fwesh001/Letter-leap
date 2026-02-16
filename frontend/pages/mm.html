@@ -40,6 +40,7 @@
       <div class="room-menu" id="room-menu">
         <button id="menu-create-btn" class="button"><i class="ph ph-plus-circle"></i> Create Room</button>
         <button id="menu-join-btn" class="button"><i class="ph ph-sign-in"></i> Join Room</button>
+        <button id="menu-spectate-btn" class="button"><i class="ph ph-eye"></i> Spectate Room</button>
       </div>
       <div class="create-room" style="display:none;">
         <input type="text" id="create-room-name" placeholder="Room name">
@@ -51,6 +52,10 @@
       <div class="join-room" style="display:none;">
         <input type="text" id="join-room-name" placeholder="Room name">
         <button id="join-room-btn" class="button">Join</button>
+      </div>
+      <div class="spectate-room" style="display:none;">
+        <input type="text" id="spectate-room-name" placeholder="Room name to spectate">
+        <button id="spectate-room-btn" class="button">Spectate</button>
       </div>
 
       <!-- Player Count Display -->
@@ -70,6 +75,14 @@
       <div id="waiting-message" class="waiting-message" style="display:none;">
         <div class="spinner"></div>
         Waiting for opponent to join...
+      </div>
+
+      <!-- Waiting Room Player List -->
+      <div id="waiting-room-players" class="waiting-room-players" style="display:none;">
+        <h3 style="color: var(--text-primary); margin-bottom: 0.75rem; font-size: 1.1rem;">Players in Room</h3>
+        <ul id="waiting-players-list" style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.5rem;">
+          <!-- JS will populate player list here -->
+        </ul>
       </div>
     </section>
 
