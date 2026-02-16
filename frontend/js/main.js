@@ -39,9 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
       getUsername((uname) => {
         socket.emit('createRoom', { roomName, username: uname });
         window.currentRoomName = roomName;
-        if (aiToggle.checked) {
-          socket.emit('addAI', { roomName });
-        }
         document.getElementById('choose-letter-section').style.display = 'block';
         showWaitingMessage();
       });
