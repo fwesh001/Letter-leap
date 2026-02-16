@@ -659,6 +659,12 @@ checkAndEmitAchievements(word, gameState, socket, roomName);
   startTurnTimer(roomName);
 });
 
+  socket.on('leaveRoom', ({ roomName }) => {
+    if (!roomName || !roomUsernames[roomName]?.[socket.id]) return;
+    handlePlayerExit(roomName, socket.id, 'left');
+    socket.leave(roomName);
+  });
+
 // =====================================
 //  🔴  SOCKET DISCONNECTION HANDLER
 // =====================================
@@ -667,34 +673,7 @@ checkAndEmitAchievements(word, gameState, socket, roomName);
     console.log('🔴 User disconnected:', socket.id);
     for (const roomName in roomUsernames) {
       if (roomUsernames[roomName][socket.id]) {
-        socket.to(roomName).emit('opponentLeft', roomUsernames[roomName][socket.id]);
-        delete roomUsernames[roomName][socket.id];
-        delete roomScores[roomName][socket.id];
-        roomPlayerOrder[roomName] = roomPlayerOrder[roomName].filter(id => id !== socket.id);
-
-        // If current turn was this player, advance/retime
-        if (roomTurns[roomName] === socket.id) {
-          roomTurns[roomName] = undefined;
-          startTurnTimer(roomName);
-        }
-
-        // If one or zero players remain, declare winner
-        const remaining = roomPlayerOrder[roomName] || [];
-        if (remaining.length <= 1) {
-          const winnerId = remaining[0];
-          const winnerName = winnerId ? (roomUsernames[roomName][winnerId] || 'Winner') : 'No winner';
-          io.to(roomName).emit('gameOver', {
-            winner: winnerName,
-            reason: 'All other players left',
-            scores: roomScores[roomName],
-            wordChain: roomWordChains[roomName],
-            usernames: roomUsernames[roomName],
-            incorrect: playerTotalErrors[roomName] || {},
-            extraStats: buildExtraStats(roomName),
-          });
-        }
-            // Emit the count
-  emitPlayerCount(roomName);
+        handlePlayerExit(roomName, socket.id, 'left');
 
       }
     }
