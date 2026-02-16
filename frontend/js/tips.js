@@ -259,7 +259,7 @@ function renderWordAchievements(word) {
   wordAchievements.classList.remove('is-empty');
 
   if (!matches.length) {
-    wordAchievements.textContent = 'No achievements triggered.';
+    wordAchievements.textContent = 'No achievements.';
     wordAchievements.classList.add('is-empty');
     return;
   }
