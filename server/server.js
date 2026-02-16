@@ -690,6 +690,35 @@ checkAndEmitAchievements(word, gameState, socket, roomName);
     socket.leave(roomName);
   });
 
+  socket.on('kickPlayer', ({ roomName, playerId }) => {
+    // Verify that the requester is the room creator
+    if (roomCreators[roomName] !== socket.id) {
+      socket.emit('toast', '⚠️ Only the room creator can kick players');
+      return;
+    }
+
+    // Verify the room exists
+    if (!roomUsernames[roomName] || !roomUsernames[roomName][playerId]) {
+      socket.emit('toast', '⚠️ Player not found in room');
+      return;
+    }
+
+    // Get the player's socket
+    const kickedPlayerName = roomUsernames[roomName][playerId] || 'Player';
+    
+    // Remove player from room
+    handlePlayerExit(roomName, playerId, 'kicked');
+    
+    // Notify the kicked player
+    io.to(playerId).emit('toast', '❌ You have been kicked from the room');
+    io.to(playerId).emit('kicked');
+    
+    // Notify the room
+    io.to(roomName).emit('toast', `${kickedPlayerName} was kicked from the room`);
+    
+    console.log(`⚠️ Player ${playerId} kicked from room ${roomName}`);
+  });
+
 // =====================================
 //  🔴  SOCKET DISCONNECTION HANDLER
 // =====================================
