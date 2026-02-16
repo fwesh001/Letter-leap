@@ -11,6 +11,7 @@ const closeBtn = document.getElementById('closePopupBtn');
 // GLOBAL VARIABLES
 // ==========================
 let selectedLevelUrl = '';
+let selectedLevelKey = '';
 
 // ==========================
 // LEVELS DATA CONFIGURATION
@@ -29,16 +30,16 @@ const levelsData = {
     url: 'sm.html'
   },
   normal: {
-    title: 'Level Normal: Word Warrior',
+    title: 'Survival Mode: Endurance Run',
     descriptionList: [
-      '<i class="ph ph-timer"></i> Time Limit: 40 seconds',
-      '<i class="ph ph-text-aa"></i> Minimum Words: 3',
-      '<i class="ph ph-plus-circle"></i> Bonus Time per Word: +10 seconds',
-      '<i class="ph ph-lightbulb"></i> Tips: None',
-      '<i class="ph ph-medal"></i> Achievement: Unlock “Keyboard Samurai” with 12+ words',
+      '<i class="ph ph-heart"></i> 3 hearts, no timer',
+      '<i class="ph ph-text-aa"></i> Floor rises every 10 words',
+      '<i class="ph ph-warning"></i> Corrupted letters appear',
+      '<i class="ph ph-coin"></i> Spend tokens to stay alive',
+      '<i class="ph ph-medal"></i> Recommended',
     ],
-    flavorText: '“Focus up, it\'s getting real now! Precision is key.”',
-    url: 'sm-normal.html'
+    flavorText: '“Endurance over speed. Survive the climb.”',
+    url: 'sm.html'
   },
   hard: {
     title: 'Level Hard: Word Expert',
@@ -73,6 +74,7 @@ function showPopup(levelKey) {
     `<blockquote>${level.flavorText}</blockquote>`;
 
   selectedLevelUrl = level.url;
+  selectedLevelKey = levelKey;
   popup.classList.add('show');
   popup.classList.remove('hidden');
 }
@@ -96,6 +98,12 @@ document.getElementById('hardLevel').addEventListener('click', () => showPopup('
 
 // Start button: navigates to the selected level's URL
 startBtn.addEventListener('click', () => {
+  if (selectedLevelKey === 'normal') {
+    localStorage.setItem('gameMode', 'survival');
+    localStorage.setItem('gameDifficulty', 'medium');
+  } else {
+    localStorage.setItem('gameMode', 'classic');
+  }
   window.location.href = selectedLevelUrl;
 });
 
