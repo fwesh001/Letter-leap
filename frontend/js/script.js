@@ -104,6 +104,7 @@ function startGame() {
   wordChain = [];
   usedWords.clear();
   score = 0;
+  totalScore = 0;
   gameOver = false;
   wordInput.disabled = false;
   submitBtn.disabled = false;
@@ -115,6 +116,12 @@ function startGame() {
   playerAttempts = 0;
   incorrectWordsCount = 0;
   lastTimeWarning = null;
+  currentStreak = 0;
+  maxStreakMultiplier = 1;
+  lengthPoints = 0;
+  rareLetterPoints = 0;
+  streakBonusPoints = 0;
+  longWordPoints = 0;
 
   currentLetter = getRandomLetter();
   letterElement.textContent = currentLetter;
@@ -187,7 +194,7 @@ function updateGame() {
     const speaker = i % 2 === 0 ? 'You' : 'AI';
     return `<li><b>${speaker}:</b> ${word}</li>`;
   }).join('');
-  scoreElement.textContent = score;
+  scoreElement.textContent = totalScore;
   letterElement.textContent = currentLetter;
   updateLastWords();
 }
