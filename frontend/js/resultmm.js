@@ -242,29 +242,43 @@ function populateMultiplayerResults() {
   const statsBreakdown = document.getElementById('stats-breakdown');
   if (statsBreakdown) {
     statsBreakdown.innerHTML = '';
+    if (players.length !== 2) {
+      statsBreakdown.innerHTML = '<p class="duel-only-note">Competitive Breakdown is available for duels only.</p>';
+      return;
+    }
+
     const p1 = players[0];
     const p2 = players[1];
+
+    const header = document.createElement('div');
+    header.className = 'stat-comparison-header';
+    header.innerHTML = `
+      <span class="p1-name">${escapeHtml(p1.name)}</span>
+      <span class="vs-text">VS</span>
+      <span class="p2-name">${escapeHtml(p2.name)}</span>
+    `;
+    statsBreakdown.appendChild(header);
 
     const statRow = (label, p1Val, p2Val) => {
       const row = document.createElement('div');
       row.className = 'stat-comparison-row';
       row.innerHTML = `
         <span class="stat-label">${label}</span>
-        <span class="p1-value">${p1Val}</span>
-        <span class="divider">:</span>
-        ${p2 ? `<span class="p2-value">${p2Val}</span>` : '<span class="p2-value">—</span>'}
+        <div class="stat-values">
+          <span class="p1-value">${p1Val}</span>
+          <span class="divider">:</span>
+          <span class="p2-value">${p2Val}</span>
+        </div>
       `;
       statsBreakdown.appendChild(row);
     };
 
-    if (p1) {
-      statRow('Total Words', p1.totalWords, p2?.totalWords || '—');
-      statRow('Accuracy', `${p1.accuracyPct}%`, p2 ? `${p2.accuracyPct}%` : '—');
-      statRow('Errors', p1.errors, p2?.errors || '—');
-      statRow('Max Streak', p1.maxStreak, p2?.maxStreak || '—');
-      statRow('Long Words', p1.longWords, p2?.longWords || '—');
-      statRow('Rare Letters', p1.rareLetters, p2?.rareLetters || '—');
-    }
+    statRow('Total Words', p1.totalWords, p2.totalWords);
+    statRow('Accuracy', `${p1.accuracyPct}%`, `${p2.accuracyPct}%`);
+    statRow('Errors', p1.errors, p2.errors);
+    statRow('Max Streak', p1.maxStreak, p2.maxStreak);
+    statRow('Long Words', p1.longWords, p2.longWords);
+    statRow('Rare Letters', p1.rareLetters, p2.rareLetters);
   }
 }
 
