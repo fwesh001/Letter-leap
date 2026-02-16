@@ -60,7 +60,8 @@ function populateResultPage() {
     if (quoteEl) quoteEl.textContent = quoteText;
 
     // --- SECTION 2: Stats Summary ---
-    const timeLabel = document.querySelector('section.result-stats .stat-label:nth-of-type(2)');
+    const statLabels = document.querySelectorAll('section.result-stats .stat-label');
+    const timeLabel = statLabels && statLabels.length > 1 ? statLabels[1] : null;
     setText('word-count', stats.words.length);
     if (lastGame.maxFloor !== undefined && lastGame.maxFloor !== null) {
         if (timeLabel) timeLabel.textContent = 'Highest Floor';
