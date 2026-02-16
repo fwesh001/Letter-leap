@@ -22,6 +22,8 @@ const DIFFICULTY_CONFIG = {
 // Get difficulty from localStorage (default to 'easy')
 const gameDifficulty = localStorage.getItem('gameDifficulty') || 'easy';
 const difficultySettings = DIFFICULTY_CONFIG[gameDifficulty] || DIFFICULTY_CONFIG.easy;
+const gameMode = localStorage.getItem('gameMode') || 'classic';
+const isSurvivalMode = gameMode === 'survival';
 
 // =======================
 // DOM ELEMENTS
