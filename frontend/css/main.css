@@ -250,6 +250,12 @@ select {
   margin: 0;
 }
 
+#word-chain {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
 #word-chain-list li {
   padding: 0.3rem 0;
   border-bottom: 1px solid var(--bg-secondary);
@@ -258,7 +264,22 @@ select {
   transition: background 0.3s;
 }
 
+#word-chain li {
+  padding: 0.3rem 0;
+  border-bottom: 1px solid var(--bg-secondary);
+  font-size: 1rem;
+  color: #ffffff;
+  transition: background 0.3s;
+}
+
 #word-chain-list li.new-word {
+  background: rgba(58, 143, 255, 0.2);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  animation: word-pop 0.5s;
+}
+
+#word-chain li.new-word {
   background: rgba(58, 143, 255, 0.2);
   color: #fff;
   border-radius: var(--radius-sm);
@@ -1504,7 +1525,15 @@ body.light-mode #word-chain-list li {
   color: #ffffff;
 }
 
+body.light-mode #word-chain li {
+  color: #ffffff;
+}
+
 body.light-mode #word-chain-list li.new-word {
+  color: #ffffff;
+}
+
+body.light-mode #word-chain li.new-word {
   color: #ffffff;
 }
 
