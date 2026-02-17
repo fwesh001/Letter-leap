@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let playerStatuses = {};
   let isSpectator = false;
   let currentPlayersCount = 0;
+  let scannedRooms = [];
   let currentRoomSettings = {
     timeLimit: 60,
     letterIncrement: 10,
@@ -47,7 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
       isSpectator = false;
       currentRoom = roomName;
       getUsername((uname) => {
-        socket.emit('createRoom', { roomName, username: uname });
+        const isPublic = Boolean(document.getElementById('create-room-public')?.checked);
+        socket.emit('createRoom', { roomName, username: uname, settings: currentRoomSettings, isPublic });
         window.currentRoomName = roomName;
         document.getElementById('choose-letter-section').style.display = 'block';
         showWaitingMessage();
@@ -88,8 +90,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // Listen for room creation or joining
   socket.on('playerCountUpdate', (count) => {
     const counter = document.getElementById('player-counter');
+    const cap = currentRoomSettings?.maxPlayers || 6;
     if (counter) {
-      counter.textContent = `${count} / 6 players in the room`;
+      counter.textContent = `${count} / ${cap} players in the room`;
     }
   });
 
