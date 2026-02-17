@@ -1159,7 +1159,8 @@ button.mode-card {
     transition: color 0.2s;
 }
 .mode-card:hover .mode-icon {
-    color: #fff;
+    color: var(--primary-hover);
+    filter: drop-shadow(0 0 8px var(--primary-color));
 }
 
 .mode-title {
@@ -1354,4 +1355,134 @@ button.mode-card {
         font-size: 0.8rem;
         opacity: 0.8;
     }
+}
+
+/* ======================================
+   DAYLIGHT NEON LIGHT MODE OVERRIDES
+   ====================================== */
+
+/* Mode Selection Cards - White surface with neon glow */
+body.light-mode .mode-card {
+    background: white;
+    border: 2px solid #e5e7eb;
+    box-shadow: 0 2px 8px rgba(30, 41, 59, 0.06);
+}
+
+body.light-mode .mode-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    border-color: var(--neon-cyan);
+    box-shadow: var(--shadow-neon-cyan), 0 12px 40px rgba(0, 180, 216, 0.25);
+}
+
+body.light-mode .mode-icon {
+    color: var(--neon-cyan);
+}
+
+body.light-mode .mode-card:hover .mode-icon {
+    color: var(--neon-cyan-hover);
+    filter: drop-shadow(0 0 8px rgba(0, 180, 216, 0.6));
+}
+
+/* Multiplayer Room Cards */
+body.light-mode .room-card {
+    background: white;
+    border: 1.5px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(30, 41, 59, 0.08);
+}
+
+body.light-mode .room-card:hover {
+    border-color: var(--neon-cyan);
+    box-shadow: var(--shadow-neon-cyan);
+    transform: translateY(-2px);
+}
+
+body.light-mode .custom-badge {
+    background: linear-gradient(135deg, var(--neon-magenta), var(--neon-magenta-hover));
+    box-shadow: 0 0 12px rgba(236, 72, 153, 0.4);
+}
+
+/* Room Browser Modal */
+body.light-mode .room-browser-modal {
+    background: white;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 12px 48px rgba(30, 41, 59, 0.15);
+}
+
+body.light-mode .room-browser-empty {
+    color: var(--text-muted);
+}
+
+/* Input Fields */
+body.light-mode input[type="text"],
+body.light-mode select {
+    background: white;
+    color: #1e293b;
+    border: 2px solid #e5e7eb;
+}
+
+body.light-mode input[type="text"]:focus,
+body.light-mode select:focus {
+    border-color: var(--neon-cyan);
+    box-shadow: var(--shadow-neon-cyan);
+}
+
+/* Buttons */
+body.light-mode .button {
+    box-shadow: 0 2px 4px rgba(0, 180, 216, 0.15);
+}
+
+body.light-mode .button:hover {
+    box-shadow: var(--shadow-neon-cyan-hover);
+}
+
+body.light-mode .button.secondary {
+    border: 2px solid var(--neon-cyan);
+    background: white;
+    color: var(--neon-cyan);
+}
+
+body.light-mode .button.secondary:hover {
+    background: rgba(0, 180, 216, 0.08);
+    box-shadow: var(--shadow-neon-cyan);
+}
+
+/* Survival HUD */
+body.light-mode #survival-hud {
+    background: white;
+    box-shadow: var(--shadow-neon-cyan);
+    border: 1px solid #e5e7eb;
+}
+
+body.light-mode #token-reset-btn {
+    border: 2px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    background: white;
+}
+
+body.light-mode #token-reset-btn:hover {
+    background: rgba(0, 180, 216, 0.08);
+    box-shadow: var(--shadow-neon-cyan);
+}
+
+body.light-mode #token-skip-btn {
+    border: 2px solid var(--neon-magenta);
+    color: var(--neon-magenta);
+    background: white;
+}
+
+body.light-mode #token-skip-btn:hover {
+    background: rgba(236, 72, 153, 0.08);
+    box-shadow: var(--shadow-neon-magenta);
+}
+
+/* Difficulty Cards */
+body.light-mode .difficulty-card {
+    background: white;
+    border: 2px solid #e5e7eb;
+    box-shadow: 0 2px 8px rgba(30, 41, 59, 0.08);
+}
+
+body.light-mode .difficulty-card:hover {
+    border-color: var(--neon-cyan);
+    box-shadow: var(--shadow-neon-cyan-hover);
 }
