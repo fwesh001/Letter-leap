@@ -97,3 +97,103 @@ body{
   .search{width:100%}
   .section-header{flex-direction:column;align-items:stretch}
 }
+
+/* ======================================
+   DAYLIGHT NEON LIGHT MODE
+   ====================================== */
+
+body.light-mode {
+  background: linear-gradient(180deg, #f3f4f6, #ffffff);
+  color: #1e293b;
+}
+
+body.light-mode {
+  --bg: #f3f4f6;
+  --surface: #ffffff;
+  --surface-2: #f8f9fa;
+  --text: #1e293b;
+  --muted: #64748b;
+  --accent: #00b4d8;
+  --card-shadow: 0 4px 20px rgba(0, 180, 216, 0.15);
+}
+
+body.light-mode .topbar {
+  background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.85));
+  border-bottom: 1px solid rgba(0, 180, 216, 0.15);
+}
+
+body.light-mode .back-btn {
+  background: white;
+  color: var(--neon-cyan);
+  border: 1.5px solid #e5e7eb;
+}
+
+body.light-mode .back-btn:hover {
+  background: rgba(0, 180, 216, 0.08);
+  border-color: var(--neon-cyan);
+  box-shadow: var(--shadow-neon-cyan);
+}
+
+body.light-mode .card {
+  background: white;
+  border: 1.5px solid #e5e7eb;
+  box-shadow: 0 2px 8px rgba(30, 41, 59, 0.08);
+}
+
+body.light-mode .tiers li {
+  background: rgba(0, 180, 216, 0.05);
+  border: 1px solid rgba(0, 180, 216, 0.12);
+}
+
+body.light-mode .search {
+  background: white;
+  color: #1e293b;
+  border: 2px solid #e5e7eb;
+}
+
+body.light-mode .search:focus {
+  border-color: var(--neon-cyan);
+  box-shadow: var(--shadow-neon-cyan);
+}
+
+body.light-mode .ach-card {
+  background: white;
+  border: 1.5px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(30, 41, 59, 0.08);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+body.light-mode .ach-card:hover {
+  border-color: var(--neon-cyan);
+  box-shadow: var(--shadow-neon-cyan);
+}
+
+body.light-mode .ach-card[open] {
+  border-color: var(--neon-cyan);
+  box-shadow: var(--shadow-neon-cyan);
+}
+
+body.light-mode .badge.bronze {
+  background: linear-gradient(135deg, #cd7f32, #b8732e);
+  box-shadow: 0 2px 8px rgba(205, 127, 50, 0.3);
+}
+
+body.light-mode .badge.silver {
+  background: linear-gradient(135deg, #c0c0c0, #a8a8a8);
+  box-shadow: 0 2px 8px rgba(192, 192, 192, 0.3);
+}
+
+body.light-mode .badge.gold {
+  background: linear-gradient(135deg, #ffd166, #f59e0b);
+  box-shadow: 0 2px 8px rgba(255, 209, 102, 0.4);
+}
+
+body.light-mode .badge.platinum {
+  background: linear-gradient(135deg, #a5f3fc, #67e8f9);
+  box-shadow: 0 2px 8px rgba(165, 243, 252, 0.4);
+}
+
+body.light-mode .badge.diamond {
+  background: linear-gradient(135deg, #9b8cff, #7c3aed);
+  box-shadow: 0 2px 8px rgba(155, 140, 255, 0.4);
+}
