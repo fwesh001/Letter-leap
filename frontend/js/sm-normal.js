@@ -53,8 +53,13 @@ fetch('../data/words.txt')
 // =======================
 // SOUND FX
 // =======================
+function isAudioMuted() {
+  if (window.audioManager) return window.audioManager.isMuted;
+  return localStorage.getItem('letterLeapMuted') === 'true' || localStorage.getItem('isMuted') === 'true';
+}
+
 function playClickSound() {
-  if (window.audioManager && window.audioManager.isMuted) {
+  if (isAudioMuted()) {
     return;
   }
   if (clickSound) {
@@ -64,7 +69,7 @@ function playClickSound() {
 }
 
 function playCorrectSound() {
-  if (window.audioManager && window.audioManager.isMuted) {
+  if (isAudioMuted()) {
     return;
   }
   if (correctSound) {
@@ -74,7 +79,7 @@ function playCorrectSound() {
 }
 
 function playWrongSound() {
-  if (window.audioManager && window.audioManager.isMuted) {
+  if (isAudioMuted()) {
     return;
   }
   if (wrongSound) {
@@ -84,7 +89,7 @@ function playWrongSound() {
 }
 
 function playGameoverSound() {
-  if (window.audioManager && window.audioManager.isMuted) {
+  if (isAudioMuted()) {
     return;
   }
   if (gameoverSound) {
@@ -215,36 +220,36 @@ function handleSubmission() {
 
   if (!playerWord) {
     showPopup("Blank Input - You typed nothing.");
-    wrongSound.currentTime = 0; wrongSound.play();
+    playWrongSound();
     incorrectWordsCount++; wordInput.value = ''; return;
   }
 
   if (usedWords.has(playerWord)) {
     showPopup("Already Used - Try a different word.");
-    wrongSound.currentTime = 0; wrongSound.play();
+    playWrongSound();
     incorrectWordsCount++; wordInput.value = ''; return;
   }
 
   if (playerWord.length < minWordLength) {
     showPopup(`Too Short - Use at least ${minWordLength} letters!`);
-    wrongSound.currentTime = 0; wrongSound.play();
+    playWrongSound();
     incorrectWordsCount++; wordInput.value = ''; return;
   }
 
   if (!playerWord.startsWith(currentLetter)) {
     showPopup(`Wrong Start Letter - Must start with "${currentLetter}"`);
-    wrongSound.currentTime = 0; wrongSound.play();
+    playWrongSound();
     incorrectWordsCount++; wordInput.value = ''; return;
   }
 
   if (!isValidWord(playerWord)) {
     showPopup(`Invalid Word - "${playerWord}" is not in the dictionary.`);
-    wrongSound.currentTime = 0; wrongSound.play();
+    playWrongSound();
     incorrectWordsCount++; wordInput.value = ''; return;
   }
 
   // VALID ENTRY
-  correctSound.currentTime = 0; correctSound.play();
+  playCorrectSound();
   wordChain.push(playerWord); usedWords.add(playerWord);
   score++; totalWordsExchanged++;
   currentLetter = playerWord.slice(-1);
@@ -443,8 +448,7 @@ function endGame() {
   gameOver = true;
   wordInput.disabled = true;
   submitBtn.disabled = true;
-  gameoverSound.currentTime = 0;
-  gameoverSound.play();
+  playGameoverSound();
   saveGameResult();
   showGameOverScreen();
 }
