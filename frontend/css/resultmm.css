@@ -253,6 +253,66 @@ ul {
   font-size: 1.4rem;
 }
 
+/* Player Performance (3-6 players) */
+.player-performance-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.player-performance-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.pp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.pp-rank {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+.pp-name {
+  flex: 1;
+  text-align: left;
+}
+
+.pp-score {
+  color: var(--text-accent);
+  font-size: 0.9rem;
+}
+
+.pp-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem 0.75rem;
+  font-size: 0.9rem;
+}
+
+.pp-stats .label {
+  color: var(--text-secondary);
+  margin-right: 0.25rem;
+}
+
+.pp-stats .value {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
 /* Battle Winner Section */
 .battle-winner {
   background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 165, 0, 0.05));
