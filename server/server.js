@@ -484,7 +484,7 @@ function checkAndEmitAchievements(word, gameState, socket, roomName) {
 io.on('connection', (socket) => {
   console.log('🟢 A user connected:', socket.id);
 
-  socket.on('createRoom', ({ roomName, username, settings }) => {
+  socket.on('createRoom', ({ roomName, username, settings, isPublic = true }) => {
     // Check if room already exists and username is taken
     if (roomUsernames[roomName]) {
       const existingUsernames = Object.values(roomUsernames[roomName]);
@@ -506,8 +506,10 @@ io.on('connection', (socket) => {
     roomPlayerStatus[roomName][socket.id] = 'active';
 
     roomCreators[roomName] = socket.id;
+    roomStarted[roomName] = false;
 
     roomSettings[roomName] = normalizeRoomSettings(settings);
+    upsertActiveRoom(roomName, { isPublic: Boolean(isPublic) });
 
     
 
@@ -536,6 +538,7 @@ io.on('connection', (socket) => {
     console.log(`🏗️ Room created: ${roomName}`);
     // Emit the count
   emitPlayerCount(roomName);
+  emitPublicRoomsUpdated();
   });
 
   socket.on('joinRoom', ({ roomName, username }) => {
@@ -598,6 +601,8 @@ io.on('connection', (socket) => {
     console.log(`➡️ User joined room: ${roomName}`);
     // Emit the count
   emitPlayerCount(roomName);
+  upsertActiveRoom(roomName);
+  emitPublicRoomsUpdated();
     });
 
   socket.on('setRoomSettings', ({ roomName, settings }) => {
@@ -607,7 +612,13 @@ io.on('connection', (socket) => {
     }
 
     roomSettings[roomName] = normalizeRoomSettings(settings);
+    upsertActiveRoom(roomName);
     io.to(roomName).emit('roomSettingsUpdated', roomSettings[roomName]);
+    emitPublicRoomsUpdated();
+  });
+
+  socket.on('getPublicRooms', () => {
+    socket.emit('publicRooms', listPublicRooms());
   });
 
   socket.on('spectateRoom', ({ roomName }) => {
@@ -837,6 +848,10 @@ checkAndEmitAchievements(word, gameState, socket, roomName);
     io.to(roomName).emit('updateScores', roomScores[roomName]);
     io.to(roomName).emit('roomSettingsUpdated', getRoomSettings(roomName));
 
+    roomStarted[roomName] = true;
+    upsertActiveRoom(roomName);
+    emitPublicRoomsUpdated();
+
     roomTurns[roomName] = socket.id;
     Object.keys(roomScores[roomName]).forEach(id => {
       playerTimeLeft[roomName][id] = TURN_TIME;
@@ -861,6 +876,9 @@ checkAndEmitAchievements(word, gameState, socket, roomName);
 
   socket.on('startGameConfirmed', (roomName) => {
   console.log(`⏱️ Timer starting for room: ${roomName}`);
+  roomStarted[roomName] = true;
+  upsertActiveRoom(roomName);
+  emitPublicRoomsUpdated();
   startTurnTimer(roomName);
 });
 
@@ -868,6 +886,9 @@ checkAndEmitAchievements(word, gameState, socket, roomName);
     if (!roomName || !roomUsernames[roomName]?.[socket.id]) return;
     handlePlayerExit(roomName, socket.id, 'left');
     socket.leave(roomName);
+    upsertActiveRoom(roomName);
+    maybeCleanupRoom(roomName);
+    emitPublicRoomsUpdated();
   });
 
   socket.on('kickPlayer', ({ roomName, playerId }) => {
@@ -895,6 +916,9 @@ checkAndEmitAchievements(word, gameState, socket, roomName);
     
     // Notify the room
     io.to(roomName).emit('toast', `${kickedPlayerName} was kicked from the room`);
+    upsertActiveRoom(roomName);
+    maybeCleanupRoom(roomName);
+    emitPublicRoomsUpdated();
     
     console.log(`⚠️ Player ${playerId} kicked from room ${roomName}`);
   });
@@ -908,6 +932,9 @@ checkAndEmitAchievements(word, gameState, socket, roomName);
     for (const roomName in roomUsernames) {
       if (roomUsernames[roomName][socket.id]) {
         handlePlayerExit(roomName, socket.id, 'left');
+        upsertActiveRoom(roomName);
+        maybeCleanupRoom(roomName);
+        emitPublicRoomsUpdated();
 
       }
     }
@@ -931,6 +958,8 @@ checkAndEmitAchievements(word, gameState, socket, roomName);
       io.to(roomName).emit('updateScores', roomScores[roomName]);
       io.to(roomName).emit('updateUsernames', roomUsernames[roomName]);
       io.to(roomName).emit('aiAdded');
+      upsertActiveRoom(roomName);
+      emitPublicRoomsUpdated();
 
       if (!roomTurns[roomName]) {
         roomTurns[roomName] = Object.keys(roomScores[roomName])[0];
@@ -947,6 +976,8 @@ checkAndEmitAchievements(word, gameState, socket, roomName);
       io.to(roomName).emit('updateScores', roomScores[roomName]);
       io.to(roomName).emit('updateUsernames', roomUsernames[roomName]);
       io.to(roomName).emit('aiRemoved');
+      upsertActiveRoom(roomName);
+      emitPublicRoomsUpdated();
     }
   });
 
@@ -1078,6 +1109,7 @@ function handlePlayerExit(roomName, playerId, exitType) {
 
   const remaining = roomPlayerOrder[roomName] || [];
   if (remaining.length <= 1) {
+    roomStarted[roomName] = false;
     const winnerResult = computeWinnerResult(roomName, { type: exitType, reason: 'All other players left' });
     io.to(roomName).emit('gameOver', {
       winner: winnerResult.winner,
@@ -1091,6 +1123,7 @@ function handlePlayerExit(roomName, playerId, exitType) {
   }
 
   emitPlayerCount(roomName);
+  upsertActiveRoom(roomName);
 }
 
 
