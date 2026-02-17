@@ -50,6 +50,10 @@ Create valid words that either continue or respond to the current word chain bef
 - **Single-player:** Play against the system and aim for a high score and achievements.
 - **Survival Mode:** A pressure-focused single-player variant with hearts, floor progression, and corrupted letters that increase the challenge.
 - **Multiplayer:** Real-time, turn-based rooms where players take turns making words. Players have a fixed turn timer; running out of time or submitting invalid words can eliminate a player.
+  - **Room Browser:** Scan for public rooms and join active games
+  - **Public/Private Rooms:** Choose room visibility when creating
+  - **Spectate Mode:** Watch ongoing matches without participating
+  - **Custom Mode:** Configure game rules (timer, word length, lives, etc.)
 
 ### ⌨️ Controls & Rules (basic)
 - Type a word in the input box and submit (Enter or the Submit button).
@@ -66,14 +70,22 @@ Create valid words that either continue or respond to the current word chain bef
 
 - Single-player, Survival Mode, and real-time multiplayer modes
 - Real-time multiplayer powered by Socket.io with rooms and turn timers (🔁)
+- **Room Browser:** Scan and discover public multiplayer rooms with real-time updates (🔍)
+- **Public/Private Rooms:** Control room visibility and access when creating games (🔒)
+- **Spectate Mode:** Watch live matches without participating (👁️)
+- **Custom Game Mode:** Customize rules including timer length, word length requirements, lives, and scoring (⚙️)
+- **Real-time Room Updates:** Automatic refresh of available rooms as players join/leave (🔄)
 - Score tracking, achievements, and end-of-match result screens (🏆)
 - Global dark/light theme with a settings sidebar for quick access to core options (🌙/☀️)
 - Achievement search and expanded challenge list (🔎)
 - Multiplayer results include player cards, badges, and dynamic commentary (🎯)
 - Sound effects and images (assets in `frontend/assets/`) (🔊, 🖼️)
 - Configurable settings via `frontend/data/settings.json` (⚙️)
-- Gamified elements: streaks, badges, and milestone achievements (🥇)
-- Tips hub with letter browsing, word search, achievement previews, copy, and text-to-speech (💡)
+- **Room Browser Modal:** Clean, card-based interface for discovering public rooms with player counts and host information
+- **Custom Badge Indicator:** Animated badge on room cards showing custom rule configurations
+- **Scanning Animation:** Integrated loader animation for room discovery with smooth transitions
+- Settings sidebar added across content pages (Tips, Achievements, Feedback, How to Play, Multiplayer)
+- Survival Mode added with a dedicated HUD, hearts, and corrupted-letter pressure
 
 ## 🧩 Recent UI Updates
 
