@@ -33,8 +33,11 @@
   }
 
   function playToastSound(type) {
-    // Check mute state from global audio manager
-    if (window.audioManager && window.audioManager.isMuted) {
+    // Check mute state from global audio manager with localStorage fallback
+    const isMuted = window.audioManager
+      ? window.audioManager.isMuted
+      : (localStorage.getItem('letterLeapMuted') === 'true' || localStorage.getItem('isMuted') === 'true');
+    if (isMuted) {
       return;
     }
 
