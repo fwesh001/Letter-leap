@@ -41,9 +41,14 @@
         <button id="menu-create-btn" class="button"><i class="ph ph-plus-circle"></i> Create Room</button>
         <button id="menu-join-btn" class="button"><i class="ph ph-sign-in"></i> Join Room</button>
         <button id="menu-spectate-btn" class="button"><i class="ph ph-eye"></i> Spectate Room</button>
+        <button id="scan-rooms-btn" class="button secondary"><i class="ph ph-magnifying-glass"></i> Scan for Rooms</button>
       </div>
       <div class="create-room" style="display:none;">
         <input type="text" id="create-room-name" placeholder="Room name">
+        <label class="room-visibility-toggle">
+          <input type="checkbox" id="create-room-public" checked>
+          Public Room
+        </label>
         <button id="create-room-btn" class="button">Create</button>
       </div>
       <div class="join-room" style="display:none;">
@@ -189,6 +194,32 @@
         <div class="modal-actions">
           <button id="custom-mode-save-btn" class="button">Save Settings</button>
           <button id="custom-mode-cancel-btn" class="button secondary">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="roomBrowserModal" class="modal-overlay" style="display:none;">
+      <div class="modal room-browser-modal">
+        <h3 style="color: var(--text-primary); margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; display:flex; justify-content:space-between; align-items:center;">
+          <span><i class="ph ph-magnifying-glass"></i> Room Browser</span>
+          <button id="refresh-rooms-btn" class="button secondary" style="padding:0.35rem 0.75rem;">Refresh</button>
+        </h3>
+        <div id="room-list-container" class="room-list-container"></div>
+        <p id="room-browser-empty" class="room-browser-empty" style="display:none;">No active rooms found. Why not create one?</p>
+        <div class="modal-actions">
+          <button id="close-room-browser-btn" class="button secondary">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="room-rules-modal" class="modal-overlay" style="display:none;">
+      <div class="modal room-rules-modal">
+        <h3 style="color: var(--text-primary); margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+          <i class="ph ph-list-checks"></i> Custom Rules
+        </h3>
+        <div id="room-rules-content" class="room-rules-content"></div>
+        <div class="modal-actions">
+          <button id="close-room-rules-btn" class="button secondary">Close</button>
         </div>
       </div>
     </div>
