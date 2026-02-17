@@ -55,9 +55,12 @@ fetch('../data/words.txt')
 // SOUND FX
 // =======================
 function playClickSound() {
+  if (window.audioManager && window.audioManager.isMuted) {
+    return;
+  }
   if (clickSound) {
     clickSound.currentTime = 0;
-    clickSound.play();
+    clickSound.play().catch(err => console.warn('[sm-hard] click sound play failed:', err));
   }
 }
 
