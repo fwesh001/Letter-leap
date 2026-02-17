@@ -359,13 +359,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  document.getElementById('add-ai-btn').onclick = () => {
-    if (!currentRoom) {
-      showToast('Create a room first!');
-      return;
-    }
-    socket.emit('addAI', { roomName: currentRoom });
-  };
+  const addAiBtn = document.getElementById('add-ai-btn');
+  if (addAiBtn) {
+    addAiBtn.onclick = () => {
+      if (!currentRoom) {
+        showToast('Create a room first!');
+        return;
+      }
+      socket.emit('addAI', { roomName: currentRoom });
+    };
+  }
 
   socket.on('aiAdded', () => {
     showToast('AI opponent has been added to this room!');
