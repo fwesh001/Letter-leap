@@ -462,7 +462,7 @@ function handleSubmission() {
 
   if (!playerWord) {
     showPopup("Blank Input - You typed nothing.", 2000, 'penalty');
-    wrongSound.currentTime = 0; wrongSound.play();
+    playWrongSound();
     incorrectWordsCount++; wordInput.value = '';
     resetStreak();
     if (isSurvivalMode) {
@@ -474,7 +474,7 @@ function handleSubmission() {
 
   if (usedWords.has(playerWord)) {
     showPopup("Already Used - Try a different word.", 2000, 'penalty');
-    wrongSound.currentTime = 0; wrongSound.play();
+    playWrongSound();
     incorrectWordsCount++; wordInput.value = '';
     resetStreak();
     if (isSurvivalMode) {
@@ -486,7 +486,7 @@ function handleSubmission() {
 
   if (playerWord.length < minWordLength) {
     showPopup(`Too Short - Use at least ${minWordLength} letters!`, 2000, 'penalty');
-    wrongSound.currentTime = 0; wrongSound.play();
+    playWrongSound();
     incorrectWordsCount++; wordInput.value = '';
     resetStreak();
     if (isSurvivalMode) {
@@ -498,7 +498,7 @@ function handleSubmission() {
 
   if (!playerWord.startsWith(currentLetter)) {
     showPopup(`Wrong Start Letter - Must start with "${currentLetter}"`, 2000, 'penalty');
-    wrongSound.currentTime = 0; wrongSound.play();
+    playWrongSound();
     incorrectWordsCount++; wordInput.value = '';
     resetStreak();
     if (isSurvivalMode) {
@@ -511,7 +511,7 @@ function handleSubmission() {
 
   if (!isValidWord(playerWord)) {
     showPopup(`Invalid Word - "${playerWord}" is not in the dictionary.`, 2000, 'penalty');
-    wrongSound.currentTime = 0; wrongSound.play();
+    playWrongSound();
     incorrectWordsCount++; wordInput.value = '';
     resetStreak();
     if (isSurvivalMode) {
@@ -523,7 +523,7 @@ function handleSubmission() {
 
   if (isSurvivalMode && wordHasCorruptedLetter(playerWord)) {
     showPopup(`Corrupted letter "${corruptedLetter}" used!`, 2000, 'penalty');
-    wrongSound.currentTime = 0; wrongSound.play();
+    playWrongSound();
     incorrectWordsCount++; wordInput.value = '';
     resetStreak();
     loseHeart('Heart lost: corrupted letter');
@@ -532,7 +532,7 @@ function handleSubmission() {
   }
 
   // 🔥 VALID ENTRY
-  correctSound.currentTime = 0; correctSound.play();
+  playCorrectSound();
   wordChain.push(playerWord); usedWords.add(playerWord);
   score++;
   totalWordsExchanged++;
@@ -831,8 +831,7 @@ function endGame() {
   gameOver = true;
   wordInput.disabled = true;
   submitBtn.disabled = true;
-  gameoverSound.currentTime = 0;
-  gameoverSound.play();
+  playGameoverSound();
   saveGameResult();
   showGameOverScreen();
 }
