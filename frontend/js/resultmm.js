@@ -64,42 +64,82 @@ function populateMultiplayerResults() {
     reasonEl.textContent = reason || 'Match finished';
   }
 
-  // Head-to-Head
+  // Head-to-Head or Player Performance
   const h2hGrid = document.getElementById('comparison-grid');
+  const comparisonTitle = document.getElementById('comparison-title');
   if (h2hGrid && players.length >= 1) {
     h2hGrid.innerHTML = '';
-    const p1 = players[0];
-    const p2 = players[1] || null;
 
-    const card1 = document.createElement('div');
-    card1.className = 'h2h-card winner';
-    card1.innerHTML = `
-      <div class="medal-badge"><i class="ph-fill ph-medal" style="color: #ffd700;"></i> 1st</div>
-      <h4>${escapeHtml(p1.name)}</h4>
-      <div class="stat-row"><span class="stat-label">Score</span><span class="stat-value">${p1.score}</span></div>
-      <div class="stat-row"><span class="stat-label">Words</span><span class="stat-value">${p1.totalWords}</span></div>
-      <div class="stat-row"><span class="stat-label">Accuracy</span><span class="stat-value">${p1.accuracyPct}%</span></div>
-      <div class="stat-row"><span class="stat-label">Longest</span><span class="stat-value">${escapeHtml(p1.longest || '—')}</span></div>
-    `;
-    h2hGrid.appendChild(card1);
+    if (players.length <= 2) {
+      if (comparisonTitle) {
+        comparisonTitle.innerHTML = '<i class="ph ph-swords"></i> Head-to-Head';
+      }
 
-    const vs = document.createElement('div');
-    vs.className = 'vs-divider';
-    vs.textContent = 'VS';
-    h2hGrid.appendChild(vs);
+      const p1 = players[0];
+      const p2 = players[1] || null;
 
-    if (p2) {
-      const card2 = document.createElement('div');
-      card2.className = 'h2h-card';
-      card2.innerHTML = `
-        <div class="medal-badge"><i class="ph-fill ph-medal" style="color: #c0c0c0;"></i> 2nd</div>
-        <h4>${escapeHtml(p2.name)}</h4>
-        <div class="stat-row"><span class="stat-label">Score</span><span class="stat-value">${p2.score}</span></div>
-        <div class="stat-row"><span class="stat-label">Words</span><span class="stat-value">${p2.totalWords}</span></div>
-        <div class="stat-row"><span class="stat-label">Accuracy</span><span class="stat-value">${p2.accuracyPct}%</span></div>
-        <div class="stat-row"><span class="stat-label">Longest</span><span class="stat-value">${escapeHtml(p2.longest || '—')}</span></div>
+      const card1 = document.createElement('div');
+      card1.className = 'h2h-card winner';
+      card1.innerHTML = `
+        <div class="medal-badge"><i class="ph-fill ph-medal" style="color: #ffd700;"></i> 1st</div>
+        <h4>${escapeHtml(p1.name)}</h4>
+        <div class="stat-row"><span class="stat-label">Score</span><span class="stat-value">${p1.score}</span></div>
+        <div class="stat-row"><span class="stat-label">Words</span><span class="stat-value">${p1.totalWords}</span></div>
+        <div class="stat-row"><span class="stat-label">Accuracy</span><span class="stat-value">${p1.accuracyPct}%</span></div>
+        <div class="stat-row"><span class="stat-label">Longest</span><span class="stat-value">${escapeHtml(p1.longest || '—')}</span></div>
       `;
-      h2hGrid.appendChild(card2);
+      h2hGrid.appendChild(card1);
+
+      const vs = document.createElement('div');
+      vs.className = 'vs-divider';
+      vs.textContent = 'VS';
+      h2hGrid.appendChild(vs);
+
+      if (p2) {
+        const card2 = document.createElement('div');
+        card2.className = 'h2h-card';
+        card2.innerHTML = `
+          <div class="medal-badge"><i class="ph-fill ph-medal" style="color: #c0c0c0;"></i> 2nd</div>
+          <h4>${escapeHtml(p2.name)}</h4>
+          <div class="stat-row"><span class="stat-label">Score</span><span class="stat-value">${p2.score}</span></div>
+          <div class="stat-row"><span class="stat-label">Words</span><span class="stat-value">${p2.totalWords}</span></div>
+          <div class="stat-row"><span class="stat-label">Accuracy</span><span class="stat-value">${p2.accuracyPct}%</span></div>
+          <div class="stat-row"><span class="stat-label">Longest</span><span class="stat-value">${escapeHtml(p2.longest || '—')}</span></div>
+        `;
+        h2hGrid.appendChild(card2);
+      }
+    } else {
+      if (comparisonTitle) {
+        comparisonTitle.innerHTML = '<i class="ph ph-users-three"></i> Player Performance';
+      }
+
+      const grid = document.createElement('div');
+      grid.className = 'player-performance-grid';
+
+      players.forEach((p, idx) => {
+        const card = document.createElement('div');
+        card.className = 'player-performance-card';
+        card.innerHTML = `
+          <div class="pp-header">
+            <span class="pp-rank">#${idx + 1}</span>
+            <span class="pp-name">${escapeHtml(p.name)}</span>
+            <span class="pp-score">${p.score} pts</span>
+          </div>
+          <div class="pp-stats">
+            <div><span class="label">Words</span><span class="value">${p.totalWords}</span></div>
+            <div><span class="label">Accuracy</span><span class="value">${p.accuracyPct}%</span></div>
+            <div><span class="label">Errors</span><span class="value">${p.errors}</span></div>
+            <div><span class="label">Max Streak</span><span class="value">${p.maxStreak}</span></div>
+            <div><span class="label">Long Words</span><span class="value">${p.longWords}</span></div>
+            <div><span class="label">Rare Letters</span><span class="value">${p.rareLetters}</span></div>
+            <div><span class="label">Achievements</span><span class="value">${p.achievements}</span></div>
+            <div><span class="label">Longest</span><span class="value">${escapeHtml(p.longest || '—')}</span></div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      h2hGrid.appendChild(grid);
     }
   }
 
