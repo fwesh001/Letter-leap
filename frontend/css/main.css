@@ -401,6 +401,41 @@ select {
   color: var(--text-primary);
 }
 
+.waiting-room-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.room-settings-summary {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  justify-content: center;
+}
+
+.room-settings-summary span {
+  color: var(--text-secondary);
+}
+
+.custom-mode-warning {
+  margin-top: 0.75rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: 6px;
+  background: rgba(255, 77, 79, 0.12);
+  border: 1px solid rgba(255, 77, 79, 0.35);
+  color: #ffb3b3;
+  font-size: 0.9rem;
+}
+
 /* ===========================
    Toast Notifications
    =========================== */
