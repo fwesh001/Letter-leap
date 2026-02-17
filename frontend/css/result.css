@@ -710,3 +710,88 @@ li {
     50% { transform: scale(1.05); }
     100% { transform: scale(1); }
 }
+
+/* ======================================
+   DAYLIGHT NEON LIGHT MODE
+   ====================================== */
+
+body.light-mode .result-section {
+  background: white;
+  border: 1.5px solid #e5e7eb;
+  box-shadow: 0 2px 8px rgba(30, 41, 59, 0.08);
+}
+
+body.light-mode .result-section:hover {
+  background: white;
+  border-color: var(--neon-cyan);
+  box-shadow: var(--shadow-neon-cyan);
+}
+
+body.light-mode .result-quote {
+  background: rgba(245, 158, 11, 0.08);
+  border-color: var(--neon-yellow);
+}
+
+body.light-mode .result-quote h2 {
+  color: var(--danger-color);
+}
+
+body.light-mode .stat-card {
+  background: rgba(0, 180, 216, 0.05);
+  border: 1px solid rgba(0, 180, 216, 0.15);
+}
+
+body.light-mode .stat-card:hover {
+  background: rgba(0, 180, 216, 0.08);
+  border-color: var(--neon-cyan);
+  box-shadow: 0 2px 8px rgba(0, 180, 216, 0.2);
+}
+
+body.light-mode .stat-value {
+  color: var(--neon-cyan);
+}
+
+body.light-mode .result-playstyle {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: var(--neon-green);
+}
+
+body.light-mode .achievements-showcase {
+  background: white;
+  border: 1.5px solid #e5e7eb;
+}
+
+body.light-mode .achievement-badge {
+  background: white;
+  border: 1.5px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(30, 41, 59, 0.08);
+}
+
+body.light-mode .achievement-badge:hover {
+  border-color: var(--neon-magenta);
+  box-shadow: var(--shadow-neon-magenta);
+}
+
+body.light-mode .milestone-item {
+  background: rgba(0, 180, 216, 0.05);
+  border-left: 4px solid var(--neon-cyan);
+}
+
+body.light-mode .word-chip {
+  background: white;
+  border: 1.5px solid #e5e7eb;
+  color: #1e293b;
+}
+
+body.light-mode .word-chip:hover {
+  border-color: var(--neon-cyan);
+  background: rgba(0, 180, 216, 0.08);
+}
+
+body.light-mode .action-buttons button {
+  box-shadow: var(--shadow-neon-cyan);
+}
+
+body.light-mode .action-buttons button:hover {
+  box-shadow: var(--shadow-neon-cyan-hover);
+}
