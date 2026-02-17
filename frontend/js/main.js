@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let lastMinLength = 2;
   let playerStatuses = {};
   let isSpectator = false;
+  let currentPlayersCount = 0;
   let currentRoomSettings = {
     timeLimit: 60,
     letterIncrement: 10,
@@ -118,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
     waitingForOpponent = true;
     showWaitingMessage();
     showRoomActions();
-    showCustomModeActions(true);
+    showWaitingRoomActions(true);
     openCustomModeModal();
   });
 
@@ -126,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
     waitingForOpponent = true;
     showWaitingMessage();
     showRoomActions();
-    showCustomModeActions(false);
+    showWaitingRoomActions(false);
   });
 
   socket.on('roomSpectated', (roomName) => {
@@ -134,13 +135,13 @@ document.addEventListener('DOMContentLoaded', () => {
     enterGameRoom(roomName);
     showRoomActions();
     showToast(`Now spectating ${roomName}`);
-    showCustomModeActions(false);
+    showWaitingRoomActions(false);
   });
 
   socket.on('startGame', (startLetter) => {
     enterGameRoom(currentRoom);
     updateNextLetter(startLetter);
-    showCustomModeActions(false);
+    showWaitingRoomActions(false);
 
     socket.emit('startGameConfirmed', currentRoom);
   });
@@ -149,6 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!settings) return;
     currentRoomSettings = settings;
     syncCustomModeInputs(settings);
+    updateRoomSettingsSummary();
   });
 
   document.getElementById('submit-word-btn').onclick = () => {
@@ -163,11 +165,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   socket.on('updateUsernames', (userObj) => {
     usernames = userObj;
+    currentPlayersCount = Object.keys(userObj || {}).length;
     if (Object.values(userObj).some(name => name && name.includes('BOT'))) {
       document.getElementById('ai-indicator').style.display = 'block';
     }
     renderScoreboard();
     renderWaitingRoomPlayers();
+    updateRoomSettingsSummary();
+    updateCustomModeWarning();
   });
 
   socket.on('updatePlayerStatus', (statusObj) => {
@@ -387,6 +392,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const customBonusPerWord = document.getElementById('custom-bonus-per-word');
   const customTimeBonus = document.getElementById('custom-time-bonus');
   const customMaxPlayers = document.getElementById('custom-max-players');
+  const customModeWarning = document.getElementById('custom-mode-warning');
 
   function syncCustomModeInputs(settings) {
     if (!customTimeLimit) return;
@@ -395,6 +401,7 @@ document.addEventListener('DOMContentLoaded', () => {
     customBonusPerWord.value = settings.bonusPerWord ?? 1;
     customTimeBonus.value = settings.timeBonusPerWord ?? 10;
     customMaxPlayers.value = settings.maxPlayers ?? 6;
+    updateCustomModeWarning();
   }
 
   function openCustomModeModal() {
@@ -419,6 +426,27 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
 
+  function updateCustomModeWarning() {
+    if (!customModeWarning || !customMaxPlayers) return;
+    const maxPlayers = Number(customMaxPlayers.value || 6);
+    if (currentPlayersCount > 0 && maxPlayers < currentPlayersCount) {
+      customModeWarning.textContent = `Max players is below current room size (${currentPlayersCount}). Increase it to save.`;
+      customModeWarning.style.display = 'block';
+      if (customModeSaveBtn) customModeSaveBtn.disabled = true;
+    } else {
+      customModeWarning.style.display = 'none';
+      if (customModeSaveBtn) customModeSaveBtn.disabled = false;
+    }
+  }
+
+  [customTimeLimit, customLetterIncrement, customBonusPerWord, customTimeBonus, customMaxPlayers]
+    .filter(Boolean)
+    .forEach((input) => {
+      input.addEventListener('input', () => {
+        updateCustomModeWarning();
+      });
+    });
+
   if (customModeBtn) {
     customModeBtn.addEventListener('click', () => {
       openCustomModeModal();
@@ -435,6 +463,11 @@ document.addEventListener('DOMContentLoaded', () => {
     customModeSaveBtn.addEventListener('click', () => {
       if (!currentRoom || !isCreator) {
         showToast('Only the room creator can change settings');
+        return;
+      }
+      updateCustomModeWarning();
+      if (customModeSaveBtn.disabled) {
+        showToast('Increase max players to match current room size');
         return;
       }
       const nextSettings = getCustomModeValues();
@@ -579,14 +612,29 @@ document.addEventListener('DOMContentLoaded', () => {
     if (actions) actions.style.display = 'none';
   }
 
-  function showCustomModeActions(visible) {
-    const customActions = document.getElementById('custom-mode-actions');
-    if (!customActions) return;
+  function showWaitingRoomActions(visible) {
+    const actions = document.getElementById('waiting-room-actions');
+    if (!actions) return;
     if (visible && isCreator && !isSpectator) {
-      customActions.style.display = 'block';
+      actions.style.display = 'flex';
     } else {
-      customActions.style.display = 'none';
+      actions.style.display = 'none';
     }
+  }
+
+  function updateRoomSettingsSummary() {
+    const summary = document.getElementById('room-settings-summary');
+    const roomSystem = document.getElementById('room-system');
+    if (!summary || !roomSystem || roomSystem.style.display === 'none') return;
+
+    summary.innerHTML = `
+      <span>Time: <strong>${currentRoomSettings.timeLimit}s</strong></span>
+      <span>Increment: <strong>${currentRoomSettings.letterIncrement}</strong></span>
+      <span>Bonus/Word: <strong>${currentRoomSettings.bonusPerWord}</strong></span>
+      <span>Time Bonus: <strong>${currentRoomSettings.timeBonusPerWord}s</strong></span>
+      <span>Max Players: <strong>${currentRoomSettings.maxPlayers}</strong></span>
+    `;
+    summary.style.display = 'flex';
   }
 
   function renderScoreboard() {
