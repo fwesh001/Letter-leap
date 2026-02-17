@@ -968,6 +968,11 @@ window.addEventListener('unhandledrejection', (event) => {
 
 // Unified sound player
 function playSound(kind) {
+  // Check mute state from global audio manager
+  if (window.audioManager && window.audioManager.isMuted) {
+    return;
+  }
+  
   try {
     const id = kind === 'correct' ? 'sound-correct'
       : kind === 'wrong' ? 'sound-wrong'
