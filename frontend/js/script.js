@@ -119,6 +119,36 @@ function playClickSound() {
   }
 }
 
+function playCorrectSound() {
+  if (window.audioManager && window.audioManager.isMuted) {
+    return;
+  }
+  if (correctSound) {
+    correctSound.currentTime = 0;
+    correctSound.play().catch(err => console.warn('[script] correct sound play failed:', err));
+  }
+}
+
+function playWrongSound() {
+  if (window.audioManager && window.audioManager.isMuted) {
+    return;
+  }
+  if (wrongSound) {
+    wrongSound.currentTime = 0;
+    wrongSound.play().catch(err => console.warn('[script] wrong sound play failed:', err));
+  }
+}
+
+function playGameoverSound() {
+  if (window.audioManager && window.audioManager.isMuted) {
+    return;
+  }
+  if (gameoverSound) {
+    gameoverSound.currentTime = 0;
+    gameoverSound.play().catch(err => console.warn('[script] gameover sound play failed:', err));
+  }
+}
+
 // =======================
 // 🟢 GAME INIT + RESTART
 // =======================
