@@ -84,6 +84,10 @@
           <!-- JS will populate player list here -->
         </ul>
       </div>
+
+      <div id="custom-mode-actions" style="display:none; text-align:center;">
+        <button id="custom-mode-btn" class="button secondary"><i class="ph ph-sliders"></i> Custom Mode</button>
+      </div>
     </section>
 
     <section class="game-area" id="game-area" style="display:none;">
@@ -149,6 +153,41 @@
         </div>
         <div class="modal-actions">
           <button id="ai-modal-cancel-btn" class="button secondary">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Custom Mode Modal -->
+    <div id="custom-mode-modal" class="modal-overlay" style="display:none;">
+      <div class="modal custom-mode-modal">
+        <h3 style="color: var(--text-primary); margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+          <i class="ph ph-sliders"></i> Custom Mode Settings
+        </h3>
+        <div class="custom-mode-form">
+          <div class="custom-mode-row">
+            <label for="custom-time-limit">Time limit (seconds)</label>
+            <input type="number" id="custom-time-limit" min="15" max="180" step="5" value="60">
+          </div>
+          <div class="custom-mode-row">
+            <label for="custom-letter-increment">Letter increment (words)</label>
+            <input type="number" id="custom-letter-increment" min="3" max="30" step="1" value="10">
+          </div>
+          <div class="custom-mode-row">
+            <label for="custom-bonus-per-word">Bonus per word (score)</label>
+            <input type="number" id="custom-bonus-per-word" min="0" max="10" step="1" value="1">
+          </div>
+          <div class="custom-mode-row">
+            <label for="custom-time-bonus">Time bonus per word (seconds)</label>
+            <input type="number" id="custom-time-bonus" min="0" max="30" step="1" value="10">
+          </div>
+          <div class="custom-mode-row">
+            <label for="custom-max-players">Max players</label>
+            <input type="number" id="custom-max-players" min="2" max="6" step="1" value="6">
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button id="custom-mode-save-btn" class="button">Save Settings</button>
+          <button id="custom-mode-cancel-btn" class="button secondary">Cancel</button>
         </div>
       </div>
     </div>
