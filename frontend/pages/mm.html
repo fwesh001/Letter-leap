@@ -21,6 +21,18 @@
       justify-content: center;
       margin-bottom: 0.5rem;
     }
+
+    @media (max-width: 700px) {
+      .room-menu {
+        flex-wrap: wrap;
+        justify-content: stretch;
+      }
+
+      .room-menu .button {
+        flex: 1 1 calc(50% - 0.5rem);
+        min-width: 140px;
+      }
+    }
   </style>
 </head>
 
