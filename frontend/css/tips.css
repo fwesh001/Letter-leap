@@ -11,6 +11,18 @@
   --tips-shadow: 0 18px 50px rgba(7, 10, 22, 0.55);
 }
 
+/* --- Daylight Neon Light Mode Overrides --- */
+body.light-mode {
+  --tips-bg: #f3f4f6;
+  --tips-ink: #1e293b;
+  --tips-muted: #64748b;
+  --tips-accent: #f59e0b;
+  --tips-accent-2: #00b4d8;
+  --tips-surface: rgba(255, 255, 255, 0.95);
+  --tips-border: rgba(30, 41, 59, 0.12);
+  --tips-shadow: 0 8px 32px rgba(0, 180, 216, 0.2);
+}
+
 .tips-page {
   background:
     radial-gradient(900px 500px at 85% -10%, rgba(95, 208, 197, 0.2), transparent 60%),
@@ -441,4 +453,111 @@
     flex-direction: column;
     gap: 15px;
   }
+}
+
+/* ======================================
+   LIGHT MODE COMPONENT OVERRIDES
+   ====================================== */
+
+body.light-mode .tips-page {
+  background:
+    radial-gradient(900px 500px at 85% -10%, rgba(0, 180, 216, 0.08), transparent 60%),
+    radial-gradient(700px 400px at -10% 20%, rgba(245, 158, 11, 0.08), transparent 55%),
+    linear-gradient(160deg, #f3f4f6, #ffffff 55%, #f8f9fa);
+}
+
+body.light-mode .tips-header {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--tips-border);
+}
+
+body.light-mode .tips-search__input {
+  background: white;
+  border: 2px solid #e5e7eb;
+  color: var(--tips-ink);
+}
+
+body.light-mode .tips-search__input:focus {
+  border-color: var(--tips-accent-2);
+  box-shadow: var(--shadow-neon-cyan);
+  animation: neonPulse 2s ease-in-out infinite;
+}
+
+body.light-mode .search-results {
+  background: white;
+  border: 1px solid var(--tips-border);
+  box-shadow: 0 8px 24px rgba(30, 41, 59, 0.12);
+}
+
+body.light-mode .search-result {
+  border-bottom: 1px solid rgba(30, 41, 59, 0.06);
+}
+
+body.light-mode .search-result.is-active,
+body.light-mode .search-result:hover {
+  background: rgba(0, 180, 216, 0.08);
+}
+
+body.light-mode .letter-tile {
+  background: white;
+  border: 1.5px solid #e5e7eb;
+  color: var(--tips-ink);
+  box-shadow: 0 1px 3px rgba(30, 41, 59, 0.05);
+}
+
+body.light-mode .letter-tile:focus-visible,
+body.light-mode .letter-tile:hover {
+  border-color: var(--tips-accent-2);
+  box-shadow: var(--shadow-neon-cyan);
+  transform: translateY(-4px);
+}
+
+body.light-mode .modal-overlay {
+  background: rgba(30, 41, 59, 0.25);
+  backdrop-filter: blur(12px);
+}
+
+body.light-mode .modal-content {
+  background: white;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 12px 40px rgba(0, 180, 216, 0.25);
+}
+
+body.light-mode .ach-chip {
+  background: rgba(0, 180, 216, 0.08);
+  border: 1px solid rgba(0, 180, 216, 0.2);
+  color: var(--tips-ink);
+}
+
+body.light-mode .icon-btn {
+  background: white;
+  border: 1.5px solid #e5e7eb;
+  color: var(--tips-ink);
+}
+
+body.light-mode .icon-btn:hover {
+  border-color: var(--tips-accent-2);
+  background: rgba(0, 180, 216, 0.08);
+  box-shadow: var(--shadow-neon-cyan);
+}
+
+body.light-mode .word-row {
+  background: rgba(243, 244, 246, 0.5);
+  border: 1px solid #e5e7eb;
+}
+
+body.light-mode .copy-btn {
+  background: white;
+  border: 1.5px solid #e5e7eb;
+  color: var(--tips-ink);
+}
+
+body.light-mode .copy-btn:hover {
+  border-color: var(--tips-accent-2);
+  background: rgba(0, 180, 216, 0.08);
+}
+
+body.light-mode .modal-footer {
+  border-top: 1px solid var(--tips-border);
 }
