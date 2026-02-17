@@ -109,8 +109,13 @@ fetch('../data/words.txt')
 // =======================
 // 🔊 SOUND FX
 // =======================
+function isAudioMuted() {
+  if (window.audioManager) return window.audioManager.isMuted;
+  return localStorage.getItem('letterLeapMuted') === 'true' || localStorage.getItem('isMuted') === 'true';
+}
+
 function playClickSound() {
-  if (window.audioManager && window.audioManager.isMuted) {
+  if (isAudioMuted()) {
     return;
   }
   if (clickSound) {
@@ -120,7 +125,7 @@ function playClickSound() {
 }
 
 function playCorrectSound() {
-  if (window.audioManager && window.audioManager.isMuted) {
+  if (isAudioMuted()) {
     return;
   }
   if (correctSound) {
@@ -130,7 +135,7 @@ function playCorrectSound() {
 }
 
 function playWrongSound() {
-  if (window.audioManager && window.audioManager.isMuted) {
+  if (isAudioMuted()) {
     return;
   }
   if (wrongSound) {
@@ -140,7 +145,7 @@ function playWrongSound() {
 }
 
 function playGameoverSound() {
-  if (window.audioManager && window.audioManager.isMuted) {
+  if (isAudioMuted()) {
     return;
   }
   if (gameoverSound) {
