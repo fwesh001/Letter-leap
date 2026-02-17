@@ -410,6 +410,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const customTimeBonus = document.getElementById('custom-time-bonus');
   const customMaxPlayers = document.getElementById('custom-max-players');
   const customModeWarning = document.getElementById('custom-mode-warning');
+  const scanRoomsBtn = document.getElementById('scan-rooms-btn');
+  const roomBrowserModal = document.getElementById('roomBrowserModal');
+  const closeRoomBrowserBtn = document.getElementById('close-room-browser-btn');
+  const refreshRoomsBtn = document.getElementById('refresh-rooms-btn');
+  const roomListContainer = document.getElementById('room-list-container');
+  const roomBrowserEmpty = document.getElementById('room-browser-empty');
+  const roomRulesModal = document.getElementById('room-rules-modal');
+  const roomRulesContent = document.getElementById('room-rules-content');
+  const closeRoomRulesBtn = document.getElementById('close-room-rules-btn');
 
   function syncCustomModeInputs(settings) {
     if (!customTimeLimit) return;
@@ -492,6 +501,172 @@ document.addEventListener('DOMContentLoaded', () => {
       currentRoomSettings = nextSettings;
       closeCustomModeModal();
       showToast('Custom settings saved');
+    });
+  }
+
+  function isRoomBrowserOpen() {
+    return roomBrowserModal && roomBrowserModal.style.display === 'flex';
+  }
+
+  function showRoomScanLoading() {
+    if (!roomListContainer) return;
+    roomListContainer.innerHTML = '';
+    if (roomBrowserEmpty) roomBrowserEmpty.style.display = 'none';
+    if (scanRoomsBtn) {
+      scanRoomsBtn.classList.add('scan-loading');
+      scanRoomsBtn.disabled = true;
+      scanRoomsBtn.innerHTML = '<i class="ph ph-spinner"></i> Scanning...';
+    }
+    if (window.showGameLoader) {
+      window.showGameLoader('SCANNING...', { target: '#room-list-container' });
+    }
+  }
+
+  function stopRoomScanLoading() {
+    if (window.hideGameLoader) {
+      window.hideGameLoader('#room-list-container');
+    }
+    if (scanRoomsBtn) {
+      scanRoomsBtn.classList.remove('scan-loading');
+      scanRoomsBtn.disabled = false;
+      scanRoomsBtn.innerHTML = '<i class="ph ph-magnifying-glass"></i> Scan for Rooms';
+    }
+  }
+
+  function openRoomBrowser() {
+    if (!roomBrowserModal) return;
+    roomBrowserModal.style.display = 'flex';
+    requestPublicRooms();
+  }
+
+  function closeRoomBrowser() {
+    if (!roomBrowserModal) return;
+    roomBrowserModal.style.display = 'none';
+    stopRoomScanLoading();
+  }
+
+  function requestPublicRooms() {
+    showRoomScanLoading();
+    socket.emit('getPublicRooms');
+  }
+
+  function showRoomRules(config = {}) {
+    if (!roomRulesModal || !roomRulesContent) return;
+    roomRulesContent.innerHTML = `
+      <ul style="list-style:none; padding:0; margin:0; display:grid; gap:0.45rem;">
+        <li><strong>Time limit:</strong> ${config.timeLimit ?? 60}s</li>
+        <li><strong>Letter increment:</strong> ${config.letterIncrement ?? 10}</li>
+        <li><strong>Bonus per word:</strong> ${config.bonusPerWord ?? 1}</li>
+        <li><strong>Time bonus:</strong> ${config.timeBonusPerWord ?? 10}s</li>
+        <li><strong>Max players:</strong> ${config.maxPlayers ?? 6}</li>
+      </ul>
+    `;
+    roomRulesModal.style.display = 'flex';
+  }
+
+  function renderRoomBrowserList(rooms = []) {
+    if (!roomListContainer) return;
+    roomListContainer.innerHTML = '';
+
+    if (!rooms.length) {
+      if (roomBrowserEmpty) roomBrowserEmpty.style.display = 'block';
+      return;
+    }
+
+    if (roomBrowserEmpty) roomBrowserEmpty.style.display = 'none';
+
+    rooms.forEach((room) => {
+      const card = document.createElement('div');
+      card.className = 'room-card';
+
+      const top = document.createElement('div');
+      top.className = 'room-card-top';
+      top.innerHTML = `
+        <div class="room-card-name">${escapeHtml(room.roomName || 'Unnamed Room')}</div>
+        ${room.isCustom ? '<span class="custom-badge">Custom</span>' : ''}
+      `;
+
+      const meta = document.createElement('div');
+      meta.className = 'room-card-meta';
+      meta.textContent = `${room.playerCount || 0}/${room.maxPlayers || 6} players • Host: ${room.hostName || 'Host'}`;
+
+      const actions = document.createElement('div');
+      actions.className = 'room-card-actions';
+
+      if (room.joinable) {
+        const joinBtn = document.createElement('button');
+        joinBtn.className = 'button';
+        joinBtn.textContent = 'Join';
+        joinBtn.addEventListener('click', () => {
+          const joinInput = document.getElementById('join-room-name');
+          const joinBtnMain = document.getElementById('join-room-btn');
+          if (joinInput) joinInput.value = room.roomName;
+          closeRoomBrowser();
+          if (joinBtnMain) joinBtnMain.click();
+        });
+        actions.appendChild(joinBtn);
+      } else {
+        const spectateBtnMain = document.createElement('button');
+        spectateBtnMain.className = 'button secondary';
+        spectateBtnMain.textContent = 'Spectate';
+        spectateBtnMain.addEventListener('click', () => {
+          const spectateInput = document.getElementById('spectate-room-name');
+          const spectateBtn = document.getElementById('spectate-room-btn');
+          if (spectateInput) spectateInput.value = room.roomName;
+          closeRoomBrowser();
+          if (spectateBtn) spectateBtn.click();
+        });
+        actions.appendChild(spectateBtnMain);
+      }
+
+      if (room.isCustom) {
+        const rulesBtn = document.createElement('button');
+        rulesBtn.className = 'button secondary';
+        rulesBtn.textContent = 'View Rules';
+        rulesBtn.addEventListener('click', () => {
+          showRoomRules(room.customConfig || {});
+        });
+        actions.appendChild(rulesBtn);
+      }
+
+      card.appendChild(top);
+      card.appendChild(meta);
+      card.appendChild(actions);
+      roomListContainer.appendChild(card);
+    });
+  }
+
+  function escapeHtml(text) {
+    if (text === undefined || text === null) return '';
+    return String(text)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  if (scanRoomsBtn) {
+    scanRoomsBtn.addEventListener('click', () => {
+      openRoomBrowser();
+    });
+  }
+
+  if (refreshRoomsBtn) {
+    refreshRoomsBtn.addEventListener('click', () => {
+      requestPublicRooms();
+    });
+  }
+
+  if (closeRoomBrowserBtn) {
+    closeRoomBrowserBtn.addEventListener('click', () => {
+      closeRoomBrowser();
+    });
+  }
+
+  if (closeRoomRulesBtn) {
+    closeRoomRulesBtn.addEventListener('click', () => {
+      if (roomRulesModal) roomRulesModal.style.display = 'none';
     });
   }
 
