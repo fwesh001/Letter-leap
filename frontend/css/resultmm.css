@@ -659,3 +659,105 @@ ul {
     grid-template-columns: 1fr auto 1fr;
   }
 }
+
+/* ======================================
+   DAYLIGHT NEON LIGHT MODE
+   ====================================== */
+
+body.light-mode {
+  background: linear-gradient(180deg, #f3f4f6, #ffffff);
+  color: #1e293b;
+}
+
+body.light-mode .card {
+  background: white;
+  border: 1.5px solid #e5e7eb;
+  box-shadow: 0 2px 8px rgba(30, 41, 59, 0.08);
+}
+
+body.light-mode .player-card {
+  background: white;
+  border: 1.5px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(30, 41, 59, 0.08);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+body.light-mode .player-card:hover {
+  border-color: var(--neon-cyan);
+  box-shadow: var(--shadow-neon-cyan);
+}
+
+body.light-mode .player-card.winner {
+  border-color: var(--neon-magenta);
+  box-shadow: var(--shadow-neon-magenta);
+}
+
+body.light-mode .player-card h3 {
+  color: var(--neon-cyan);
+}
+
+body.light-mode .player-card.winner h3 {
+  color: var(--neon-magenta);
+}
+
+body.light-mode .player-card li {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+body.light-mode .badge-card {
+  background: white;
+  border: 1.5px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(30, 41, 59, 0.08);
+}
+
+body.light-mode .badge-card:hover {
+  border-color: var(--neon-cyan);
+  box-shadow: var(--shadow-neon-cyan);
+}
+
+body.light-mode h1,
+body.light-mode h2,
+body.light-mode h3 {
+  color: var(--neon-cyan);
+}
+
+body.light-mode .highlight {
+  color: var(--neon-magenta);
+}
+
+body.light-mode .stat-comparison-card {
+  background: white;
+  border: 1.5px solid #e5e7eb;
+}
+
+body.light-mode .stat-comparison-header {
+  background: rgba(0, 180, 216, 0.08);
+  color: #1e293b;
+}
+
+body.light-mode .stat-comparison-row {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+body.light-mode .word-chip {
+  background: white;
+  border: 1.5px solid #e5e7eb;
+  color: #1e293b;
+}
+
+body.light-mode .word-chip:hover {
+  border-color: var(--neon-cyan);
+  background: rgba(0, 180, 216, 0.08);
+}
+
+body.light-mode .vs-divider {
+  color: var(--neon-magenta);
+}
+
+body.light-mode .result-actions .button {
+  box-shadow: var(--shadow-neon-cyan);
+}
+
+body.light-mode .result-actions .button:hover {
+  box-shadow: var(--shadow-neon-cyan-hover);
+}
