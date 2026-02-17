@@ -156,6 +156,20 @@ document.addEventListener('DOMContentLoaded', () => {
     updateRoomSettingsSummary();
   });
 
+  socket.on('publicRooms', (rooms) => {
+    scannedRooms = Array.isArray(rooms) ? rooms : [];
+    stopRoomScanLoading();
+    renderRoomBrowserList(scannedRooms);
+  });
+
+  socket.on('publicRoomsUpdated', (rooms) => {
+    scannedRooms = Array.isArray(rooms) ? rooms : [];
+    if (isRoomBrowserOpen()) {
+      stopRoomScanLoading();
+      renderRoomBrowserList(scannedRooms);
+    }
+  });
+
   document.getElementById('submit-word-btn').onclick = () => {
     const word = document.getElementById('word-input').value.trim();
     console.log('[client] submit clicked:', word);
