@@ -5,6 +5,7 @@
   let loaderInterval = null;
   let loaderTimeout = null;
   let loaderListenerAdded = false;
+  const containedLoaders = new Map();
 
   function getToastContainer() {
     let container = document.getElementById('toast-container');
@@ -70,29 +71,77 @@
     }
   }
 
-  function getLoaderOverlay() {
+  function createLoaderOverlay(message = 'LETTER-LEAP', contained = false) {
+    const overlay = document.createElement('div');
+    overlay.className = contained ? 'letter-leap-loader-overlay contained' : 'letter-leap-loader-overlay fullscreen';
+    if (!contained) {
+      overlay.id = 'loader-overlay';
+    }
+    overlay.setAttribute('role', 'status');
+    overlay.setAttribute('aria-live', 'polite');
+    overlay.setAttribute('aria-hidden', 'false');
+
+    const loader = document.createElement('div');
+    loader.className = 'letter-leap-loader';
+    loader.setAttribute('aria-label', `Loading ${message}`);
+
+    const letters = String(message || 'LETTER-LEAP').split('');
+    letters.forEach((ch) => {
+      const span = document.createElement('span');
+      span.className = 'letter';
+      span.textContent = ch;
+      loader.appendChild(span);
+    });
+
+    overlay.appendChild(loader);
+    return overlay;
+  }
+
+  function getFullscreenLoaderOverlay(message = 'LETTER-LEAP') {
     let overlay = document.getElementById('loader-overlay');
     if (!overlay) {
-      overlay = document.createElement('div');
-      overlay.id = 'loader-overlay';
-      overlay.setAttribute('role', 'status');
-      overlay.setAttribute('aria-live', 'polite');
-      overlay.setAttribute('aria-hidden', 'false');
-
-      const loader = document.createElement('div');
-      loader.id = 'letter-leap-loader';
-      loader.setAttribute('aria-label', 'Loading LETTER-LEAP');
-
-      const letters = 'LETTER-LEAP'.split('');
-      letters.forEach((ch) => {
-        const span = document.createElement('span');
-        span.className = 'letter';
-        span.textContent = ch;
-        loader.appendChild(span);
-      });
-
-      overlay.appendChild(loader);
+      overlay = createLoaderOverlay(message, false);
       document.documentElement.appendChild(overlay);
+    } else {
+      const loader = overlay.querySelector('.letter-leap-loader');
+      if (loader) {
+        loader.innerHTML = '';
+        String(message || 'LETTER-LEAP').split('').forEach((ch) => {
+          const span = document.createElement('span');
+          span.className = 'letter';
+          span.textContent = ch;
+          loader.appendChild(span);
+        });
+      }
+    }
+    return overlay;
+  }
+
+  function getContainedLoaderOverlay(targetSelector, message = 'SCANNING...') {
+    const target = document.querySelector(targetSelector);
+    if (!target) return null;
+
+    if (window.getComputedStyle(target).position === 'static') {
+      target.style.position = 'relative';
+    }
+
+    let overlay = containedLoaders.get(targetSelector);
+    if (!overlay || !overlay.isConnected) {
+      overlay = createLoaderOverlay(message, true);
+      target.appendChild(overlay);
+      containedLoaders.set(targetSelector, overlay);
+    } else {
+      const loader = overlay.querySelector('.letter-leap-loader');
+      if (loader) {
+        loader.innerHTML = '';
+        String(message || 'SCANNING...').split('').forEach((ch) => {
+          const span = document.createElement('span');
+          span.className = 'letter';
+          span.textContent = ch;
+          loader.appendChild(span);
+        });
+      }
+      overlay.style.display = 'flex';
     }
 
     return overlay;
@@ -127,9 +176,26 @@
     loaderInterval = setInterval(tick, 300);
   }
 
-  window.showGameLoader = function showGameLoader(destinationUrl, delay = 3000) {
-    if (!destinationUrl) return;
-    const overlay = getLoaderOverlay();
+  window.showGameLoader = function showGameLoader(destinationOrMessage, delayOrOptions = 3000) {
+    if (!destinationOrMessage) return;
+
+    if (typeof delayOrOptions === 'object' && delayOrOptions !== null) {
+      const options = delayOrOptions;
+      const targetSelector = options.target || 'body';
+      const message = String(destinationOrMessage || options.message || 'SCANNING...');
+      const overlay = getContainedLoaderOverlay(targetSelector, message);
+      if (!overlay) return;
+      overlay.style.display = 'flex';
+      overlay.setAttribute('aria-hidden', 'false');
+
+      clearLoaderTimers();
+      startLoaderAnimation(overlay);
+      return;
+    }
+
+    const destinationUrl = destinationOrMessage;
+    const delay = typeof delayOrOptions === 'number' ? delayOrOptions : 3000;
+    const overlay = getFullscreenLoaderOverlay('LETTER-LEAP');
     overlay.style.display = 'flex';
     overlay.setAttribute('aria-hidden', 'false');
 
@@ -142,6 +208,24 @@
     if (!loaderListenerAdded) {
       window.addEventListener('beforeunload', clearLoaderTimers);
       loaderListenerAdded = true;
+    }
+  };
+
+  window.hideGameLoader = function hideGameLoader(targetSelector = null) {
+    clearLoaderTimers();
+    if (targetSelector) {
+      const overlay = containedLoaders.get(targetSelector);
+      if (overlay) {
+        overlay.remove();
+        containedLoaders.delete(targetSelector);
+      }
+      return;
+    }
+
+    const fullscreen = document.getElementById('loader-overlay');
+    if (fullscreen) {
+      fullscreen.style.display = 'none';
+      fullscreen.setAttribute('aria-hidden', 'true');
     }
   };
 
