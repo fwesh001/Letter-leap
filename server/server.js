@@ -51,9 +51,34 @@ const roomLastAIWord = {};      // Tracks last AI word by room for achievements
 const roomAIDifficulty = {};   // Tracks AI difficulty per room
 const roomPlayerStatus = {};  // Tracks player status (active, eliminated, left)
 const playerQuickStreak = {};  // Tracks consecutive plays with >=30s left per player per room
+const roomSettings = {};       // Tracks custom room settings
 const TURN_TIME = 60;         // Tracks seconds per player
 const AI_ID = 'AI_PLAYER';   // Tracks AI in room
 const AI_NAME = 'Max (BOT)';// Tracks name of Bot
+
+function normalizeRoomSettings(settings = {}) {
+  const raw = settings || {};
+  const timeLimit = Math.max(10, Math.min(180, Number(raw.timeLimit) || TURN_TIME));
+  const letterIncrement = Math.max(1, Math.min(50, Number(raw.letterIncrement) || 10));
+  const bonusPerWord = Math.max(0, Math.min(20, Number(raw.bonusPerWord) || 1));
+  const timeBonusPerWord = Math.max(0, Math.min(30, Number(raw.timeBonusPerWord) || 10));
+  const maxPlayers = Math.max(2, Math.min(6, Number(raw.maxPlayers) || 6));
+
+  return {
+    timeLimit,
+    letterIncrement,
+    bonusPerWord,
+    timeBonusPerWord,
+    maxPlayers,
+  };
+}
+
+function getRoomSettings(roomName) {
+  if (!roomSettings[roomName]) {
+    roomSettings[roomName] = normalizeRoomSettings();
+  }
+  return roomSettings[roomName];
+}
 
 // =====================================
 // 🔄 Backward compatibility routes (old URLs)
@@ -138,9 +163,12 @@ function startTurnTimer(roomName) {
 
   const currentPlayer = roomTurns[roomName];
 
+  const settings = getRoomSettings(roomName);
+  const timeLimit = settings.timeLimit || TURN_TIME;
+
   if (!playerTimeLeft[roomName]) playerTimeLeft[roomName] = {};
   if (typeof playerTimeLeft[roomName][currentPlayer] !== 'number') {
-    playerTimeLeft[roomName][currentPlayer] = TURN_TIME;
+    playerTimeLeft[roomName][currentPlayer] = timeLimit;
   }
 
   let timeLeft = playerTimeLeft[roomName][currentPlayer];
@@ -357,7 +385,7 @@ function checkAndEmitAchievements(word, gameState, socket, roomName) {
 io.on('connection', (socket) => {
   console.log('🟢 A user connected:', socket.id);
 
-  socket.on('createRoom', ({ roomName, username }) => {
+  socket.on('createRoom', ({ roomName, username, settings }) => {
     // Check if room already exists and username is taken
     if (roomUsernames[roomName]) {
       const existingUsernames = Object.values(roomUsernames[roomName]);
@@ -379,6 +407,8 @@ io.on('connection', (socket) => {
     roomPlayerStatus[roomName][socket.id] = 'active';
 
     roomCreators[roomName] = socket.id;
+
+    roomSettings[roomName] = normalizeRoomSettings(settings);
 
     
 
@@ -402,6 +432,7 @@ io.on('connection', (socket) => {
     socket.emit('roomCreated', roomName);
     io.to(roomName).emit('turnChanged', roomTurns[roomName]);
     io.to(roomName).emit('updateUsernames', roomUsernames[roomName]);
+    io.to(roomName).emit('roomSettingsUpdated', roomSettings[roomName]);
     emitPlayerStatus(roomName);
     console.log(`🏗️ Room created: ${roomName}`);
     // Emit the count
@@ -414,8 +445,9 @@ io.on('connection', (socket) => {
       socket.emit('roomNotFound', 'Room not found');
       return;
     }
-    if (roomPlayerOrder[roomName].length >= 6) {
-      socket.emit('roomFull', '🚫 Room is full (max 6 players)');
+    const maxPlayers = getRoomSettings(roomName).maxPlayers || 6;
+    if (roomPlayerOrder[roomName].length >= maxPlayers) {
+      socket.emit('roomFull', `🚫 Room is full (max ${maxPlayers} players)`);
       return;
     }
 
@@ -459,6 +491,7 @@ io.on('connection', (socket) => {
     socket.emit('roomJoined', roomName);
     io.to(roomName).emit('updateScores', roomScores[roomName]);
     io.to(roomName).emit('updateUsernames', roomUsernames[roomName]);
+    socket.emit('roomSettingsUpdated', getRoomSettings(roomName));
     emitPlayerStatus(roomName);
     io.to(roomName).emit('playerJoined', roomUsernames[roomName][socket.id]);
     io.to(roomName).emit('turnChanged', roomTurns[roomName]);
@@ -467,6 +500,16 @@ io.on('connection', (socket) => {
     // Emit the count
   emitPlayerCount(roomName);
     });
+
+  socket.on('setRoomSettings', ({ roomName, settings }) => {
+    if (!roomCreators[roomName] || roomCreators[roomName] !== socket.id) {
+      socket.emit('toast', '⚠️ Only the room creator can change settings');
+      return;
+    }
+
+    roomSettings[roomName] = normalizeRoomSettings(settings);
+    io.to(roomName).emit('roomSettingsUpdated', roomSettings[roomName]);
+  });
 
   socket.on('spectateRoom', ({ roomName }) => {
     if (!roomPlayerOrder[roomName]) {
@@ -480,12 +523,14 @@ io.on('connection', (socket) => {
     socket.emit('updateScores', roomScores[roomName] || {});
     socket.emit('updateUsernames', roomUsernames[roomName] || {});
     socket.emit('updatePlayerStatus', roomPlayerStatus[roomName] || {});
+    socket.emit('roomSettingsUpdated', getRoomSettings(roomName));
     socket.emit('turnChanged', roomTurns[roomName]);
 
     const currentTurn = roomTurns[roomName];
+    const timeLimit = getRoomSettings(roomName).timeLimit || TURN_TIME;
     const timeLeft = (playerTimeLeft[roomName] && typeof playerTimeLeft[roomName][currentTurn] === 'number')
       ? playerTimeLeft[roomName][currentTurn]
-      : TURN_TIME;
+      : timeLimit;
     socket.emit('timerUpdate', timeLeft);
 
     socket.emit('toast', `👀 Spectating ${roomName}`);
@@ -511,8 +556,10 @@ io.on('connection', (socket) => {
     if (!playerErrors[roomName][socket.id]) playerErrors[roomName][socket.id] = 0;
     if (!playerTotalErrors[roomName][socket.id]) playerTotalErrors[roomName][socket.id] = 0;
 
+    const settings = getRoomSettings(roomName);
     const chainLength = roomWordChains[roomName]?.length || 0;
-    const minLength = Math.min(2 + Math.floor(chainLength / 10),7);
+    const increment = Math.max(1, Number(settings.letterIncrement) || 10);
+    const minLength = Math.min(2 + Math.floor(chainLength / increment), 7);
     // Notify players if minLength just increased
 if (!roomMinLength[roomName]) roomMinLength[roomName] = 2;
 
@@ -556,7 +603,7 @@ if (roomWordChains[roomName].length > 0) {
     // Word accepted
     roomWordChains[roomName].push({ word, playerId: socket.id });
 
-let baseScore = 1;
+let baseScore = Math.max(0, Number(settings.bonusPerWord) || 1);
 let bonus = 0;
 
 // Update streaks and reset error count
@@ -611,7 +658,9 @@ if (word.length >= 12) {
 // Achievements: update quick streak and evaluate
 if (!playerQuickStreak[roomName]) playerQuickStreak[roomName] = {};
 if (typeof playerQuickStreak[roomName][socket.id] !== 'number') playerQuickStreak[roomName][socket.id] = 0;
-let currentTime = (playerTimeLeft[roomName] && typeof playerTimeLeft[roomName][socket.id] === 'number') ? playerTimeLeft[roomName][socket.id] : TURN_TIME;
+let currentTime = (playerTimeLeft[roomName] && typeof playerTimeLeft[roomName][socket.id] === 'number')
+  ? playerTimeLeft[roomName][socket.id]
+  : (settings.timeLimit || TURN_TIME);
 if (currentTime >= 30) {
   playerQuickStreak[roomName][socket.id] += 1;
 } else {
@@ -628,7 +677,8 @@ checkAndEmitAchievements(word, gameState, socket, roomName);
     const totalScore = baseScore + bonus;
     roomScores[roomName][socket.id] += totalScore;
 
-    playerTimeLeft[roomName][socket.id] += 10;
+    const timeBonus = Math.max(0, Number(settings.timeBonusPerWord) || 10);
+    playerTimeLeft[roomName][socket.id] += timeBonus;
     io.to(roomName).emit('timerUpdate', playerTimeLeft[roomName][socket.id]);
 
     io.to(roomName).emit('updateWordChain', roomWordChains[roomName]);
@@ -668,6 +718,7 @@ checkAndEmitAchievements(word, gameState, socket, roomName);
     roomWordChains[roomName] = [];
     Object.keys(roomScores[roomName]).forEach(id => roomScores[roomName][id] = 0);
     playerTimeLeft[roomName] = {};
+    roomMinLength[roomName] = 2;
     // Reset per-player tracking for a clean rematch
     playerStreaks[roomName] = {};
     playerErrors[roomName] = {};
@@ -685,6 +736,7 @@ checkAndEmitAchievements(word, gameState, socket, roomName);
 
     io.to(roomName).emit('updateWordChain', []);
     io.to(roomName).emit('updateScores', roomScores[roomName]);
+    io.to(roomName).emit('roomSettingsUpdated', getRoomSettings(roomName));
 
     roomTurns[roomName] = socket.id;
     Object.keys(roomScores[roomName]).forEach(id => {
@@ -767,8 +819,9 @@ checkAndEmitAchievements(word, gameState, socket, roomName);
 // =====================================
 
   socket.on('addAI', ({ roomName, difficulty = 'normal' }) => {
-    if (roomPlayerOrder[roomName] && roomPlayerOrder[roomName].length >= 6) {
-      socket.emit('roomFull', '🚫 Room is full (max 6 players)');
+    const maxPlayers = getRoomSettings(roomName).maxPlayers || 6;
+    if (roomPlayerOrder[roomName] && roomPlayerOrder[roomName].length >= maxPlayers) {
+      socket.emit('roomFull', `🚫 Room is full (max ${maxPlayers} players)`);
       return;
     }
     if (!roomScores[roomName][AI_ID]) {
