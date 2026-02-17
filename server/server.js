@@ -52,6 +52,8 @@ const roomAIDifficulty = {};   // Tracks AI difficulty per room
 const roomPlayerStatus = {};  // Tracks player status (active, eliminated, left)
 const playerQuickStreak = {};  // Tracks consecutive plays with >=30s left per player per room
 const roomSettings = {};       // Tracks custom room settings
+const roomStarted = {};        // Tracks whether match has started per room
+const activeRooms = {};        // Tracks room browser metadata
 const TURN_TIME = 60;         // Tracks seconds per player
 const AI_ID = 'AI_PLAYER';   // Tracks AI in room
 const AI_NAME = 'Max (BOT)';// Tracks name of Bot
@@ -78,6 +80,103 @@ function getRoomSettings(roomName) {
     roomSettings[roomName] = normalizeRoomSettings();
   }
   return roomSettings[roomName];
+}
+
+function getHumanPlayerCount(roomName) {
+  const players = roomPlayerOrder[roomName] || [];
+  return players.filter(id => id !== AI_ID).length;
+}
+
+function getTotalPlayerCount(roomName) {
+  return (roomPlayerOrder[roomName] || []).length;
+}
+
+function isCustomRoomConfig(settings) {
+  const normalized = normalizeRoomSettings(settings);
+  const defaults = normalizeRoomSettings();
+  return (
+    normalized.timeLimit !== defaults.timeLimit ||
+    normalized.letterIncrement !== defaults.letterIncrement ||
+    normalized.bonusPerWord !== defaults.bonusPerWord ||
+    normalized.timeBonusPerWord !== defaults.timeBonusPerWord ||
+    normalized.maxPlayers !== defaults.maxPlayers
+  );
+}
+
+function upsertActiveRoom(roomName, overrides = {}) {
+  if (!roomName || !roomUsernames[roomName]) return;
+
+  const settings = getRoomSettings(roomName);
+  const hostId = roomCreators[roomName] || roomPlayerOrder[roomName]?.[0] || null;
+  const hostName = hostId ? (roomUsernames[roomName]?.[hostId] || 'Host') : 'Host';
+  const maxPlayers = Number(settings.maxPlayers) || 6;
+  const humanPlayers = getHumanPlayerCount(roomName);
+  const totalPlayers = getTotalPlayerCount(roomName);
+
+  activeRooms[roomName] = {
+    roomName,
+    isPublic: overrides.isPublic ?? activeRooms[roomName]?.isPublic ?? true,
+    playerCount: humanPlayers,
+    totalPlayers,
+    maxPlayers,
+    hostName,
+    isCustom: isCustomRoomConfig(settings),
+    customConfig: { ...settings, isCustom: isCustomRoomConfig(settings) },
+    inProgress: Boolean(roomStarted[roomName]),
+  };
+}
+
+function listPublicRooms() {
+  return Object.values(activeRooms)
+    .filter((room) => room.isPublic && room.playerCount > 0 && room.playerCount < room.maxPlayers)
+    .map((room) => ({
+      roomName: room.roomName,
+      playerCount: room.playerCount,
+      maxPlayers: room.maxPlayers,
+      hostName: room.hostName,
+      isCustom: room.isCustom,
+      isPublic: room.isPublic,
+      inProgress: room.inProgress,
+      joinable: !room.inProgress,
+      customConfig: room.customConfig,
+    }));
+}
+
+function emitPublicRoomsUpdated() {
+  io.emit('publicRoomsUpdated', listPublicRooms());
+}
+
+function maybeCleanupRoom(roomName) {
+  const humanPlayers = getHumanPlayerCount(roomName);
+  if (humanPlayers > 0) {
+    return;
+  }
+
+  clearInterval(roomTimers[roomName]);
+  delete roomTimers[roomName];
+
+  delete roomWordChains[roomName];
+  delete roomScores[roomName];
+  delete roomTurns[roomName];
+  delete playerTimeLeft[roomName];
+  delete roomUsernames[roomName];
+  delete roomPlayerOrder[roomName];
+  delete roomMinLength[roomName];
+  delete roomLastAIWord[roomName];
+  delete roomAIDifficulty[roomName];
+  delete roomPlayerStatus[roomName];
+  delete playerQuickStreak[roomName];
+  delete roomSettings[roomName];
+  delete roomCreators[roomName];
+  delete playerStreaks[roomName];
+  delete playerErrors[roomName];
+  delete playerTotalErrors[roomName];
+  delete playerMaxStreak[roomName];
+  delete playerLongWords[roomName];
+  delete playerRareLetters[roomName];
+  delete roomAchievementCounts[roomName];
+  delete roomStarted[roomName];
+  delete activeRooms[roomName];
 }
 
 // =====================================
