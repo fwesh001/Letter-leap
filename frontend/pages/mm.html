@@ -45,9 +45,6 @@
       <div class="create-room" style="display:none;">
         <input type="text" id="create-room-name" placeholder="Room name">
         <button id="create-room-btn" class="button">Create</button>
-        <button id="ai-difficulty-btn" class="button secondary" style="margin-top: 0.5rem;">
-          <i class="ph ph-robot"></i> Add AI Opponent
-        </button>
       </div>
       <div class="join-room" style="display:none;">
         <input type="text" id="join-room-name" placeholder="Room name">
@@ -85,7 +82,10 @@
         </ul>
       </div>
 
-      <div id="custom-mode-actions" style="display:none; text-align:center;">
+      <div id="room-settings-summary" class="room-settings-summary" style="display:none;"></div>
+
+      <div id="waiting-room-actions" class="waiting-room-actions" style="display:none; text-align:center;">
+        <button id="ai-difficulty-btn" class="button secondary"><i class="ph ph-robot"></i> Add AI Opponent</button>
         <button id="custom-mode-btn" class="button secondary"><i class="ph ph-sliders"></i> Custom Mode</button>
       </div>
     </section>
@@ -185,6 +185,7 @@
             <input type="number" id="custom-max-players" min="2" max="6" step="1" value="6">
           </div>
         </div>
+        <div id="custom-mode-warning" class="custom-mode-warning" style="display:none;"></div>
         <div class="modal-actions">
           <button id="custom-mode-save-btn" class="button">Save Settings</button>
           <button id="custom-mode-cancel-btn" class="button secondary">Cancel</button>
