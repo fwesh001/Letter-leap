@@ -3,18 +3,33 @@
 // ============================================
 // GLOBAL AUDIO MANAGER
 // ============================================
+const MUTE_STORAGE_KEY = 'letterLeapMuted';
+const LEGACY_MUTE_STORAGE_KEY = 'isMuted';
+
 window.audioManager = {
-  isMuted: localStorage.getItem('letterLeapMuted') === 'true',
+  isMuted: false,
   
   init: function() {
-    // Initialize from localStorage on first load
-    this.isMuted = localStorage.getItem('letterLeapMuted') === 'true';
+    // Initialize from current key, with fallback migration from legacy key
+    const stored = localStorage.getItem(MUTE_STORAGE_KEY);
+    const legacy = localStorage.getItem(LEGACY_MUTE_STORAGE_KEY);
+
+    if (stored === null && legacy !== null) {
+      this.isMuted = legacy === 'true';
+      localStorage.setItem(MUTE_STORAGE_KEY, String(this.isMuted));
+      localStorage.removeItem(LEGACY_MUTE_STORAGE_KEY);
+    } else {
+      this.isMuted = stored === 'true';
+    }
   },
   
   setMuted: function(muted) {
-    this.isMuted = muted;
-    localStorage.setItem('letterLeapMuted', muted);
-    this.pauseAllAudio();
+    this.isMuted = Boolean(muted);
+    localStorage.setItem(MUTE_STORAGE_KEY, String(this.isMuted));
+    localStorage.removeItem(LEGACY_MUTE_STORAGE_KEY);
+    if (this.isMuted) {
+      this.pauseAllAudio();
+    }
   },
   
   toggleMute: function() {
@@ -43,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // DOM ELEMENT REFERENCES
   const sidebar = document.getElementById('settingsSidebar');
   const toggleBtn = document.getElementById('settingsToggleBtn');
-  const muteBtn = document.getElementById('muteBtn');
+  const muteButtons = Array.from(document.querySelectorAll('#muteBtn, [data-mute-toggle], .mute-btn'));
   const darkModeBtn = document.getElementById('darkModeBtn');
 
   // 1. SIDEBAR TOGGLE
@@ -62,30 +77,34 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // 2. MUTE LOGIC
-  if (muteBtn) {
+  if (muteButtons.length) {
     // Init UI based on global audio manager
     updateMuteUI(window.audioManager.isMuted);
 
-    muteBtn.addEventListener('click', () => {
-      const newMutedState = window.audioManager.toggleMute();
-      updateMuteUI(newMutedState);
+    muteButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const newMutedState = window.audioManager.toggleMute();
+        updateMuteUI(newMutedState);
+      });
     });
   }
 
   function updateMuteUI(muted) {
-    if (!muteBtn) return;
-    const icon = muteBtn.querySelector('i');
-    const text = muteBtn.querySelector('span');
+    if (!muteButtons.length) return;
+    muteButtons.forEach((button) => {
+      const icon = button.querySelector('i');
+      const text = button.querySelector('span');
 
-    if (muted) {
-      if (icon) icon.className = 'ph ph-speaker-slash';
-      if (text) text.textContent = 'Unmute';
-      muteBtn.setAttribute('aria-pressed', 'true');
-    } else {
-      if (icon) icon.className = 'ph ph-speaker-simple-high';
-      if (text) text.textContent = 'Mute';
-      muteBtn.setAttribute('aria-pressed', 'false');
-    }
+      if (muted) {
+        if (icon) icon.className = 'ph ph-speaker-slash';
+        if (text) text.textContent = 'Unmute';
+        button.setAttribute('aria-pressed', 'true');
+      } else {
+        if (icon) icon.className = 'ph ph-speaker-simple-high';
+        if (text) text.textContent = 'Mute';
+        button.setAttribute('aria-pressed', 'false');
+      }
+    });
   }
 
   // 3. DARK MODE LOGIC
