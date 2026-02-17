@@ -1,4 +1,44 @@
 // Letter Leap — Global UI & Settings logic
+
+// ============================================
+// GLOBAL AUDIO MANAGER
+// ============================================
+window.audioManager = {
+  isMuted: localStorage.getItem('letterLeapMuted') === 'true',
+  
+  init: function() {
+    // Initialize from localStorage on first load
+    this.isMuted = localStorage.getItem('letterLeapMuted') === 'true';
+  },
+  
+  setMuted: function(muted) {
+    this.isMuted = muted;
+    localStorage.setItem('letterLeapMuted', muted);
+    this.pauseAllAudio();
+  },
+  
+  toggleMute: function() {
+    this.setMuted(!this.isMuted);
+    return this.isMuted;
+  },
+  
+  shouldPlaySound: function() {
+    return !this.isMuted;
+  },
+  
+  pauseAllAudio: function() {
+    // Pause all audio elements on the page
+    const audioElements = document.querySelectorAll('audio');
+    audioElements.forEach(audio => {
+      audio.pause();
+      audio.currentTime = 0;
+    });
+  }
+};
+
+// Initialize audio manager on load
+window.audioManager.init();
+
 document.addEventListener('DOMContentLoaded', () => {
   // DOM ELEMENT REFERENCES
   const sidebar = document.getElementById('settingsSidebar');
@@ -23,14 +63,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 2. MUTE LOGIC
   if (muteBtn) {
-    // Initial state from localStorage
-    let isMuted = localStorage.getItem('isMuted') === 'true';
-    updateMuteUI(isMuted);
+    // Init UI based on global audio manager
+    updateMuteUI(window.audioManager.isMuted);
 
     muteBtn.addEventListener('click', () => {
-      isMuted = !isMuted;
-      localStorage.setItem('isMuted', isMuted);
-      updateMuteUI(isMuted);
+      const newMutedState = window.audioManager.toggleMute();
+      updateMuteUI(newMutedState);
     });
   }
 
