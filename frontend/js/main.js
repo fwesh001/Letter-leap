@@ -10,6 +10,13 @@ document.addEventListener('DOMContentLoaded', () => {
   let lastMinLength = 2;
   let playerStatuses = {};
   let isSpectator = false;
+  let currentRoomSettings = {
+    timeLimit: 60,
+    letterIncrement: 10,
+    bonusPerWord: 1,
+    timeBonusPerWord: 10,
+    maxPlayers: 6,
+  };
 
   // Fill A-Z in the select
   const startLetterSelect = document.getElementById('start-letter');
@@ -111,12 +118,15 @@ document.addEventListener('DOMContentLoaded', () => {
     waitingForOpponent = true;
     showWaitingMessage();
     showRoomActions();
+    showCustomModeActions(true);
+    openCustomModeModal();
   });
 
   socket.on('roomJoined', () => {
     waitingForOpponent = true;
     showWaitingMessage();
     showRoomActions();
+    showCustomModeActions(false);
   });
 
   socket.on('roomSpectated', (roomName) => {
@@ -124,13 +134,21 @@ document.addEventListener('DOMContentLoaded', () => {
     enterGameRoom(roomName);
     showRoomActions();
     showToast(`Now spectating ${roomName}`);
+    showCustomModeActions(false);
   });
 
   socket.on('startGame', (startLetter) => {
     enterGameRoom(currentRoom);
     updateNextLetter(startLetter);
+    showCustomModeActions(false);
 
     socket.emit('startGameConfirmed', currentRoom);
+  });
+
+  socket.on('roomSettingsUpdated', (settings) => {
+    if (!settings) return;
+    currentRoomSettings = settings;
+    syncCustomModeInputs(settings);
   });
 
   document.getElementById('submit-word-btn').onclick = () => {
@@ -359,6 +377,74 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Custom Mode Modal
+  const customModeBtn = document.getElementById('custom-mode-btn');
+  const customModeModal = document.getElementById('custom-mode-modal');
+  const customModeSaveBtn = document.getElementById('custom-mode-save-btn');
+  const customModeCancelBtn = document.getElementById('custom-mode-cancel-btn');
+  const customTimeLimit = document.getElementById('custom-time-limit');
+  const customLetterIncrement = document.getElementById('custom-letter-increment');
+  const customBonusPerWord = document.getElementById('custom-bonus-per-word');
+  const customTimeBonus = document.getElementById('custom-time-bonus');
+  const customMaxPlayers = document.getElementById('custom-max-players');
+
+  function syncCustomModeInputs(settings) {
+    if (!customTimeLimit) return;
+    customTimeLimit.value = settings.timeLimit ?? 60;
+    customLetterIncrement.value = settings.letterIncrement ?? 10;
+    customBonusPerWord.value = settings.bonusPerWord ?? 1;
+    customTimeBonus.value = settings.timeBonusPerWord ?? 10;
+    customMaxPlayers.value = settings.maxPlayers ?? 6;
+  }
+
+  function openCustomModeModal() {
+    if (!isCreator || isSpectator) return;
+    if (customModeModal) {
+      syncCustomModeInputs(currentRoomSettings);
+      customModeModal.style.display = 'flex';
+    }
+  }
+
+  function closeCustomModeModal() {
+    if (customModeModal) customModeModal.style.display = 'none';
+  }
+
+  function getCustomModeValues() {
+    return {
+      timeLimit: Number(customTimeLimit?.value || 60),
+      letterIncrement: Number(customLetterIncrement?.value || 10),
+      bonusPerWord: Number(customBonusPerWord?.value || 1),
+      timeBonusPerWord: Number(customTimeBonus?.value || 10),
+      maxPlayers: Number(customMaxPlayers?.value || 6),
+    };
+  }
+
+  if (customModeBtn) {
+    customModeBtn.addEventListener('click', () => {
+      openCustomModeModal();
+    });
+  }
+
+  if (customModeCancelBtn) {
+    customModeCancelBtn.addEventListener('click', () => {
+      closeCustomModeModal();
+    });
+  }
+
+  if (customModeSaveBtn) {
+    customModeSaveBtn.addEventListener('click', () => {
+      if (!currentRoom || !isCreator) {
+        showToast('Only the room creator can change settings');
+        return;
+      }
+      const nextSettings = getCustomModeValues();
+      socket.emit('setRoomSettings', { roomName: currentRoom, settings: nextSettings });
+      currentRoomSettings = nextSettings;
+      closeCustomModeModal();
+      showToast('Custom settings saved');
+    });
+  }
+
   const addAiBtn = document.getElementById('add-ai-btn');
   if (addAiBtn) {
     addAiBtn.onclick = () => {
@@ -491,6 +577,16 @@ document.addEventListener('DOMContentLoaded', () => {
   function hideRoomActions() {
     const actions = document.getElementById('room-actions');
     if (actions) actions.style.display = 'none';
+  }
+
+  function showCustomModeActions(visible) {
+    const customActions = document.getElementById('custom-mode-actions');
+    if (!customActions) return;
+    if (visible && isCreator && !isSpectator) {
+      customActions.style.display = 'block';
+    } else {
+      customActions.style.display = 'none';
+    }
   }
 
   function renderScoreboard() {
